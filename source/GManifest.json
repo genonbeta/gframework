@@ -1,0 +1,33 @@
+{
+	"application":
+	{
+		"name":"genonbeta.filemanager",
+		"version":"1.0",
+		"author":"genonbeta",
+		"website":"genonbeta.com"
+	},
+
+	"configuration":
+	{
+		"data_path":"genonbeta/filemanager",
+		"languages_path":"genonbeta/filemanager/languages",
+		"htmlPatterns_path":"genonbeta/filemanager/htmlPatterns",
+		"databases_path":"genonbeta/filemanager/databases"
+	},
+
+	"system":
+	{
+		"loaderClass" : "\\genonbeta\\filemanager\\system\\Loader",
+		"viewSkeleton" :
+		{
+			"__default":"\\genonbeta\\filemanager\\view\\model\\Home",
+			"about":"\\genonbeta\\filemanager\\view\\model\\About",
+			"about/developers":"\\genonbeta\\filemanager\\view\\model\\Developers"
+		}
+	},
+	
+	"service" :
+	{
+		"ViewDistrubutor" : "\\genonbeta\\filemanager\\service\\ViewDistrubutor"
+	}
+}
