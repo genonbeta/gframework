@@ -9,7 +9,6 @@ use genonbeta\util\RefusedIndexException;
 
 class MySQLLoader implements DbLoaderInterface
 {
-
 	private $dbAdapter;
 	private $loginInstance;
 

@@ -12,7 +12,7 @@ class Configuration
 	const SOURCE_PATH = "source"; // system additional library
 	const CACHE_PATH = "data/cache"; // system cache
 	const RESOURCE_PATH = "resource"; // resource directory
-	const FRAMEWORK_JSON = "source/GManifest.json"; // system will use it as info and loader-starter
+	const FRAMEWORK_JSON = "source/GManifest.json"; // main configuration file will loaded by System
 	const GMANIFEST_MAX_SIZE = 10240; // maximum gmanifest file size (defeult = 10kB)
 	const CLASS_EXTENSION = "php"; // this will be used to call or identify the classes
 	const RESOURCE_PROTOCOL = "res"; // default resource protocol
@@ -20,25 +20,24 @@ class Configuration
 	
 	private static $systemServices = [
 		"ErrorHandler" => "\\genonbeta\\service\\ErrorHandler",
-		"TypeHinting" => "\\genonbeta\\security\\TypeHinting",
 		"AutoLoader" => "\\genonbeta\\service\\AutoLoader",
 		"Flusher" => "\\genonbeta\service\\Flusher",
 		"ClassLoader" => "\\genonbeta\\service\\ClassLoader"
 	];
 	
-	// Components must extend Component class and so it can be created only once  
+	// Components can be implemented only once
 	private static $components = [
 		"\\genonbeta\\system\\configuration\\FirstLoadInitializer",
 		"\\genonbeta\\system\\helper\\LibraryCacheHelper",
 		"\\genonbeta\\provider\\wrapper\\ResourceComponent",
 	];
 	
-	public static function getServices()
+	public static function getServices() : array
 	{
 		return self::$systemServices;
 	}
 	
-	public static function getComponents()
+	public static function getComponents() : array
 	{
 		return self::$components;
 	}

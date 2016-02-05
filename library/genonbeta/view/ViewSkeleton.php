@@ -2,11 +2,12 @@
 
 namespace genonbeta\view;
 
+use genonbeta\controller\OutputController;
 use genonbeta\util\Log;
 use genonbeta\util\HashMap;
 use genonbeta\util\NativeUrl;
 use genonbeta\support\LanguageInterface;
-use genonbeta\support\Languages;
+use genonbeta\support\Language;
 use genonbeta\provider\ResourceManager;
 use genonbeta\provider\Resource;
 use genonbeta\net\UrlResolver;
@@ -29,7 +30,7 @@ abstract class ViewSkeleton implements ViewInterface
 	private $uris;
 
 	abstract function onCreate(array $methodName);
-	abstract function outputController();
+	abstract function outputController() : OutputController;
 
 	function __construct()
 	{
@@ -42,7 +43,7 @@ abstract class ViewSkeleton implements ViewInterface
 		return NativeUrl::pathResolver();
 	}
 	
-	protected function getOpController()
+	protected function getOpController() : OutputController
 	{
 		return $this->opcontroller;
 	}
@@ -62,29 +63,29 @@ abstract class ViewSkeleton implements ViewInterface
 		$this->getOpController()->putIndex($name, $pattern->drawAsAdapter($map));
 	}
 
-	function getString($name, array $sprintf = array())
+	function getString(string $name, array $sprintf = array())
 	{
-		if(!$this->languageIndex instanceof Languages)
+		if(!$this->languageIndex instanceof Language)
 		{ 
 			$this->logs->e("The languageIndex not defined yet. You need to load a language file");
-			return false;
+			return null;
 		}
 
 		return $this->languageIndex->getString($name, $sprintf);
 	}
 
-	function getLoadedLangInfo()
+	function getLoadedLangInfo() : array
 	{
 		if(!$this->languageInstance instanceof LanguageInterface)
 		{ 
 			$this->logs->e("The languageIndex not defined yet. You need to load a language file");
-			return false;
+			return array();
 		}
 	
 		return $this->languageInstance->onInfo();
 	}
 
-	function getUri(\string $skeleton, \string $abstractPath = null)
+	function getUri(string $skeleton, string $abstractPath = null) : String
 	{	
 		if($this->uris == null)
 			return false;
@@ -92,19 +93,21 @@ abstract class ViewSkeleton implements ViewInterface
 		return $this->uris->getUri($skeleton, $abstractPath);
 	}
 
-	function loadLanguage(LanguageInterface $interface)
+	function loadLanguage(LanguageInterface $interface) : bool
 	{
 		$this->languageInstance = $interface;
 		$this->languageIndex = $this->languageInstance->onLoading();
 		
-		if(!$this->languageIndex instanceof Languages)
+		if(!$this->languageIndex instanceof Language)
 		{ 
 			$this->logs->e("The language cannot be preserved languages instance");
 			return false;
 		}
+
+        return true;
 	}
 
-	protected function setUrlResolver(UrlResolver $res)
+	protected function setUrlResolver(UrlResolver $res) : bool
 	{
 		if($res == null)
 		{

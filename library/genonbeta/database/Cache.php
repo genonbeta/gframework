@@ -12,7 +12,7 @@ class Cache
 	
 	private $cacheDirectory = null;
 
-	function __construct(\string $dataDirectory) 
+	function __construct(string $dataDirectory)
 	{
 		$required = new RequiredFiles(self::TAG);
 		$required->request(Configuration::CACHE_PATH, RequiredFiles::TYPE_DIRECTORY, 0777);
@@ -21,12 +21,12 @@ class Cache
 		$this->cacheDirectory = Configuration::CACHE_PATH."/".$dataDirectory;
 	}
 
-	protected function convertFileName(\string $fileName)
+	protected function convertFileName(string $fileName)
 	{
 		return $this->cacheDirectory."/".str_replace("/", "@", $fileName);
 	}
 
-	function makeCacheFromFile(\string $filePath, \string $externalContent = null, \boolean $fileNotExists = null)
+	function makeCacheFromFile(string $filePath, string $externalContent = null, bool $fileNotExists = null)
 	{
 		$file = new File($filePath);
 		
@@ -35,7 +35,7 @@ class Cache
 	
 		$cacheFile = new File($this->convertFileName($file->getPath()));
 		
-		if ($cacheFile->isExists())
+		if ($cacheFile->doesExist())
 			return false;
 			
 		$cacheFile->createNewFile(); 
@@ -49,11 +49,11 @@ class Cache
 			return $cacheFile->putIndex($file->getIndex());
 	}
 
-	function makeCache(\string $cacheFilename, \string $content)
+	function makeCache(string $cacheFilename, string $content)
 	{
 		$cacheFile = new File($this->cacheDirectory."/".$cacheFilename);
 		
-		if ($cacheFile->isExists())
+		if ($cacheFile->doesExist())
 			return false;
 			
 		$cacheFile->createNewFile(); 
@@ -64,7 +64,7 @@ class Cache
 		return $cacheFile->putIndex($content);
 	}
 
-	function readFileCache(\string $cacheName)
+	function readFileCache(string $cacheName)
 	{
 		if(!$this->isCachedFile($cacheName))
 			return false;
@@ -77,7 +77,7 @@ class Cache
 		return $file->getIndex();
 	}
 
-	function readCache($cacheName)
+	function readCache(string $cacheName)
 	{
 		if(!$this->isCached($cacheName))
 			return false;
@@ -90,12 +90,12 @@ class Cache
 		return $file->getIndex();
 	}
 	
-	function getFileCachePath(\string $cacheName)
+	function getFileCachePath(string $cacheName)
 	{
 		return $this->convertFileName($cacheName);
 	}
 
-	function isCachedFile(\string $cacheName)
+	function isCachedFile(string $cacheName)
 	{
 		if(is_file($this->convertFileName($cacheName)))
 			return true;
@@ -103,7 +103,7 @@ class Cache
 		return false;
 	}
 
-	function isCached(\string $cacheName)
+	function isCached(string $cacheName)
 	{
 		if(is_file($this->cacheDirectory."/".$cacheName))
 			return true;
@@ -111,7 +111,7 @@ class Cache
 		return false;
 	}
 	
-	function deleteFileCache(\string $cacheName)
+	function deleteFileCache(string $cacheName)
 	{
 		$file = new File($this->convertFileName($cacheName));
 		
@@ -121,7 +121,7 @@ class Cache
 		return $file->deleteFile();
 	}
 	
-	function deleteCache(\string $cacheName)
+	function deleteCache(string $cacheName)
 	{
 		$file = new File($this->cacheDirectory."/".$cacheName);
 		

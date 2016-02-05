@@ -8,7 +8,9 @@ class Boolean implements CallbackInterface
 {
 	function onCallback($data)
 	{
-		if (!is_bool($data)) return false;
+		if (!is_bool($data))
+			return false;
+
 		return true;
 	}
 }

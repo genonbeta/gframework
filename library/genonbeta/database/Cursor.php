@@ -14,7 +14,7 @@ class Cursor
 		$this->items = $map->getAll();		
 	}
 
-	public function moveToFirst()
+	public function moveToFirst() : bool
 	{
 		if(count($this->items) == 0) 
 			return false;
@@ -29,22 +29,22 @@ class Cursor
 		return $this->items[$this->currentPosition];
 	}
 
-	public function getIndexById($id)
+	public function getIndexById(int $id)
 	{
 		return $this->items[$this->currentPosition][$id];
 	}
 
-	public function getPosition()
+	public function getPosition() : int
 	{
 		return $this->currentPosition;
 	}
 
-	public function getCount()
+	public function getCount() : int
 	{
 		return count($this->items);
 	}
 
-	public function moveToNext()
+	public function moveToNext() : bool
 	{
 		if(($this->currentPosition + 1) == count($this->items)) 
 			return false;
@@ -54,7 +54,7 @@ class Cursor
 		return true;
 	}
 
-	public function moveToPrevious()
+	public function moveToPrevious() : bool
 	{
 		if(($this->currentPosition - 1) < 0) 
 			return false;

@@ -20,11 +20,11 @@ class MySQL extends DbAdapter implements DbAdapterModel
 	function onStartCommand(StackDataStore $login)
 	{
 		$fields = $login->getHierarchy();
-		$this->resourceIndex = @mysql_connect($fields[self::DB_SERVER], 
-												$fields[self::DB_USERNAME], 
-												$fields[self::DB_PASSWORD]);
+		$this->resourceIndex = @mysqli_connect($fields[self::DB_SERVER], $fields[self::DB_USERNAME], $fields[self::DB_PASSWORD]);
 
-		if(!$this->resourceIndex) return false;
+		if(!$this->resourceIndex)
+            return false;
+
 		return true;
 	}
 
@@ -35,7 +35,7 @@ class MySQL extends DbAdapter implements DbAdapterModel
 
 	function query()
 	{
-		$result = $this->callOptimizer("mysql_query", func_get_args());
+		$result = $this->callOptimizer("mysqli_query", func_get_args());
 
 		if(is_resource($result)) return new MySQLResult($result);
 
@@ -44,17 +44,17 @@ class MySQL extends DbAdapter implements DbAdapterModel
 
 	function escape()
 	{
-		return $this->callOptimizer("mysql_real_escape_string", func_get_args());
+		return $this->callOptimizer("mysqli_real_escape_string", func_get_args());
 	}
 
 	function closeConnection()
 	{
-		return $this->callOptimizer("mysql_close", func_get_args());
+		return $this->callOptimizer("mysqli_close", func_get_args());
 	}
 
 	function getServerInfo()
 	{
-		return $this->callOptimizer("mysql_stat", func_get_args());
+		return $this->callOptimizer("mysqli_stat", func_get_args());
 	}
 
 	function getDbModelInfo()
@@ -64,7 +64,7 @@ class MySQL extends DbAdapter implements DbAdapterModel
 
 	function selectDb()
 	{
-		return $this->callOptimizer("mysql_select_db", func_get_args());
+		return $this->callOptimizer("mysqli_select_db", func_get_args());
 	}
 	
 	private function callOptimizer($func, array $index = array())

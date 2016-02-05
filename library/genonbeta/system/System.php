@@ -20,7 +20,7 @@ abstract class System
 	static private $manifestIndex;
 	static private $services = array();
 	
-	static function setup() 
+	public static function setup()
 	{
 		spl_autoload_register([__CLASS__, "autoLoad"]);
 		set_error_handler([__CLASS__, "errorHandler"]);
@@ -33,7 +33,7 @@ abstract class System
 		
 		if(is_file(Configuration::FRAMEWORK_JSON))
 		{
-			if(filesize(Configuration::FRAMEWORK_JSON) < (Configuration::GMANIFEST_MAX_SIZE))
+			if(filesize(Configuration::FRAMEWORK_JSON) < Configuration::GMANIFEST_MAX_SIZE)
 			{
 				$JsonIndex = file_get_contents(Configuration::FRAMEWORK_JSON);
 				$json = json_decode($JsonIndex, true);
@@ -49,16 +49,24 @@ abstract class System
 					if (isset($json['service']))
 						self::loadServices($json['service']);
 					else
-						self::getLogger()->i("No service load request has been added to config");
+						self::getLogger()->i("No service was requested to load in gmanifest file");
 
-					if(class_exists($json['system']['loaderClass']))
+					if (isset($json['component']))
+						self::loadComponents($json['component']);
+					else
+						self::getLogger()->i("No component was requested in gmanifest file");
+
+					if(isset($json['system']['loaderClass']) && class_exists($json['system']['loaderClass']))
 					{
-						self::getLogger()->d("loaderClass found \"".$json['system']['loaderClass']."\"");
-						new $json['system']['loaderClass']($json);
+						self::getLogger()->d("Loader class found \"".$json['system']['loaderClass']."\"");
+						$loader = new $json['system']['loaderClass']();
+
+						if (!$loader instanceof Component)
+							throw new \Exception("Loader class must be instance of \\genonbeta\\system\\Component class");
 					}
 					else
 					{
-						self::getLogger()->e("No class loaded that requested in GManifest file");
+						throw new \Exception("No class loader class found in GManifest file");
 					}
 				}
 			}
@@ -75,18 +83,18 @@ abstract class System
 		}
 	}
 	
-	static function getService($serviceName)
+	public static function getService(string $serviceName)
 	{
-		if (!self::doesServiceExist($serviceName))
+		if (!self::serviceExists($serviceName))
 		{ 
 			self::getLogger()->e($serviceName." service that has just been requested is not known by System");
-			return false;
+			return null;
 		}
 		
 		return self::$services[$serviceName];
 	}
 
-	static function autoLoad($className) 
+	protected static function autoLoad(string $className) : bool
 	{
 		$classNameOriginal = $className;
 		$className = str_replace("\\", "/", $className);
@@ -97,14 +105,16 @@ abstract class System
 		elseif (is_file(Configuration::SOURCE_PATH."/".$className))
 			include_once(Configuration::SOURCE_PATH."/".$className);
 		else
-			Intent::sendServiceIntent("AutoLoader", self::getService("AutoLoader")->getDefaultIntent()->putExtra(AutoLoader::CLASS_NAME, $className));
+			Intent::sendServiceIntent("AutoLoader", self::getService("AutoLoader")
+									  ->getDefaultIntent()
+									  ->putExtra(AutoLoader::CLASS_NAME, $className));
 	
 		self::addLoadedClass($classNameOriginal);
 
 		return true;
 	}
 
-	private static function addLoadedClass($className)
+	private static function addLoadedClass(string $className) : bool
 	{
 		// The character "\" represents to jump to main way
 		$className = "\\" . $className;
@@ -116,10 +126,10 @@ abstract class System
 
 		self::getLoadedClasses()->add(array($className, $stat));
 
-		return true;
+		return $stat;
 	}
 	
-	private static function loadServices(array $serviceList)
+	private static function loadServices(array $serviceList) : bool
 	{
 		if (count($serviceList) < 1)
 		{
@@ -131,7 +141,7 @@ abstract class System
 		{
 			if (class_exists($serviceClass) && is_string($serviceName))
 			{
-				if(self::doesServiceExist($serviceName))
+				if(self::serviceExists($serviceName))
 				{
 					self::getLogger()->e("Tried to load existed service {$serviceName}");
 					continue;
@@ -148,20 +158,16 @@ abstract class System
 					throw new \Exception($serviceClass." class can only be instance of Service");
 			}
 		}
+
+        return true;
 	}
 	
-	public static function doesServiceExist($serviceName)
+	public static function serviceExists(string $serviceName) : bool
 	{
-		if (!is_string($serviceName))
-			return false;
-		
-		if (isset(self::$services[$serviceName]))
-			return true;
-			
-		return false;
+		return isset(self::$services[$serviceName]);
 	}
 	
-	private static function loadComponents(array $componentList)
+	private static function loadComponents(array $componentList) : bool
 	{
 		if (count($componentList) < 1)
 		{
@@ -176,17 +182,19 @@ abstract class System
 				
 				if ($componentInstance instanceof Component)
 					self::getLogger()->i($component." component is loaded");
-				else
+                else
 					throw new \Exception($component." class can only be instance of Component");
 			}
+
+        return true;
 	}
 	
-	public static function getClassSpacePath(\string $className)
-	{
+	public static function getClassStorage(string $className)
+    {
 		if (!class_exists($className))
 		{
 			self::getLogger()->e("Requested self space path of not existing {$className} class");
-			return false;
+			return null;
 		}
 		
 		$className = str_replace("\\", "/", $className);
@@ -194,7 +202,7 @@ abstract class System
 		
 		$spaceDir = new \genonbeta\io\File(Configuration::DATA_PATH."/".$className);
 		
-		if (!$spaceDir->isExists())
+		if (!$spaceDir->doesExist())
 			$spaceDir->createDirectories();
 		
 		return $spaceDir->getPath();
@@ -203,12 +211,12 @@ abstract class System
 	public static function errorHandler($errLevel = null, $errMessage = null)
 	{
 		return Intent::sendServiceIntent("ErrorHandler", self::getService("ErrorHandler")
-															->getDefaultIntent()
-															->putExtra(ErrorHandler::ERROR_LEVEL, $errLevel)
-															->putExtra(ErrorHandler::ERROR_MESSAGE, $errMessage));
+										 ->getDefaultIntent()
+										 ->putExtra(ErrorHandler::ERROR_LEVEL, $errLevel)
+										 ->putExtra(ErrorHandler::ERROR_MESSAGE, $errMessage));
 	}
 
-	public static function getLoadedClasses() 
+	public static function getLoadedClasses() : HashMap
 	{
 		if (self::$loadedClasses == null)
 			self::$loadedClasses = new HashMap();
@@ -216,7 +224,7 @@ abstract class System
 		return self::$loadedClasses;
 	}
 
-	private static function getLogger()
+	private static function getLogger() : Log
 	{
 		if (self::$logs == null)
 			self::$logs = new Log(self::TAG);
@@ -224,7 +232,7 @@ abstract class System
 		return self::$logs;
 	}
 
-	static function getLoadedManifest()
+	public static function getLoadedManifest() : array
 	{
 		return self::$manifestIndex;
 	}

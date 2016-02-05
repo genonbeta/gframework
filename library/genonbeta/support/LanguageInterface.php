@@ -6,6 +6,6 @@ use genonbeta\provider\ResourceManager;
 
 interface LanguageInterface
 {
-	function onInfo();
-	function onLoading();
+	function onInfo() : array;
+	function onLoading() : Language;
 }

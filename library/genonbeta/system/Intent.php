@@ -47,24 +47,22 @@ class Intent
 		return $this;
 	}
 	
-	public function hasExtra($key)
+	public function hasExtra($key) : bool
 	{
-		if (!isset($this->extras[$key]))
-			return false;
-			
-		return true;
+		return isset($this->extras[$key]);
 	}
 	
-	public function removeExtra($key)
+	public function removeExtra(string $key)
 	{
 		if (!$this->hasExtra($key))
-			return false;
+			return null;
 		
 		unset($this->extras[$key]);
+
 		return $this;
 	}
 	
-	public function getExtra($key, $default = false)
+	public function getExtra($key, bool $default = false)
 	{
 		if (!$this->hasExtra($key))
 			return $default;
@@ -72,16 +70,17 @@ class Intent
 		return $this->extras[$key];
 	}
 	
-	public function setResult($result)
+	public function setResult(int $result)
 	{
 		if (!is_int($result))
-			return false;
+			return null;
 			
 		$this->result = $result;
+
 		return $this;
 	}
 	
-	public function getResult()
+	public function getResult() : int
 	{
 		return $this->result;
 	}
@@ -89,14 +88,14 @@ class Intent
 	public function setAction($action)
 	{
 		if (!is_string($action))
-			return false;
+			return null;
 		
 		$this->action = $action;
 		
 		return $this;
 	}
 	
-	public function getAction()
+	public function getAction() : String
 	{
 		return $this->action;
 	}
@@ -104,7 +103,7 @@ class Intent
 	public function flushOlds()
 	{
 		if ($this->staticClass === null)
-			return false;
+			return null;
 		
 		$this->action = $this->staticClass[0];
 		$this->result = $this->staticClass[1];
@@ -115,8 +114,8 @@ class Intent
 	
 	public static function sendServiceIntent($serviceName, Intent $intent)
 	{
-		if (!System::doesServiceExist($serviceName))
-			return false;
+		if (!System::serviceExists($serviceName))
+			return null;
 			
 		return System::getService($serviceName)->send($intent);
 	}

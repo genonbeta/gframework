@@ -11,7 +11,6 @@ use genonbeta\util\Log;
 
 class Characters
 {
-
 	const TAG = "Characters";
 
 	const TYPE_BIG = "tbig";
@@ -19,17 +18,16 @@ class Characters
 	const TYPE_CLEARED = "tcleared";
 	const TYPE_LANG = "tlanguage";
 
-	static private $data;
+	private static $data = [];
 	private $lang;
 
-	function __construct($lang)
+	function __construct(string $lang)
 	{
-		$this->lang = $lang;		
+		$this->lang = $lang;
 	}
 
-	function addMap($bigSt, $smallSt, $clearedSt)
+	function addMap(string $bigSt, string $smallSt, string $clearedSt)
 	{
-
 		$log = new Log(self::TAG);
 
 		$hexBig = bin2hex($bigSt);
@@ -58,20 +56,20 @@ class Characters
 		{
 			$log->e("{$smallSt} already saved");
 		}
-
 	}
 
-	static public function character($letter)
+	public static function character(string $letter)
 	{
-		$h = bin2hex($letter);
-		if(!isset(self::$data[$h])) return false;
+		$hex = bin2hex($letter);
 
-		return self::$data[$h];
+		if(!isset(self::$data[$hex]))
+			return false;
+
+		return self::$data[$hex];
 	}
 
-	static function getAllMap()
+	public static function getAllMap()
 	{
 		return self::$data;
 	}
-	
 }

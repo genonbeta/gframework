@@ -6,12 +6,12 @@ final class EnvironmentVariables
 {
 	private static $variables = [];
 	
-	static function getList()
+	public static function getList()
 	{
 		return self::$variables;
 	}
 
-	static function define(\string $key, $value)
+	public static function define(string $key, string $value)
 	{
 		if(self::isDefined($key))
 			return false;
@@ -21,15 +21,12 @@ final class EnvironmentVariables
 		return true;
 	}
 	
-	static function isDefined(\string $key)
+	public static function isDefined(string $key) : bool
 	{
-		if(isset(self::$variables[$key]))
-			return true;
-		
-		return false;
+		return isset(self::$variables[$key]);
 	}
 	
-	static function get()
+	public static function get(string $key)
 	{
 		if(!self::isDefined($key))
 			return false;

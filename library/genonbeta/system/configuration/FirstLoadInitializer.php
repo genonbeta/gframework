@@ -2,6 +2,7 @@
 
 namespace genonbeta\system\configuration;
 
+use Configuration;
 use genonbeta\system\EnvironmentVariables;
 use genonbeta\system\Component;
 
@@ -15,10 +16,11 @@ class FirstLoadInitializer extends Component
 		EnvironmentVariables::define("serverAddress", G_ADDRESS);
 		EnvironmentVariables::define("serverAddressFull", G_ADDRESS_FULL);
 		EnvironmentVariables::define("documentRoot", G_DOCUMENT_ROOT);
-		EnvironmentVariables::define("frameworkRoot", G_FRAMEWORK_ROOT);		
+		EnvironmentVariables::define("frameworkRoot", G_FRAMEWORK_ROOT);
+		EnvironmentVariables::define("workerAddress", G_ADDRESS_FULL."/".Configuration::WORKER_URL);
 	}
 
-	protected function getClassId()
+	protected function getClassId() : string
 	{
 		return __CLASS__;
 	}

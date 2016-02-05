@@ -21,9 +21,9 @@ class AutoLoader extends Service
 		$this->autoLoaderIntent = (new Intent(self::ACTION_LOAD_CLASS))->lockIntentDefault();
 	}
 	
-	protected function onReceive(Intent $intent)
+	protected function onReceive(Intent $intent) : Intent
 	{
-		return $this->controllerPool->sendRequest($intent);
+		return $this->getDefaultIntent()->setResult(($this->controllerPool->sendRequest($intent)) ? Intent::RESULT_OK : Intent::RESULT_FALSE);
 	}
 
 	function putAutoLoader(Controller $loader)
@@ -31,7 +31,7 @@ class AutoLoader extends Service
 		$this->controllerPool->addTodoList($loader);
 	}
 	
-	public function getDefaultIntent()
+	public function getDefaultIntent() : Intent
 	{
 		return $this->autoLoaderIntent->flushOlds();
 	}

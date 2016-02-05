@@ -15,7 +15,7 @@ class LibraryCacheHelper extends Component implements Controller
 {
 	const TAG = "LibraryCacheHelper";
 
-	private $parIndex = array();
+	private $parIndex = [];
 	private $cache;
 
 	protected function onLoad()
@@ -24,12 +24,12 @@ class LibraryCacheHelper extends Component implements Controller
 		System::getService("AutoLoader")->putAutoLoader($this);
 	}
 
-	protected function getClassId()
+	protected function getClassId() : string
 	{
 		return __CLASS__;
 	}
 
-	public	function onRequest($intent)
+	public function onRequest($intent)
 	{
 		if ($intent->getAction() !== AutoLoader::ACTION_LOAD_CLASS)
 			return false;
@@ -37,7 +37,7 @@ class LibraryCacheHelper extends Component implements Controller
 		$this->tryToInclude($intent->getExtra(AutoLoader::CLASS_NAME));
 	}
 
-	public function isCachedLibrary(\string $filePath)
+	public function isCachedLibrary(string $filePath)
 	{
 		if(!$this->getCache()->isCachedFile($filePath)) 
 			return false;
@@ -45,7 +45,7 @@ class LibraryCacheHelper extends Component implements Controller
 		return true;
 	}
 
-	public function getParLibraryIndex(\string $fileName) 
+	public function getParLibraryIndex(string $fileName)
 	{
 		$parFile = new File($fileName);
 		
@@ -60,7 +60,10 @@ class LibraryCacheHelper extends Component implements Controller
 		for ($i=0; $i < $Zip->numFiles; $i++) 
 		{
 			$Name = $Zip->statIndex($i)['name'];
-			if(substr($Name, -1) == "/") continue;
+
+			if(substr($Name, -1) == "/")
+				continue;
+
 			$filesArray[$Name] = $i; 
 		}
 
@@ -77,7 +80,7 @@ class LibraryCacheHelper extends Component implements Controller
 		return json_decode($this->getCache()->readFileCache($parFile), 1);
 	}
 
-	function tryToInclude(\string $className)
+	function tryToInclude(string $className)
 	{
 		if(count($this->parIndex) < 1) 
 			return false;

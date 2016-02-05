@@ -4,40 +4,38 @@ namespace genonbeta\util;
 
 class NativeUrl
 {
-	private $methods;
+	private $methods = [];
 
-	function makeMethod($methodName, $method = false)
+	function makeMethod(string $methodName, string $method = null)
 	{
-		if($method == false)
+		if($method == null)
 			$method = $methodName;
-
-		if(!is_string($methodName) || !is_string($method))
-			return false;
 		
 		$this->methods[$methodName] = $method;
 
 		return true;
 	}
 
-	function read($arguments)
+	function read()
 	{
-		$varNumb = func_num_args();
-
-		if($varNumb < 1) 
+		if(func_num_args() < 1)
 			return false;
 
-		$nurl = $this->getThis();
+		$nUrl = $this->getThis();
 
-		if(count($nurl) < 1) 
+		if(count($nUrl) < 1)
 			return false;
 
 		$arguments = func_get_args();
 
 		foreach($arguments as $id => $arg)
 		{
-			$method = $this->getMethod($arg) or die("Method not found {$arg}");
+			if (!$this->methodExists($arg))
+				break;
 			
-			if(!preg_match("#{$method}#", $nurl[$id], $result)) 
+			$method = $this->getMethod($arg);
+
+			if(!preg_match("#{$method}#", $nUrl[$id], $result))
 				return false;
 
 			$return[] = $result[1];
@@ -46,17 +44,14 @@ class NativeUrl
 		return $return;
 	}
 
-	function getMethod($method)
+	function getMethod(string $methodName)
 	{
-		return $this->methods[$method];
+		return $this->methods[$methodName];
 	}
 
-	function methodExists($methodName)
+	function methodExists(string $methodName)
 	{
-		if(isset($this->methods[$methodName]) && $this->methods[$methodName] != null) 
-			return true;
-		
-		return false;
+		return isset($this->methods[$methodName]);
 	}
 
 	function getThis()

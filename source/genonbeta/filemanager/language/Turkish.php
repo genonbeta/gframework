@@ -4,7 +4,7 @@ namespace genonbeta\filemanager\language;
 
 use genonbeta\support\LanguageInterface;
 use genonbeta\support\Characters;
-use genonbeta\support\Languages;
+use genonbeta\support\Language;
 use genonbeta\provider\ResourceManager;
 use genonbeta\provider\Resource;
 use genonbeta\filemanager\config\MainConfig;
@@ -13,7 +13,7 @@ class Turkish implements LanguageInterface
 {
 	const TAG = "Turkish";
 
-	function onInfo()
+	function onInfo() : array
 	{
 		return array(
 			"author" => "genonbeta",
@@ -25,9 +25,9 @@ class Turkish implements LanguageInterface
 		);
 	}
 
-	function onLoading()
+	function onLoading() : Language
 	{
-		$lang = new Languages(ResourceManager::getResource(MainConfig::LANGUAGE_INDEX_NAME));
+		$lang = new Language(ResourceManager::getResource(MainConfig::LANGUAGE_INDEX_NAME));
 		$lang->loadFile(self::TAG);
 		
 		$ch = new Characters("Turkish");
@@ -41,5 +41,4 @@ class Turkish implements LanguageInterface
 		
 		return $lang;		
 	}
-
 }

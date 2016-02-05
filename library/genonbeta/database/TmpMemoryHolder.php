@@ -2,9 +2,10 @@
 
 namespace genonbeta\database;
 
+# @depracated
 abstract class TmpMemoryHolder
 {
-	static private $data;
+	static private $data = [];
 
 	static function put($data, $index)
 	{
@@ -36,7 +37,6 @@ abstract class TmpMemoryHolder
 
 	static protected function checkDataOnSave($data, $index)
 	{
-
 		if(!self::checkData($data, $index))
 			return false;
 		

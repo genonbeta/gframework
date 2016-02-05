@@ -29,12 +29,12 @@ class ControllerPool
 
 	public function clearTodoList()
 	{
-		$this->controllerInterfaces = null;
+		$this->controllerInterfaces->clear();
 	}
 
-	public function sendRequest($items, $mode = self::MODE_ARGUMENT_LOOP, ControllerCallback $resultCallback = null)
+	public function sendRequest($items, int $mode = self::MODE_ARGUMENT_LOOP, ControllerCallback $resultCallback = null)
 	{
-		if($this->controllerInterfaces->size() < 1) 
+		if ($this->controllerInterfaces->size() < 1)
 		{
 			$this->log->d("no controller defined to do work");
 			
@@ -62,7 +62,7 @@ class ControllerPool
 			return $resultCallback->onResult();
 	}
 
-	public function getCount()
+	public function getCount() : int
 	{
 		return $this->controllerInterfaces->size();
 	}

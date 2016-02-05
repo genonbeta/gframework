@@ -12,7 +12,7 @@ final class ResourceComponent extends Component
 		stream_wrapper_register(Configuration::RESOURCE_PROTOCOL, "\\genonbeta\\provider\\wrapper\\ResourceStreamWrapper");
 	}
 
-	protected function getClassId()
+	protected function getClassId() : string
 	{
 		return __CLASS__;
 	}

@@ -12,16 +12,17 @@ class RequiredFiles
 	const TYPE_DIRECTORY = 1;
 	const TYPE_FILE = 2;
 
-	public function __construct(\string $pId)
+	public function __construct(string $pId)
 	{
 		$this->logger = new Log($pId);
 	}
 
-	public function request(\string $requestName, $type, \int $chmod = null, \string $index = null)
+	public function request(string $requestName, int $type, int $chmod = null, string $index = null)
 	{
 		$fileInstance = new File($requestName);
 		
-		if ($fileInstance->isExists()) return true;
+		if ($fileInstance->doesExist())
+			return true;
 		
 		if($type == self::TYPE_DIRECTORY) 
 		{
@@ -39,7 +40,9 @@ class RequiredFiles
 			if($fileInstance->createNewFile())
 			{
 				$this->logger->i("{$requestName} created (file)");
-				if ($index != null && $fileInstane->isWritable()) $fileInstance->putIndex($index);
+
+				if ($index != null && $fileInstane->isWritable())
+					$fileInstance->putIndex($index);
 			}
 			else
 			{

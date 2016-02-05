@@ -11,7 +11,7 @@ class File
 	private $log;
 	private $file = null;
 	
-	function __construct(\string $fileName)
+	function __construct(string $fileName)
 	{
 		$this->log = new Log(self::TAG);
 		$this->file = $fileName;
@@ -22,7 +22,7 @@ class File
 		return touch($this->file);
 	}
 	
-	function createNewDirectory($chmod = 0644)
+	function createNewDirectory(int $chmod = 0644)
 	{
 		return mkdir($this->file, $chmod);
 	}
@@ -37,7 +37,7 @@ class File
 		return file_put_contents($this->file, $index);
 	}
 
-	function moveTo(\string $newName)
+	function moveTo(string $newName)
 	{
 		if (rename($this->file, $newName))
 			return new File($newName);
@@ -45,7 +45,7 @@ class File
 		return false;
 	}
 
-	function copyTo(\string $copyTo)
+	function copyTo(string $copyTo)
 	{
 		if(copy($this->file, $copyTo))
 			return new File($copyTo);
@@ -83,7 +83,7 @@ class File
 		return self::deleteDirectory($this->file);
 	}
 	
-	function copyThisDirectory(\string $copyTo)
+	function copyThisDirectory(string $copyTo)
 	{
 		return self::copyDirectory($this->file, $copyTo);
 	}
@@ -108,7 +108,7 @@ class File
 		return is_dir($this->file);
 	}
 	
-	function isExists()
+	function doesExist()
 	{
 		return file_exists($this->file);
 	}
@@ -162,25 +162,20 @@ class File
 		} 
 	} 
 
-	static function copyDirectory(\string $directory, \string $dest, $first = FALSE) 
+	static function copyDirectory(string $directory, string $dest, bool $first = false)
 	{
 
-		$first = ($first == FALSE) ? realpath($dest) : realpath($first);
+		$first = ($first == false) ? realpath($dest) : realpath($first);
 
-		if(substr($directory,-1) == "/") 
-		{ 
-			$directory = substr($directory,0,-1); 
-		} 
+		if(substr($directory,-1) == "/")
+			$directory = substr($directory,0,-1);
 
-		if(substr($dest,-1) == "/") 
-		{ 
-			$dest = substr($dest,0,-1); 
-		} 
+		if(substr($dest,-1) == "/")
+			$dest = substr($dest,0,-1);
 
 		if(!is_dir($dest)) 
-		{
-			if(!mkdir($dest, 0777)) return FALSE;
-		}
+			if(!mkdir($dest, 0777))
+                return false;
 
 		if(!file_exists($directory) || (!is_dir($directory) || !isset($dest))) 
 		{ 
@@ -229,7 +224,7 @@ class File
 		} 
 	} 
 
-	static function forceToMakeDirectory(\string $directory) 
+	static function forceToMakeDirectory(string $directory)
 	{
 		$directory = explode('/', $directory); 
 		$dirNumber = count($directory); 
@@ -252,7 +247,7 @@ class File
 
 	}
 
-	static function sizeExpression(\int $byte, $part = 1024, array $params = array()) 
+	static function sizeExpression(int $byte, int $part = 1024, array $params = array()) : String
 	{
 		if(!is_int($byte)) 
 			$byte = 0;

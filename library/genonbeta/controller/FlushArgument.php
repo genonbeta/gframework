@@ -30,5 +30,4 @@ class FlushArgument
 		
 		return true;
 	}
-
 }

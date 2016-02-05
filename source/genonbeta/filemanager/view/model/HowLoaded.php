@@ -21,45 +21,40 @@ use genonbeta\filemanager\language\Turkish;
 use genonbeta\filemanager\view\model\pattern\GBasicSkeleton;
 use genonbeta\filemanager\view\model\pattern\LogList;
 
-class Home extends ViewSkeleton
+class HowLoaded extends ViewSkeleton
 {
-	const TAG = "Home";
-	
+	const TAG = "HowLoaded";
+
 	public function onCreate(array $methods)
 	{
 		$log = new Log(self::TAG);
 		$res = ResourceManager::getResource(MainConfig::DB_INDEX_NAME);
-		
+
 		$listPattern = new LogList($this);
-		
-		try
-		{
-			$sdbLoader = new SQLite3Loader($res->findByName("tr_en"));
-			$sdb = $sdbLoader->getDbInstance();
-			$result = $sdb->query("SELECT * FROM `tr_en`");
-			$cursor = $result->getCursor();			
-						
-			$log->i("Veritabanında ".$cursor->getCount()." adet kelime bulunuyor");
-		} 
-		catch(\Exception $e)
-		{
-		}
-						
+
 		$this->loadLanguage(new Turkish());
 		$this->setUrlResolver(new UrlResolver(EnvironmentVariables::get("workerAddress"), System::getLoadedManifest()['system']['viewSkeleton']));
-		
-		$dbLoader = new MySQLLoader();
-		$db = $dbLoader->getDbInstance();
-		
-		$log->i("<a href=\"" . $this->getUri("about", "?user=23")."\">Goto about page</a>");
-		$log->i("<a href=\"" . $this->getUri("oneRun", "?user=23")."\">Goto how loaded page</a>");
-		
+
+		$log->i("<a href=\"" . $this->getUri("home", "")."\">Goto home page</a>");
+
+
+		$cursor = new \genonbeta\database\Cursor(System::getLoadedClasses());
+
+		if ($cursor->moveToFirst())
+		{
+			do
+			{
+				$log->i(($cursor->getIndex()[1] ? "loaded" : "error"). " : " . $cursor->getIndex()[0]);
+			}
+			while ($cursor->moveToNext());
+		}
+
 		$sb = new StringBuilder();
 		$sb->put($listPattern->drawAsAdapter(Log::getLogs()));
-		
-		$this->drawPattern(new GBasicSkeleton($this), "system_html", array(GBasicSkeleton::TITLE => "Home", GBasicSkeleton::BODY => $sb));
+
+		$this->drawPattern(new GBasicSkeleton($this), "system_html", array(GBasicSkeleton::TITLE => "How Loaded", GBasicSkeleton::BODY => $sb));
 	}
-	
+
 	public function outputController() : OutputController
 	{
 		return new OutputController();

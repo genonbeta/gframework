@@ -15,14 +15,14 @@ class ClassLoader extends Service
 	const RES_NAME = "ClassLoader";
 	const RES_FILETYPE = "ld";
 	
-	private $loadedClasses;
+	private $loadedClasses = [];
 	
 	function __construct()
 	{
 		$log = new Log(self::TAG);
 		$this->loadedClasses = new HashMap();
 		
-		ResourceManager::addResource(self::RES_NAME, System::getClassSpacePath(__CLASS__), self::RES_FILETYPE);
+		ResourceManager::addResource(self::RES_NAME, System::getClassStorage(__CLASS__), self::RES_FILETYPE);
 		$res = ResourceManager::getResource(self::RES_NAME, true);
 		
 		foreach ($res->getIndex() as $fileName => $fileInfo)
@@ -33,17 +33,19 @@ class ClassLoader extends Service
 			{
 				new $className;
 				
-				$log->i("{$className} class loaded.");
+				$log->i(self::TAG.".load({$className}) loaded.");
 				$this->loadedClasses->add($className);
 			}
+			else
+				$log->e(self::TAG.".load({$className}) process failed");
 		}
 	}
 	
-	function getLoadedClasses()
+	function getLoadedClasses() : array
 	{
-	
+		return $this->loadedClasses;
 	}
 	
-	public function onReceive(Intent $intent) {}
-	public function getDefaultIntent() {}
+	public function onReceive(Intent $intent) : Intent {}
+	public function getDefaultIntent() : Intent {}
 }

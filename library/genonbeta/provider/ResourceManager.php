@@ -4,11 +4,11 @@ namespace genonbeta\provider;
 
 abstract class ResourceManager
 {
-	static private $resources = array();	
+	private static $resources = [];
 
-	static function addResource($resourceName, $dirPath, $type = false)
+	static function addResource(string $resourceName, string $dirPath, string $type = null)
 	{
-		if(!is_string($resourceName) || !is_dir($dirPath) || (!is_string($type) && !is_bool($type)) || self::resourceExists($resourceName))
+		if(!is_dir($dirPath) || self::resourceExists($resourceName))
 			return false;
 		
 		self::$resources[$resourceName] = array(
@@ -20,7 +20,7 @@ abstract class ResourceManager
 		self::$resources[$resourceName]['Data'] = self::getResourceIndex($resourceName);
 	}
 
-	private static function getResourceIndex($resourceName)
+	private static function getResourceIndex(string $resourceName)
 	{
 		$i = self::$resources[$resourceName];
 		$type = (!$i['Type']) ? "" : ".".$i['Type'];
@@ -38,21 +38,15 @@ abstract class ResourceManager
 		return $return;
 	} 
 	
-	public static function resourceExists($resourceName)
+	public static function resourceExists(string $resourceName)
 	{
-		if(isset(self::$resources[$resourceName])) 
-			return true;
-		
-		return false;
+		return isset(self::$resources[$resourceName]);
 	}
 
-	public static function getResource($resourceName, $inResource = true) 
+	public static function getResource(string $resourceName, bool $inResource = true)
 	{
 		if(!self::resourceExists($resourceName)) 
 			return false;
-		
-		if(!is_bool($inResource)) 
-			$inResource = true;
 
 		if($inResource) 
 			return new Resource($resourceName);

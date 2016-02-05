@@ -5,23 +5,23 @@ namespace genonbeta\support;
 use genonbeta\provider\Resource;
 use genonbeta\util\Log;
 
-class Languages
+class Language
 {
-	const TAG = "Languages";
-	
-	private $fields = array();
-	private $resorce;
-	private $logs;
-	
+	const TAG = "Language";
+
+	private $fields = [];
+	private $resource;
+	private $log;
+
 	function __construct(Resource $resource)
 	{
-		$this->resorce = $resource;
-		$this->logs = new Log(self::TAG);
+		$this->resource = $resource;
+		$this->log = new Log(self::TAG);
 	}
 
-	function loadFile($fileName)
+	function loadFile(string $fileName)
 	{
-		$index = $this->resorce->findByName($fileName);
+		$index = $this->resource->findByName($fileName);
 
 		if($index)
 		{
@@ -29,18 +29,17 @@ class Languages
 			$jsonIndex = json_decode($readIndex, true);
 
 			if(!$jsonIndex)
-			{
-				$this->logs("{$fileName} throwing an error when decoding its index");
-				return false;
-			}
+				$this->log->e("{$fileName} file cannot be read as a json file");
 			else
+			{
 				$this->addIndex($jsonIndex);
+				return true;
+			}
 		}
 		else
-		{
-			$this->logs->e("{$fileName} cannot be find in resources");
-			return false;
-		}
+			$this->log->e("{$fileName} cannot be found in resources");
+
+		return false;
 	}
 
 	private function addIndex(array $patch)
@@ -49,19 +48,17 @@ class Languages
 		$this->fields = $newArray;
 	}
 
-	public function getString($string, array $sprintf = array())
+	public function getString(string $string, array $sprintf = [])
 	{
-		if(isset($this->fields[$string])) 
+		if(isset($this->fields[$string]))
 		{
 			if(count($sprintf) > 0)
-			{
 				return call_user_func_array("sprintf", array_merge(array($this->fields[$string]), $sprintf));
-			}
 
 			return $this->fields[$string];
 		}
 
-		$this->logs->e("{$string} not found");
+		$this->log->e("{$string} not found");
 
 		return false;
 	}

@@ -13,7 +13,7 @@ class Pattern implements RealtimeDataProcess
 {
 	private $pattern;
 	
-	function __construct(\string $pattern)
+	function __construct(string $pattern)
 	{
 		foreach (EnvironmentVariables::getList() as $key => $value)
 		{
@@ -31,7 +31,7 @@ class Pattern implements RealtimeDataProcess
 		return new Pattern($file->getIndex());
 	}
 	
-	public static function getPatternFromResource(\string $resourceName, \string $patternId)
+	public static function getPatternFromResource(string $resourceName, string $patternId)
 	{
 		if(!ResourceManager::resourceExists($resourceName))
 			return false;
@@ -47,7 +47,7 @@ class Pattern implements RealtimeDataProcess
 		return new Pattern($resourceFile->getIndex());
 	}
 	
-	public static function getPatternAssetResource(\string $resource)
+	public static function getPatternAssetResource(string $resource)
 	{
 		if (!$file = AssetResource::openResource($resource)->getResourceFile())
 			return false;

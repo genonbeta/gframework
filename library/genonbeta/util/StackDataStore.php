@@ -4,12 +4,11 @@ namespace genonbeta\util;
 
 class StackDataStore
 {
-
 	const TAG = "StackSataStore";
 
 	protected $log;
 	private $data;
-	private $selfData = array();
+	private $selfData = [];
 
 	function __construct(StackDataStoreHelper $data)
 	{
@@ -21,7 +20,7 @@ class StackDataStore
 	{
 		if(!$this->data->fieldDefined($field))
 		{
-			$this->log->e("{$field} not defined ");
+			$this->log->e("{$field} not defined");
 			return false;
 		}
 
@@ -32,8 +31,7 @@ class StackDataStore
 
 	function checkAndDone()
 	{
-		if($this->data->checkAndDone($this->selfData)) return true;
-		return false;
+		return $this->data->checkAndDone($this->selfData);
 	}
 
 	function getLatestErrorStack()

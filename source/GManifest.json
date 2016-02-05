@@ -17,17 +17,25 @@
 
 	"system":
 	{
-		"loaderClass" : "\\genonbeta\\filemanager\\system\\Loader",
-		"viewSkeleton" :
+		"loaderClass":"\\genonbeta\\filemanager\\system\\Loader",
+		"viewSkeleton":
 		{
 			"__default":"\\genonbeta\\filemanager\\view\\model\\Home",
+			"home":"\\genonbeta\\filemanager\\view\\model\\Home",
 			"about":"\\genonbeta\\filemanager\\view\\model\\About",
-			"about/developers":"\\genonbeta\\filemanager\\view\\model\\Developers"
+			"about/developers":"\\genonbeta\\filemanager\\view\\model\\Developers",
+			"oneRun":"\\genonbeta\\filemanager\\view\\model\\HowLoaded"
 		}
 	},
 	
 	"service" :
 	{
-		"ViewDistrubutor" : "\\genonbeta\\filemanager\\service\\ViewDistrubutor"
-	}
+		"DestructionHook":"\\genonbeta\\filemanager\\service\\DestructionHook",
+		"ViewDistrubutor":"\\genonbeta\\filemanager\\service\\ViewDistrubutor"
+	},
+
+	"component" :
+	[
+		"\\genonbeta\\filemanager\\util\\Debugger"
+	]
 }

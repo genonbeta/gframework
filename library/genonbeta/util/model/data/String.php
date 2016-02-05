@@ -8,7 +8,9 @@ class String implements CallbackInterface
 {
 	function onCallback($data)
 	{
-		if (is_string($data)) return true;
+		if (is_string($data))
+			return true;
+
 		return false;
 	}
 }

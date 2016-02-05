@@ -4,8 +4,7 @@ namespace genonbeta\util;
 
 class Log
 {
-
-	static private $logs;
+	private static $logs;
 
 	const TYPE_DEBUG = 0;
 	const TYPE_ERROR = 1;
@@ -18,49 +17,39 @@ class Log
 
 	private $pid;
 
-	public function __construct($pid)
+	public function __construct(string $pid)
 	{
-		if($pid == null || !is_string($pid)) return false;
-		if(self::$logs == null) self::$logs = new HashMap;
-
 		$this->pid = $pid; 
 	}
 
-	public function d($log)
+	public function d(string $log)
 	{
-		if(!is_string($log)) return false;
-
-		self::$logs->add(array($this->pid, $log, time(), self::TYPE_DEBUG));
-
+		self::getLogging()->add(array($this->pid, $log, time(), self::TYPE_DEBUG));
 		return true;
 	}
 
-	public function e($error)
+	public function e(string $error)
 	{
-		if(!is_string($error)) return false;
-
-		self::$logs->add(array($this->pid, $error, time(), self::TYPE_ERROR));
-
+		self::getLogging()->add(array($this->pid, $error, time(), self::TYPE_ERROR));
 		return true;
 	}
 	
-	public function i($info)
+	public function i(string $info)
 	{
-		if(!is_string($info)) return false;
-
-		self::$logs->add(array($this->pid, $info, time(), self::TYPE_INFO));
-
+		self::getLogging()->add(array($this->pid, $info, time(), self::TYPE_INFO));
 		return true;
 	}
 
-
-	public static function getLogs()
+	private static function getLogging() : HashMap
 	{
-
-		if(self::$logs == null) return false;
-		if(self::$logs->size() == 0) return false;
+		if(self::$logs == null)
+			self::$logs = new HashMap();
 
 		return self::$logs;
 	}
 
+	public static function getLogs() : HashMap
+	{
+		return self::getLogging();
+	}
 }

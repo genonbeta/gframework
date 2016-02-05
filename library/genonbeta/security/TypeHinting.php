@@ -8,6 +8,9 @@ use genonbeta\provider\Service;
 use genonbeta\system\System;
 use genonbeta\service\ErrorHandler;
 
+/*
+@depracated: This class depracated since PHP 7+ provides its features built-in
+*/
 class TypeHinting extends Service implements Controller
 {
 	function __construct()
@@ -42,5 +45,5 @@ class TypeHinting extends Service implements Controller
 	}
 	
 	function onReceive(Intent $intent) {}
-	function getDefaultIntent() {}
+	function getDefaultIntent() : Intent {}
 }

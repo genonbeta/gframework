@@ -8,7 +8,7 @@ abstract class Component
 {
 	private static $loadedClasses = [];
 	
-	abstract protected function getClassId();
+	abstract protected function getClassId() : string;
 	abstract protected function onLoad();
  
 	final function __construct()

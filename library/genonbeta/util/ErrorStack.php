@@ -4,46 +4,36 @@ namespace genonbeta\util;
 
 class ErrorStack
 {
-	
 	private $tag;
-	private $errors = array();
+	private $errors = [];
 
-	function __construct($tag)
+	function __construct(string $tag)
 	{
 		$this->tag = $tag;
 	}
 
-	function getTag()
+	function getTag() : string
 	{
 		return $this->tag;
 	}
 
-	function putErrorIn($cause, $errorCode)
+	function putError(string $cause, int $errorCode)
 	{
-		if(!is_string($cause) || !is_int($errorCode)) return false;
-		if(empty($cause) || empty($errorCode)) return false;
-
 		$this->errors[$cause] = $errorCode;
-
 		return true;		
 	}
 
-	function hasError()
+	function hasError() : bool
 	{
-		if(count($this->errors) < 1)
-		{
-			return false;
-		}
-
-		return true;
+		return ($this->getCount() > 0);
 	}
 
-	function getCount()
+	function getCount() : int
 	{
 		return count($this->errors);
 	}
 
-	function getErrors()
+	function getErrors() : array
 	{
 		return $this->errors;
 	}

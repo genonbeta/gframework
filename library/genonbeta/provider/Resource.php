@@ -6,23 +6,23 @@ use genonbeta\controller\Controller;
 
 class Resource extends ResourceManager
 {
-	private $data = array();
+	private $index = [];
 	private $count = 0;
 
-	function __construct($resourceName)
+	function __construct(string $resourceName)
 	{
 		if(!self::resourceExists($resourceName)) 
 			return false;
 
-		$this->data = self::getResource($resourceName, false);
-		$this->count = count($this->data['Data']);
+		$this->index = self::getResource($resourceName, false);
+		$this->count = count($this->index['Data']);
 		
 		return true;
 	}
 
 	function getResourceId()
 	{
-		$data = $this->data;
+		$data = $this->index;
 		unset($data['Data']);
 
 		return $data;
@@ -30,28 +30,28 @@ class Resource extends ResourceManager
 
 	function getResourceFileType()
 	{
-		return $this->data['Type'];
+		return $this->index['Type'];
 	}
 
 	function getResourceDir()
 	{
-		return $this->data['Directory'];
+		return $this->index['Directory'];
 	}
 
-	function findByName($name, $fullIndex = false)
+	function findByName(string $name, bool $fullIndex = false)
 	{
 		if(!$this->doesExist($name)) 
 			return false;
 
 		if(!$fullIndex === true)
-			return $this->data['Directory']."/".$this->data['Data'][$name]['basename'];
+			return $this->index['Directory']."/".$this->index['Data'][$name]['basename'];
 		
-		return $this->data['Data'][$name];
+		return $this->index['Data'][$name];
 	}
 		
 	function getIndex()
 	{
-		return $this->data['Data'];
+		return $this->index['Data'];
 	}
 	
 	function getCount()
@@ -59,11 +59,8 @@ class Resource extends ResourceManager
 		return $this->count;
 	}
 
-	function doesExist($name) 
+	function doesExist(string $name)
 	{
-		if(!isset($this->data['Data'][$name])) 
-			return false;
-		
-		return true;
+		return isset($this->index['Data'][$name]);
 	}
 }

@@ -27,7 +27,7 @@ class DirectoryTraveller
 	private $mode = self::MODE_SAMETIME;
 	private $files = [];
 	
-	function __construct(\string $directory, TravellerCallback $callback, $mode = self::MODE_SAMETIME)
+	function __construct(string $directory, TravellerCallback $callback, int $mode = self::MODE_SAMETIME)
 	{
 		$this->directory = new File(realpath($directory));
 		$this->errorStack = new ErrorStack(self::TAG); 
@@ -36,7 +36,7 @@ class DirectoryTraveller
 		$this->logger = new Log(self::TAG);
 	}
 
-	function setDirectory(\string $directory)
+	function setDirectory(string $directory)
 	{
 		$this->directory = $directory;
 	}
@@ -81,7 +81,7 @@ class DirectoryTraveller
 		if (!$dirOpen = opendir($directory))
 			return false;
 
-		$files = array();
+		$files = [];
 		
 		while ($fileName = readdir($dirOpen))
 		{
@@ -106,7 +106,7 @@ class DirectoryTraveller
 					continue;
 				}
 			elseif ($fileIns->isReadable() === false)
-				$this->errorStack->putErrorIn(self::TAG, self::ERROR_CANNOT_BE_READ);
+				$this->errorStack->putError(self::TAG, self::ERROR_CANNOT_BE_READ);
 		}
 
 		closedir($dirOpen);
