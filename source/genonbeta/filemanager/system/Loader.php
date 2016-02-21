@@ -15,7 +15,7 @@ class Loader extends Loader
 {
 	const TAG = "Loader";
 	
-	protected function oncreate()
+	protected function onCreate()
 	{
 		$fwConf = System::getLoadedManifest()['configuration'];
 

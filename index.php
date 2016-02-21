@@ -16,7 +16,7 @@ define("G_ADDRESS", str_replace("\\", "/", $_SERVER["HTTP_HOST"] . G_FRAMEWORK_R
 define("G_ADDRESS_FULL", $_SERVER["REQUEST_SCHEME"]  . "://". G_ADDRESS);
 
 if(!file_exists("configuration.php"))
-	die("No configuration file available");
+	die("No configuration file is available");
 
 include_once "configuration.php";
 
@@ -24,12 +24,12 @@ if(!class_exists("Configuration"))
 	die("Configuration class was not found");
 
 if(!file_exists($file = Configuration::LIBRARY_PATH."/genonbeta/system/System.".Configuration::CLASS_EXTENSION))
-	die("<b>{$file}</b> was not found. System exited!.");
+	die("<b>{$file}</b> was not found. Exited.");
 
 include_once Configuration::LIBRARY_PATH."/genonbeta/system/System.".Configuration::CLASS_EXTENSION;
 
 if(!class_exists("genonbeta\system\System"))
-	die("Main loader class was not found. System exited!");
+	die("System class was not found. Exited.");
 
 use genonbeta\system\System;
 
