@@ -30,7 +30,7 @@ class Configuration
 		"\\genonbeta\\system\\configuration\\FirstLoadInitializer",
 		"\\genonbeta\\system\\helper\\LibraryCacheHelper",
 		"\\genonbeta\\provider\\wrapper\\ResourceComponent",
-	];
+	];			
 	
 	public static function getServices() : array
 	{
