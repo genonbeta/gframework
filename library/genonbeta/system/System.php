@@ -87,7 +87,7 @@ abstract class System
 	{
 		if (!self::serviceExists($serviceName))
 		{ 
-			self::getLogger()->e($serviceName." service that has just been requested is not known by System");
+			self::getLogger()->e($serviceName." service which was requested is not known by System");
 			return null;
 		}
 		

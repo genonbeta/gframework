@@ -6,14 +6,14 @@
 * © 2015 - Genonbeta Open Source Project
 */
 
-if (!version_compare(PHP_VERSION, '7.0.0', '>'))
+if (version_compare(PHP_VERSION, '7.0.0', '<'))
 	die("<html>\n<title>Oppps!!!</title>\n	We're sorry but your PHP version is not supported anymore please get more information about this error <a href=\"https://github.com/genonbeta/gframework/issues\">https://github.com/genonbeta/gframework/issues</a> \n</html>");
 
 define("G_LOAD_TIME", microtime()); // unix current microtime saved as constant
 define("G_DOCUMENT_ROOT", dirname(__FILE__));
 define("G_FRAMEWORK_ROOT", substr(G_DOCUMENT_ROOT, strlen($_SERVER['DOCUMENT_ROOT'])));
 define("G_ADDRESS", str_replace("\\", "/", $_SERVER["HTTP_HOST"] . G_FRAMEWORK_ROOT));
-define("G_ADDRESS_FULL", $_SERVER["REQUEST_SCHEME"]  . "://". G_ADDRESS);
+define("G_ADDRESS_FULL", ($_SERVER["REQUEST_SCHEME"] ?? "http")  . "://". G_ADDRESS);
 
 if(!file_exists("configuration.php"))
 	die("No configuration file is available");
