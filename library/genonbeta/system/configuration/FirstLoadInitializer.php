@@ -3,8 +3,10 @@
 namespace genonbeta\system\configuration;
 
 use Configuration;
-use genonbeta\system\EnvironmentVariables;
 use genonbeta\system\Component;
+use genonbeta\provider\SourceProvider;
+use genonbeta\system\EnvironmentVariables;
+use genonbeta\system\UniversalMessageFilter;
 
 class FirstLoadInitializer extends Component
 {
@@ -18,6 +20,9 @@ class FirstLoadInitializer extends Component
 		EnvironmentVariables::define("documentRoot", G_DOCUMENT_ROOT);
 		EnvironmentVariables::define("frameworkRoot", G_FRAMEWORK_ROOT);
 		EnvironmentVariables::define("workerAddress", G_ADDRESS_FULL."/".Configuration::WORKER_URL);
+
+		UniversalMessageFilter::registerFilter(new \genonbeta\view\filter\ProviderFilter());
+		SourceProvider::registerProvider(new \genonbeta\view\provider\EnvironmentVariablesProvider());
 	}
 
 	protected function getClassId() : string
