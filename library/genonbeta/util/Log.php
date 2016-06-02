@@ -22,22 +22,34 @@ class Log
 		$this->pid = $pid; 
 	}
 
+	public static function debug(string $pid, string $log)
+	{
+		self::getLogging()->add(array($pid, $log, time(), self::TYPE_DEBUG));
+	}
+
+	public static function error(string $pid, string $log)
+	{
+		self::getLogging()->add(array($pid, $log, time(), self::TYPE_ERROR));
+	}
+
+	public static function info(string $pid, string $log)
+	{
+		self::getLogging()->add(array($pid, $log, time(), self::TYPE_INFO));
+	}
+
 	public function d(string $log)
 	{
 		self::getLogging()->add(array($this->pid, $log, time(), self::TYPE_DEBUG));
-		return true;
 	}
 
 	public function e(string $error)
 	{
 		self::getLogging()->add(array($this->pid, $error, time(), self::TYPE_ERROR));
-		return true;
 	}
 	
 	public function i(string $info)
 	{
 		self::getLogging()->add(array($this->pid, $info, time(), self::TYPE_INFO));
-		return true;
 	}
 
 	private static function getLogging() : HashMap
