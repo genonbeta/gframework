@@ -6,7 +6,7 @@
 		<script>
 			function sayHello()
 			{
-				alert("hello boy");
+				alert("hello boy: @envVar/resourceAddress;");
 			}
 		</script>
 		<style>
@@ -18,6 +18,6 @@
 	</head>
 	<body onLoad="">
 		{$.page_body}
-		<img src="{env.resourceAddress}/image/logo.png" />
+		<img src="@envVar/resourceAddress;/image/logo.png" />
 	</body>
 </html>

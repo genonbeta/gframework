@@ -2,12 +2,14 @@
 
 namespace genonbeta\view;
 
+use genonbeta\controller\RealtimeDataProcess;
 use genonbeta\io\File;
 use genonbeta\provider\AssetResource;
 use genonbeta\provider\ResourceManager;
 use genonbeta\provider\resource\ResourceVariable;
-use genonbeta\controller\RealtimeDataProcess;
 use genonbeta\system\EnvironmentVariables;
+use genonbeta\system\UniversalMessageFilter;
+use genonbeta\view\PatternFilter;
 
 class Pattern implements RealtimeDataProcess
 {
@@ -15,12 +17,7 @@ class Pattern implements RealtimeDataProcess
 	
 	function __construct(string $pattern)
 	{
-		foreach (EnvironmentVariables::getList() as $key => $value)
-		{
-			$pattern = str_replace("{env." .$key. "}", $value, $pattern);
-		}
-		
-		$this->pattern = $pattern;
+		$this->pattern = UniversalMessageFilter::applyFilter($pattern, PatternFilter::TYPE_CODE);
 	}
 	
 	public static function getPattenFromFile(File $file)
