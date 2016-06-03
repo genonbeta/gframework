@@ -47,7 +47,7 @@ class Intent
 		return $this;
 	}
 	
-	public function hasExtra($key) : bool
+	public function hasExtra($key)
 	{
 		return isset($this->extras[$key]);
 	}
@@ -80,7 +80,7 @@ class Intent
 		return $this;
 	}
 	
-	public function getResult() : int
+	public function getResult()
 	{
 		return $this->result;
 	}

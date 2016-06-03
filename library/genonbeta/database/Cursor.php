@@ -34,17 +34,17 @@ class Cursor
 		return $this->items[$this->currentPosition][$id];
 	}
 
-	public function getPosition() : int
+	public function getPosition()
 	{
 		return $this->currentPosition;
 	}
 
-	public function getCount() : int
+	public function getCount()
 	{
 		return count($this->items);
 	}
 
-	public function moveToNext() : bool
+	public function moveToNext()
 	{
 		if(($this->currentPosition + 1) == count($this->items)) 
 			return false;
@@ -54,7 +54,7 @@ class Cursor
 		return true;
 	}
 
-	public function moveToPrevious() : bool
+	public function moveToPrevious()
 	{
 		if(($this->currentPosition - 1) < 0) 
 			return false;

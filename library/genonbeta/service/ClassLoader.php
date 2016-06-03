@@ -41,11 +41,11 @@ class ClassLoader extends Service
 		}
 	}
 	
-	function getLoadedClasses() : array
+	function getLoadedClasses()
 	{
 		return $this->loadedClasses;
 	}
 	
-	public function onReceive(Intent $intent) : Intent {}
-	public function getDefaultIntent() : Intent {}
+	public function onReceive(Intent $intent) {}
+	public function getDefaultIntent() {}
 }

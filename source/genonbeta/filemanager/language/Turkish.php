@@ -13,7 +13,7 @@ class Turkish implements LanguageInterface
 {
 	const TAG = "Turkish";
 
-	function onInfo() : array
+	function onInfo()
 	{
 		return array(
 			"author" => "genonbeta",
@@ -25,12 +25,13 @@ class Turkish implements LanguageInterface
 		);
 	}
 
-	function onLoading() : Language
+	function onLoading()
 	{
 		$lang = new Language(ResourceManager::getResource(MainConfig::LANGUAGE_INDEX_NAME));
 		$lang->loadFile(self::TAG);
 		
 		$ch = new Characters("Turkish");
+
 		$ch->addMap("Ğ", "ğ", "g");
 		$ch->addMap("Ç", "ç", "c");
 		$ch->addMap("İ", "i", "i");

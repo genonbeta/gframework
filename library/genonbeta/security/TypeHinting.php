@@ -15,7 +15,8 @@ class TypeHinting extends Service implements Controller
 {
 	function __construct()
 	{
-		System::getService("ErrorHandler")->putHandlerController($this);
+		if (version_compare(PHP_VERSION, "7.0.0", "<"))
+			System::getService("ErrorHandler")->putHandlerController($this);
 	}
 	
 	function onRequest($intent)
@@ -44,6 +45,6 @@ class TypeHinting extends Service implements Controller
 		return ErrorHandler::RESULT_NOT_KNOWN;
 	}
 	
-	function onReceive(Intent $intent) {}
+	function onReceive(Intent $intent) : Intent {}
 	function getDefaultIntent() : Intent {}
 }

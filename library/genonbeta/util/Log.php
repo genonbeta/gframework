@@ -52,7 +52,7 @@ class Log
 		self::getLogging()->add(array($this->pid, $info, time(), self::TYPE_INFO));
 	}
 
-	private static function getLogging() : HashMap
+	private static function getLogging()
 	{
 		if(self::$logs == null)
 			self::$logs = new HashMap();
@@ -60,7 +60,7 @@ class Log
 		return self::$logs;
 	}
 
-	public static function getLogs() : HashMap
+	public static function getLogs()
 	{
 		return self::getLogging();
 	}

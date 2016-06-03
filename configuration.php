@@ -20,6 +20,7 @@ class Configuration
 	
 	private static $systemServices = [
 		"ErrorHandler" => "\\genonbeta\\service\\ErrorHandler",
+		"TypeHinting" => "\\genonbeta\\security\\TypeHinting",
 		"AutoLoader" => "\\genonbeta\\service\\AutoLoader",
 		"Flusher" => "\\genonbeta\service\\Flusher",
 		"ClassLoader" => "\\genonbeta\\service\\ClassLoader"
@@ -32,12 +33,12 @@ class Configuration
 		"\\genonbeta\\provider\\wrapper\\ResourceComponent",
 	];
 	
-	public static function getServices() : array
+	public static function getServices()
 	{
 		return self::$systemServices;
 	}
 	
-	public static function getComponents() : array
+	public static function getComponents()
 	{
 		return self::$components;
 	}

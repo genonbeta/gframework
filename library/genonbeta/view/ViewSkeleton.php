@@ -30,7 +30,7 @@ abstract class ViewSkeleton implements ViewInterface
 	private $uris;
 
 	abstract function onCreate(array $methodName);
-	abstract function outputController() : OutputController;
+	abstract function outputController();
 
 	function __construct()
 	{
@@ -43,7 +43,7 @@ abstract class ViewSkeleton implements ViewInterface
 		return NativeUrl::pathResolver();
 	}
 	
-	protected function getOpController() : OutputController
+	protected function getOpController()
 	{
 		return $this->opcontroller;
 	}
@@ -74,7 +74,7 @@ abstract class ViewSkeleton implements ViewInterface
 		return $this->languageIndex->getString($name, $sprintf);
 	}
 
-	function getLoadedLangInfo() : array
+	function getLoadedLangInfo()
 	{
 		if(!$this->languageInstance instanceof LanguageInterface)
 		{ 
@@ -85,7 +85,7 @@ abstract class ViewSkeleton implements ViewInterface
 		return $this->languageInstance->onInfo();
 	}
 
-	function getUri(string $skeleton, string $abstractPath = null) : String
+	function getUri(string $skeleton, string $abstractPath = null)
 	{	
 		if($this->uris == null)
 			return false;
@@ -93,7 +93,7 @@ abstract class ViewSkeleton implements ViewInterface
 		return $this->uris->getUri($skeleton, $abstractPath);
 	}
 
-	function loadLanguage(LanguageInterface $interface) : bool
+	function loadLanguage(LanguageInterface $interface)
 	{
 		$this->languageInstance = $interface;
 		$this->languageIndex = $this->languageInstance->onLoading();
@@ -107,7 +107,7 @@ abstract class ViewSkeleton implements ViewInterface
         return true;
 	}
 
-	protected function setUrlResolver(UrlResolver $res) : bool
+	protected function setUrlResolver(UrlResolver $res)
 	{
 		if($res == null)
 		{

@@ -21,7 +21,7 @@ final class EnvironmentVariables
 		return true;
 	}
 	
-	public static function isDefined(string $key) : bool
+	public static function isDefined(string $key)
 	{
 		return isset(self::$variables[$key]);
 	}

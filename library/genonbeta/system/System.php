@@ -95,7 +95,7 @@ abstract class System
 		return self::$services[$serviceName];
 	}
 
-	protected static function autoLoad(string $className) : bool
+	protected static function autoLoad(string $className)
 	{
 		$classNameOriginal = $className;
 		$className = str_replace("\\", "/", $className);
@@ -115,7 +115,7 @@ abstract class System
 		return true;
 	}
 
-	private static function addLoadedClass(string $className) : bool
+	private static function addLoadedClass(string $className)
 	{
 		// The character "\" represents to jump to main way
 		$className = "\\" . $className;
@@ -130,7 +130,7 @@ abstract class System
 		return $stat;
 	}
 	
-	private static function loadServices(array $serviceList) : bool
+	private static function loadServices(array $serviceList)
 	{
 		if (count($serviceList) < 1)
 		{
@@ -163,12 +163,12 @@ abstract class System
         return true;
 	}
 	
-	public static function serviceExists(string $serviceName) : bool
+	public static function serviceExists(string $serviceName)
 	{
 		return isset(self::$services[$serviceName]);
 	}
 	
-	private static function loadComponents(array $componentList) : bool
+	private static function loadComponents(array $componentList)
 	{
 		if (count($componentList) < 1)
 		{
@@ -217,7 +217,7 @@ abstract class System
 										 ->putExtra(ErrorHandler::ERROR_MESSAGE, $errMessage));
 	}
 
-	public static function getLoadedClasses() : HashMap
+	public static function getLoadedClasses()
 	{
 		if (self::$loadedClasses == null)
 			self::$loadedClasses = new HashMap();
@@ -225,7 +225,7 @@ abstract class System
 		return self::$loadedClasses;
 	}
 
-	private static function getLogger() : Log
+	private static function getLogger()
 	{
 		if (self::$logs == null)
 			self::$logs = new Log(self::TAG);
@@ -233,7 +233,7 @@ abstract class System
 		return self::$logs;
 	}
 
-	public static function getLoadedManifest() : array
+	public static function getLoadedManifest()
 	{
 		return self::$manifestIndex;
 	}

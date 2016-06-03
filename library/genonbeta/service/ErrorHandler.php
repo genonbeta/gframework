@@ -29,8 +29,7 @@ class ErrorHandler extends Service
 		$this->controllerCallback = new ErrorHandlerHelper();
 		$this->errorHandlerIntent = (new Intent(self::ACTION_HANDLE_ERROR))->lockIntentDefault();
 	}
-
-	protected function onReceive(Intent $intent) : Intent
+	protected function onReceive(Intent $intent)
 	{
 		if($this->controllerPool->getCount() < 1)
             return $this->getDefaultIntent()->setResult(Intent::RESULT_FALSE);
@@ -43,8 +42,9 @@ class ErrorHandler extends Service
 		$this->controllerPool->addTodoList($handler);
 	}
 	
-	public function getDefaultIntent() : Intent
+	public function getDefaultIntent()
 	{
 		return $this->errorHandlerIntent->flushOlds();
 	}
 }
+

@@ -18,9 +18,9 @@ abstract class ViewPattern
 	private $pattern;
 	private $skeleton;
 
-	abstract function onCreatingPattern() : Pattern;
-	abstract function onNotifingItems() : array;
-	abstract function onControllingItems(array $items) : array;
+	abstract function onCreatingPattern();
+	abstract function onNotifingItems();
+	abstract function onControllingItems(array $items);
 
 	function __construct(ViewSkeleton $skeleton)
 	{

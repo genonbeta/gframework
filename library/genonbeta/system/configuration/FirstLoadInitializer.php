@@ -25,7 +25,7 @@ class FirstLoadInitializer extends Component
 		SourceProvider::registerProvider(new \genonbeta\view\provider\EnvironmentVariablesProvider());
 	}
 
-	protected function getClassId() : string
+	protected function getClassId()
 	{
 		return __CLASS__;
 	}

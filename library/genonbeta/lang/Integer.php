@@ -17,7 +17,7 @@ class Integer
 		return $this->int;
 	}
 
-	static function parseInt(string $integer = 0) : int
+	static function parseInt(string $integer = 0)
 	{
 		return new Integer(intval($integer));
 	}

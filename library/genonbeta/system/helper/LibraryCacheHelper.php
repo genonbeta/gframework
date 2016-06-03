@@ -24,7 +24,7 @@ class LibraryCacheHelper extends Component implements Controller
 		System::getService("AutoLoader")->putAutoLoader($this);
 	}
 
-	protected function getClassId() : string
+	protected function getClassId()
 	{
 		return __CLASS__;
 	}

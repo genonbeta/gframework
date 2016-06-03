@@ -26,7 +26,7 @@ class UrlResolver
 		return $uri;
 	}
 
-	function isDefined(string $indexName) : bool
+	function isDefined(string $indexName)
 	{
 		return isset($this->paths[$indexName]);
 	}

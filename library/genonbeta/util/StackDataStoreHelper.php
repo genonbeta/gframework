@@ -76,7 +76,7 @@ abstract class StackDataStoreHelper
 		return $this->stack[$name]['required']; 
 	}
 
-	public function checkAndDone(array $compare) : bool
+	public function checkAndDone(array $compare)
 	{
 		if($this->getCount() < 1)
 			return true;

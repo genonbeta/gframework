@@ -62,7 +62,7 @@ class ControllerPool
 			return $resultCallback->onResult();
 	}
 
-	public function getCount() : int
+	public function getCount()
 	{
 		return $this->controllerInterfaces->size();
 	}

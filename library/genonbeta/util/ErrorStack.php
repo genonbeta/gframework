@@ -12,7 +12,7 @@ class ErrorStack
 		$this->tag = $tag;
 	}
 
-	function getTag() : string
+	function getTag()
 	{
 		return $this->tag;
 	}
@@ -23,17 +23,17 @@ class ErrorStack
 		return true;		
 	}
 
-	function hasError() : bool
+	function hasError()
 	{
 		return ($this->getCount() > 0);
 	}
 
-	function getCount() : int
+	function getCount()
 	{
 		return count($this->errors);
 	}
 
-	function getErrors() : array
+	function getErrors()
 	{
 		return $this->errors;
 	}

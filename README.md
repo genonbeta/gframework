@@ -1,4 +1,4 @@
-<h1>GFramework - <i>Simple, Dynamic & Powerful (PHP7+)</i></h1>
+<h1>GFramework - <i>Simple, Dynamic & Powerful (PHP5.3+)</i></h1>
 We offer you not just a framework, also a suggestion. 
 I hear you saying "What do you mean suggestion?". 
 What I meant is you will see a dynamic coding style that allows you to create simple and quick but powerful websites. 

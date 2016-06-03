@@ -46,7 +46,9 @@ class StringBuilder implements RealtimeDataProcess
 			$strAll .= ($str instanceof RealtimeDataProcess) ? $str->onFlush(array()) : $str;
 		}
 		
-		if($bool) return new String($strAll);
+		if($bool)
+			return new String($strAll);
+
 		return $strAll;
 	}
 	

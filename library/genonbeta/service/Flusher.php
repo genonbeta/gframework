@@ -20,7 +20,7 @@ class Flusher extends Service implements Controller
 		$this->controllerPool->addTodoList($this);
 	}
 	
-	protected function onReceive(Intent $intent) : Intent
+	protected function onReceive(Intent $intent)
 	{
 		return $this->controllerPool->sendRequest($args);
 	}
@@ -31,5 +31,5 @@ class Flusher extends Service implements Controller
 		return $arguments;
 	}
 	
-	public function getDefaultIntent() : Intent {}
+	public function getDefaultIntent() {}
 }

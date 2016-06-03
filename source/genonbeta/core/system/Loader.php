@@ -22,7 +22,7 @@ abstract class Loader extends Component
 	abstract protected function onSkeletonLoaded(ViewSkeleton $skeleton);
 	abstract protected function onDestroy();
 
-	public function getClassId() : string
+	public function getClassId()
 	{
 		return __CLASS__;
 	}
@@ -83,7 +83,7 @@ abstract class Loader extends Component
 		$this->onDestroy();
 	}
 
-	protected function getOutputController() : OutputController
+	protected function getOutputController()
 	{
 		if ($this->outputController == null)
 			$this->outputController = new OutputController();
@@ -91,7 +91,7 @@ abstract class Loader extends Component
 		return $this->outputController;
 	}
 
-	protected function getLogger() : Log
+	protected function getLogger()
 	{
 		if ($this->log == null)
 			$this->log = new Log(self::TAG);

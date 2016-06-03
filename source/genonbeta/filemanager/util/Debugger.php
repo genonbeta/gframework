@@ -25,7 +25,7 @@ class Debugger extends Component implements Controller
 		System::getService("DestructionHook")->put($this);
 	}
 
-	function getClassId() : string
+	function getClassId()
 	{
 		return __CLASS__;
 	}

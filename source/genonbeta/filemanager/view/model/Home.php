@@ -60,7 +60,7 @@ class Home extends ViewSkeleton
 		$this->drawPattern(new GBasicSkeleton($this), "system_html", array(GBasicSkeleton::TITLE => "Home", GBasicSkeleton::BODY => $sb));
 	}
 	
-	public function outputController() : OutputController
+	public function outputController()
 	{
 		return new OutputController();
 	}

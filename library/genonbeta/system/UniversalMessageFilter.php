@@ -10,12 +10,12 @@ class UniversalMessageFilter
 
 	private static $list = [];
 
-	public static function isRegistered(UniversalMessageFilterObject $filter) : bool
+	public static function isRegistered(UniversalMessageFilterObject $filter)
 	{
 		return isset(self::$list[get_class($filter)]);
 	}
 
-	public static function registerFilter(UniversalMessageFilterObject $filter) : bool
+	public static function registerFilter(UniversalMessageFilterObject $filter)
 	{
 		if (self::isRegistered($filter))
 			return false;
