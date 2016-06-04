@@ -2,9 +2,9 @@
 
 namespace genonbeta\lang;
 
+use genonbeta\controller\FlushArgument;
 use genonbeta\controller\RealtimeDataProcess;
 use genonbeta\system\System;
-use genonbeta\controller\FlushArgument;
 
 class StringBuilder implements RealtimeDataProcess
 {
@@ -13,7 +13,8 @@ class StringBuilder implements RealtimeDataProcess
 	
 	function __construct($defSeperator = "\n")
 	{
-		if(is_string($defSeperator)) $this->seperator = $defSeperator;
+		if(is_string($defSeperator))
+			$this->seperator = $defSeperator;
 	}
 	
 	function put($write)
@@ -29,10 +30,11 @@ class StringBuilder implements RealtimeDataProcess
 	
 	function remove($id)
 	{
-		if(!is_int($id)) return false;
-		if(!isset($this->string[$id])) return false;
+		if(!is_int($id) || !isset($this->string[$id]))
+			return false;
 		
 		unset($this->string[$id]);
+
 		return true;
 	}
 	
@@ -42,7 +44,9 @@ class StringBuilder implements RealtimeDataProcess
 		
 		foreach($this->string as $num => $str)
 		{
-			if($num != 0) $strAll .= $this->seperator;
+			if($num != 0)
+				$strAll .= $this->seperator;
+
 			$strAll .= ($str instanceof RealtimeDataProcess) ? $str->onFlush(array()) : $str;
 		}
 		
@@ -60,7 +64,9 @@ class StringBuilder implements RealtimeDataProcess
 		
 		foreach($this->string as $num => $str)
 		{
-			if($num != 0) $strAll .= $this->seperator;
+			if($num != 0)
+				$strAll .= $this->seperator;
+
 			$strAll .= ($str instanceof RealtimeDataProcess) ? $str->onFlush($args) : $str;
 		}
 		

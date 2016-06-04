@@ -28,7 +28,7 @@ abstract class ViewPattern
 		$this->pattern = $this->onCreatingPattern();
 
 		if(!$this->pattern instanceof Pattern)
-			throw new \Exception("Pattern must be type of " . Pattern::class);
+			throw new \Exception("Pattern must be type of \\genonbeta\\view\Pattern";
 			
 		$this->skeleton = $skeleton;
 	}

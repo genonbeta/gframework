@@ -11,6 +11,8 @@ use genonbeta\filemanager\config\MainConfig;
 
 class LogList extends ViewPattern
 {
+	private $itemList = array("debug", "error", "info");
+
 	function onCreatingPattern()
 	{
 		return Pattern::getPatternFromResource(MainConfig::PATTERN_INDEX_NAME, "log_list");
@@ -18,7 +20,7 @@ class LogList extends ViewPattern
 
 	function onControllingItems(array $items)
 	{
-		$items[Log::TYPE] = array("debug", "error", "info")[$items[Log::TYPE]];
+		$items[Log::TYPE] = $this->itemList[$items[Log::TYPE]];
 		$items[Log::TIME] = date("H:i:s", $items[Log::TIME]);
 		
 		return $items;
