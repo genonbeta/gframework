@@ -9,7 +9,7 @@ class EnvironmentVariablesProvider implements SourceProviderObject
 {
 	const PROVIDER_NAME = "envVar";
 
-	public function getProviderName() : string
+	public function getProviderName()
 	{
 		return self::PROVIDER_NAME;
 	}

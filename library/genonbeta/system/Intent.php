@@ -95,7 +95,7 @@ class Intent
 		return $this;
 	}
 	
-	public function getAction() : String
+	public function getAction()
 	{
 		return $this->action;
 	}

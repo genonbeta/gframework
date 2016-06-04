@@ -7,6 +7,6 @@ use genonbeta\system\Intent;
 
 class ViewDistrubutor extends Service
 {
-	public function onReceive(Intent $intent) : Intent {}
-	public function getDefaultIntent() : Intent {}
+	public function onReceive(Intent $intent) {}
+	public function getDefaultIntent() {}
 }

@@ -14,7 +14,7 @@ class Cursor
 		$this->items = $map->getAll();		
 	}
 
-	public function moveToFirst() : bool
+	public function moveToFirst()
 	{
 		if(count($this->items) == 0) 
 			return false;

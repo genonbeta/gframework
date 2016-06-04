@@ -35,7 +35,7 @@ class ProviderFilter implements UniversalMessageFilterObject
 		};
 	}
 
-	public function getType() : int
+	public function getType()
 	{
 		return PatternFilter::TYPE_CODE;
 	}

@@ -45,6 +45,6 @@ class TypeHinting extends Service implements Controller
 		return ErrorHandler::RESULT_NOT_KNOWN;
 	}
 	
-	function onReceive(Intent $intent) : Intent {}
-	function getDefaultIntent() : Intent {}
+	function onReceive(Intent $intent) {}
+	function getDefaultIntent() {}
 }

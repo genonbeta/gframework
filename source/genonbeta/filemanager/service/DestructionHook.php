@@ -26,12 +26,12 @@ class DestructionHook extends Service
 		$this->controllerPool->sendRequest(null, ControllerPool::MODE_ARGUMENT_JUST_SEND);
 	}
 
-	protected function onReceive(Intent $intent) : Intent
+	protected function onReceive(Intent $intent)
 	{
 		throw new \BadFunctionCallException("This operation not supported yet");
 	}
 
-	public function getDefaultIntent() : Intent
+	public function getDefaultIntent()
 	{
 		throw new \BadFunctionCallException("This operation not supported yet");
 	}
