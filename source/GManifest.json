@@ -17,7 +17,7 @@
 
 	"system":
 	{
-		"loaderClass":"\\genonbeta\\filemanager\\system\\Loader",
+		"loaderClass":"\\genonbeta\\filemanager\\system\\MainLoader",
 		"viewSkeleton":
 		{
 			"__default":"\\genonbeta\\filemanager\\view\\model\\Home",
