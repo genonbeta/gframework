@@ -247,7 +247,7 @@ class File
 
 	}
 
-	static function sizeExpression($byte, $part = 1024, array $params = array()) : String
+	static function sizeExpression($byte, $part = 1024, array $params = array())
 	{
 		if(!is_int($byte)) 
 			$byte = 0;
