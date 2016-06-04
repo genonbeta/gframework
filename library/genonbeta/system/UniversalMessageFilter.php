@@ -35,7 +35,7 @@ class UniversalMessageFilter
 		return true;
 	}
 
-	public static function applyFilter(string $message, int $type)
+	public static function applyFilter($message, $type)
 	{
 		foreach(self::$list as $filter)
 		{

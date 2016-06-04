@@ -7,13 +7,13 @@ class UrlResolver
 	private $loader;
 	private $paths = array();
 
-	function __construct(string $phpLoader, array $skeleton)
+	function __construct($phpLoader, array $skeleton)
 	{
 		$this->loader = $phpLoader;
 		$this->paths = $skeleton;
 	}
 
-	public function getUri(string $skeleton, string $abstractPath = null)
+	public function getUri($skeleton, $abstractPath = null)
 	{
 		if (!$this->isDefined($skeleton))
 			return false;
@@ -26,7 +26,7 @@ class UrlResolver
 		return $uri;
 	}
 
-	function isDefined(string $indexName)
+	function isDefined($indexName)
 	{
 		return isset($this->paths[$indexName]);
 	}

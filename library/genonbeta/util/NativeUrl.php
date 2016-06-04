@@ -6,7 +6,7 @@ class NativeUrl
 {
 	private $methods = [];
 
-	function makeMethod(string $methodName, string $method = null)
+	function makeMethod($methodName, $method = null)
 	{
 		if($method == null)
 			$method = $methodName;
@@ -44,12 +44,12 @@ class NativeUrl
 		return $return;
 	}
 
-	function getMethod(string $methodName)
+	function getMethod($methodName)
 	{
 		return $this->methods[$methodName];
 	}
 
-	function methodExists(string $methodName)
+	function methodExists($methodName)
 	{
 		return isset($this->methods[$methodName]);
 	}

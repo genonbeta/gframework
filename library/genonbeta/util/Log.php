@@ -17,37 +17,37 @@ class Log
 
 	private $pid;
 
-	public function __construct(string $pid)
+	public function __construct($pid)
 	{
 		$this->pid = $pid; 
 	}
 
-	public static function debug(string $pid, string $log)
+	public static function debug($pid, $log)
 	{
 		self::getLogging()->add(array($pid, $log, time(), self::TYPE_DEBUG));
 	}
 
-	public static function error(string $pid, string $log)
+	public static function error($pid, $log)
 	{
 		self::getLogging()->add(array($pid, $log, time(), self::TYPE_ERROR));
 	}
 
-	public static function info(string $pid, string $log)
+	public static function info($pid, $log)
 	{
 		self::getLogging()->add(array($pid, $log, time(), self::TYPE_INFO));
 	}
 
-	public function d(string $log)
+	public function d($log)
 	{
 		self::getLogging()->add(array($this->pid, $log, time(), self::TYPE_DEBUG));
 	}
 
-	public function e(string $error)
+	public function e($error)
 	{
 		self::getLogging()->add(array($this->pid, $error, time(), self::TYPE_ERROR));
 	}
 	
-	public function i(string $info)
+	public function i($info)
 	{
 		self::getLogging()->add(array($this->pid, $info, time(), self::TYPE_INFO));
 	}

@@ -19,7 +19,7 @@ class Language
 		$this->log = new Log(self::TAG);
 	}
 
-	function loadFile(string $fileName)
+	function loadFile($fileName)
 	{
 		$index = $this->resource->findByName($fileName);
 
@@ -48,7 +48,7 @@ class Language
 		$this->fields = $newArray;
 	}
 
-	public function getString(string $string, array $sprintf = [])
+	public function getString($string, array $sprintf = [])
 	{
 		if(isset($this->fields[$string]))
 		{

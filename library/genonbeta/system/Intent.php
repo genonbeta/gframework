@@ -52,7 +52,7 @@ class Intent
 		return isset($this->extras[$key]);
 	}
 	
-	public function removeExtra(string $key)
+	public function removeExtra($key)
 	{
 		if (!$this->hasExtra($key))
 			return null;
@@ -62,7 +62,7 @@ class Intent
 		return $this;
 	}
 	
-	public function getExtra($key, bool $default = false)
+	public function getExtra($key, $default = false)
 	{
 		if (!$this->hasExtra($key))
 			return $default;
@@ -70,7 +70,7 @@ class Intent
 		return $this->extras[$key];
 	}
 	
-	public function setResult(int $result)
+	public function setResult($result)
 	{
 		if (!is_int($result))
 			return null;

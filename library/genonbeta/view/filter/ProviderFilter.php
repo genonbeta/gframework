@@ -11,7 +11,7 @@ class ProviderFilter implements UniversalMessageFilterObject
 {
 	const TAG = __CLASS__;
 
-	public function applyFilter(string $message)
+	public function applyFilter($message)
 	{
 		return preg_replace_callback("#\@([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)\;#", $this->getCallback(), $message);
 	}

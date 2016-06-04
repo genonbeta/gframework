@@ -6,7 +6,7 @@ class SourceProvider
 {
 	private static $providers = [];
 
-	public static function providerExists(string $providerName)
+	public static function providerExists($providerName)
 	{
 		return isset(self::$providers[$providerName]);
 	}
@@ -31,7 +31,7 @@ class SourceProvider
 		return true;
 	}
 
-	public static function getProvider(string $providerName)
+	public static function getProvider($providerName)
 	{
 		if (self::providerExists($providerName))
 			return self::$providers[$providerName];

@@ -27,7 +27,7 @@ class DirectoryTraveller
 	private $mode = self::MODE_SAMETIME;
 	private $files = [];
 	
-	function __construct(string $directory, TravellerCallback $callback, int $mode = self::MODE_SAMETIME)
+	function __construct($directory, TravellerCallback $callback, $mode = self::MODE_SAMETIME)
 	{
 		$this->directory = new File(realpath($directory));
 		$this->errorStack = new ErrorStack(self::TAG); 
@@ -36,7 +36,7 @@ class DirectoryTraveller
 		$this->logger = new Log(self::TAG);
 	}
 
-	function setDirectory(string $directory)
+	function setDirectory($directory)
 	{
 		$this->directory = $directory;
 	}

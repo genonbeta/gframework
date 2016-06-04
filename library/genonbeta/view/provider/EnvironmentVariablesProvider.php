@@ -14,7 +14,7 @@ class EnvironmentVariablesProvider implements SourceProviderObject
 		return self::PROVIDER_NAME;
 	}
 
-	public function onRequest(string $request) : string
+	public function onRequest($request) : string
 	{
 		return EnvironmentVariables::get($request);
 	}

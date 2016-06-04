@@ -4,6 +4,6 @@ namespace genonbeta\system;
 
 interface UniversalMessageFilterObject
 {
-	public function applyFilter(string $message);
+	public function applyFilter($message);
 	public function getType() : int;
 }

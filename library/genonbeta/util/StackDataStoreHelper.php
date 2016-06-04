@@ -26,7 +26,8 @@ abstract class StackDataStoreHelper
 		$this->onCreate();
 	}
 
-	protected function addField(string $stackName, CallbackInterface $callback, bool $required = false)
+
+	protected function addField($stackName, CallbackInterface $callback, $required = false)
 	{
 		$this->stack[$stackName] = array(
 			"callback" => $callback,
@@ -34,7 +35,7 @@ abstract class StackDataStoreHelper
 		);
 	}
 
-	public function fieldDefined(string $fieldName)
+	public function fieldDefined($fieldName)
 	{
 		return isset($this->stack[$fieldName]);
 	}
@@ -60,7 +61,7 @@ abstract class StackDataStoreHelper
 		return $this->stack;
 	}
 
-	public function getCallback(string $name)
+	public function getCallback($name)
 	{
 		if(!$this->fieldDefined($name))
 			return false;
@@ -68,7 +69,7 @@ abstract class StackDataStoreHelper
 		return $this->stack[$name]['callback']; 
 	}
 
-	public function getRequireStat(string $name)
+	public function getRequireStat($name)
 	{
 		if(!$this->fieldDefined($name))
 			return false;

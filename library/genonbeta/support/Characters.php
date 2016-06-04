@@ -21,12 +21,12 @@ class Characters
 	private static $data = [];
 	private $lang;
 
-	function __construct(string $lang)
+	function __construct($lang)
 	{
 		$this->lang = $lang;
 	}
 
-	function addMap(string $bigSt, string $smallSt, string $clearedSt)
+	function addMap($bigSt, $smallSt, $clearedSt)
 	{
 		$log = new Log(self::TAG);
 
@@ -58,7 +58,7 @@ class Characters
 		}
 	}
 
-	public static function character(string $letter)
+	public static function character($letter)
 	{
 		$hex = bin2hex($letter);
 

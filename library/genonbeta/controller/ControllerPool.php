@@ -32,7 +32,7 @@ class ControllerPool
 		$this->controllerInterfaces->clear();
 	}
 
-	public function sendRequest($items, int $mode = self::MODE_ARGUMENT_LOOP, ControllerCallback $resultCallback = null)
+	public function sendRequest($items, $mode = self::MODE_ARGUMENT_LOOP, ControllerCallback $resultCallback = null)
 	{
 		if ($this->controllerInterfaces->size() < 1)
 		{

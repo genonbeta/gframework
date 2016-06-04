@@ -37,7 +37,7 @@ class LibraryCacheHelper extends Component implements Controller
 		$this->tryToInclude($intent->getExtra(AutoLoader::CLASS_NAME));
 	}
 
-	public function isCachedLibrary(string $filePath)
+	public function isCachedLibrary($filePath)
 	{
 		if(!$this->getCache()->isCachedFile($filePath)) 
 			return false;
@@ -45,7 +45,7 @@ class LibraryCacheHelper extends Component implements Controller
 		return true;
 	}
 
-	public function getParLibraryIndex(string $fileName)
+	public function getParLibraryIndex($fileName)
 	{
 		$parFile = new File($fileName);
 		
@@ -80,7 +80,7 @@ class LibraryCacheHelper extends Component implements Controller
 		return json_decode($this->getCache()->readFileCache($parFile), 1);
 	}
 
-	function tryToInclude(string $className)
+	function tryToInclude($className)
 	{
 		if(count($this->parIndex) < 1) 
 			return false;

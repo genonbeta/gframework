@@ -6,7 +6,7 @@ class TypedInfo
 {
 	const TAG = "TypedInfo";
 	
-	function __contruct(string $action, ArrayList $list)
+	function __contruct($action, ArrayList $list)
 	{
 
 	}

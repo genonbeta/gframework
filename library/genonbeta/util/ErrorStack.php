@@ -7,7 +7,7 @@ class ErrorStack
 	private $tag;
 	private $errors = [];
 
-	function __construct(string $tag)
+	function __construct($tag)
 	{
 		$this->tag = $tag;
 	}
@@ -17,7 +17,7 @@ class ErrorStack
 		return $this->tag;
 	}
 
-	function putError(string $cause, int $errorCode)
+	function putError($cause, $errorCode)
 	{
 		$this->errors[$cause] = $errorCode;
 		return true;		

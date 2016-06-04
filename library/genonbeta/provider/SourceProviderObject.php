@@ -6,6 +6,6 @@ use genonbeta\controller\OutputController;
 
 interface SourceProviderObject
 {
-	public function onRequest(String $requestIndex);
+	public function onRequest($requestIndex);
 	public function getProviderName();
 }

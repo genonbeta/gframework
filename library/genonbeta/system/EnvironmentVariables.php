@@ -11,7 +11,7 @@ final class EnvironmentVariables
 		return self::$variables;
 	}
 
-	public static function define(string $key, string $value)
+	public static function define($key, $value)
 	{
 		if(self::isDefined($key))
 			return false;
@@ -21,12 +21,12 @@ final class EnvironmentVariables
 		return true;
 	}
 	
-	public static function isDefined(string $key)
+	public static function isDefined($key)
 	{
 		return isset(self::$variables[$key]);
 	}
 	
-	public static function get(string $key)
+	public static function get($key)
 	{
 		if(!self::isDefined($key))
 			return false;

@@ -17,7 +17,7 @@ class OutputController implements RealtimeDataProcess
 		$this->output = new HashMap();
 	}
 
-	public function putIndex(string $outputTitle, RealTimeDataProcess $write)
+	public function putIndex($outputTitle, RealTimeDataProcess $write)
 	{
 		$this->output->add(array($outputTitle, $write));
 		return true;

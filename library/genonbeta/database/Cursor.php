@@ -29,7 +29,7 @@ class Cursor
 		return $this->items[$this->currentPosition];
 	}
 
-	public function getIndexById(int $id)
+	public function getIndexById($id)
 	{
 		return $this->items[$this->currentPosition][$id];
 	}

@@ -12,12 +12,12 @@ class RequiredFiles
 	const TYPE_DIRECTORY = 1;
 	const TYPE_FILE = 2;
 
-	public function __construct(string $pId)
+	public function __construct($pId)
 	{
 		$this->logger = new Log($pId);
 	}
 
-	public function request(string $requestName, int $type, int $chmod = null, string $index = null)
+	public function request($requestName, $type, $chmod = null, $index = null)
 	{
 		$fileInstance = new File($requestName);
 		

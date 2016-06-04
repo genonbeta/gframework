@@ -9,12 +9,12 @@ class StringObject
 
 	private $string = null;
 
-	function __construct(string $string)
+	function __construct($string)
 	{
 		$this->string = $string;
 	}
 
-	function replace(string $rplFrom, string $rplTo)
+	function replace($rplFrom, $rplTo)
 	{
 		return new StringObject(str_replace($rplFrom, $rplTo, $this->string));
 	}
@@ -49,7 +49,7 @@ class StringObject
 		return new StringObject(strtolower($str));
 	}
 
-	function explode(string $by)
+	function explode($by)
 	{
 		return explode($by, $this->string);
 	}
@@ -83,7 +83,7 @@ class StringObject
 	}
 
 	# This method creates a new string object and returns it
-	public function __invoke(string $string)
+	public function __invoke($string)
 	{
 		return new StringObject($string);
 	}

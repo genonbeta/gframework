@@ -11,7 +11,7 @@ class File
 	private $log;
 	private $file = null;
 	
-	function __construct(string $fileName)
+	function __construct($fileName)
 	{
 		$this->log = new Log(self::TAG);
 		$this->file = $fileName;
@@ -22,7 +22,7 @@ class File
 		return touch($this->file);
 	}
 	
-	function createNewDirectory(int $chmod = 0644)
+	function createNewDirectory($chmod = 0644)
 	{
 		return mkdir($this->file, $chmod);
 	}
@@ -37,7 +37,7 @@ class File
 		return file_put_contents($this->file, $index);
 	}
 
-	function moveTo(string $newName)
+	function moveTo($newName)
 	{
 		if (rename($this->file, $newName))
 			return new File($newName);
@@ -45,7 +45,7 @@ class File
 		return false;
 	}
 
-	function copyTo(string $copyTo)
+	function copyTo($copyTo)
 	{
 		if(copy($this->file, $copyTo))
 			return new File($copyTo);
@@ -83,7 +83,7 @@ class File
 		return self::deleteDirectory($this->file);
 	}
 	
-	function copyThisDirectory(string $copyTo)
+	function copyThisDirectory($copyTo)
 	{
 		return self::copyDirectory($this->file, $copyTo);
 	}
@@ -162,7 +162,7 @@ class File
 		} 
 	} 
 
-	static function copyDirectory(string $directory, string $dest, bool $first = false)
+	static function copyDirectory($directory, $dest, $first = false)
 	{
 
 		$first = ($first == false) ? realpath($dest) : realpath($first);
@@ -224,7 +224,7 @@ class File
 		} 
 	} 
 
-	static function forceToMakeDirectory(string $directory)
+	static function forceToMakeDirectory($directory)
 	{
 		$directory = explode('/', $directory); 
 		$dirNumber = count($directory); 
@@ -247,7 +247,7 @@ class File
 
 	}
 
-	static function sizeExpression(int $byte, int $part = 1024, array $params = array()) : String
+	static function sizeExpression($byte, $part = 1024, array $params = array()) : String
 	{
 		if(!is_int($byte)) 
 			$byte = 0;

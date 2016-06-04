@@ -15,7 +15,7 @@ class Pattern implements RealtimeDataProcess
 {
 	private $pattern;
 	
-	function __construct(string $pattern)
+	function __construct($pattern)
 	{
 		$this->pattern = UniversalMessageFilter::applyFilter($pattern, PatternFilter::TYPE_CODE);
 	}
@@ -28,7 +28,7 @@ class Pattern implements RealtimeDataProcess
 		return new Pattern($file->getIndex());
 	}
 	
-	public static function getPatternFromResource(string $resourceName, string $patternId)
+	public static function getPatternFromResource($resourceName, $patternId)
 	{
 		if(!ResourceManager::resourceExists($resourceName))
 			return false;
@@ -44,7 +44,7 @@ class Pattern implements RealtimeDataProcess
 		return new Pattern($resourceFile->getIndex());
 	}
 	
-	public static function getPatternAssetResource(string $resource)
+	public static function getPatternAssetResource($resource)
 	{
 		if (!$file = AssetResource::openResource($resource)->getResourceFile())
 			return false;

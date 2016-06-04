@@ -9,7 +9,7 @@ class Resource extends ResourceManager
 	private $index = [];
 	private $count = 0;
 
-	function __construct(string $resourceName)
+	function __construct($resourceName)
 	{
 		if(!self::resourceExists($resourceName)) 
 			return false;
@@ -38,7 +38,7 @@ class Resource extends ResourceManager
 		return $this->index['Directory'];
 	}
 
-	function findByName(string $name, bool $fullIndex = false)
+	function findByName($name, $fullIndex = false)
 	{
 		if(!$this->doesExist($name)) 
 			return false;
@@ -59,7 +59,7 @@ class Resource extends ResourceManager
 		return $this->count;
 	}
 
-	function doesExist(string $name)
+	function doesExist($name)
 	{
 		return isset($this->index['Data'][$name]);
 	}

@@ -63,7 +63,7 @@ abstract class ViewSkeleton implements ViewInterface
 		$this->getOpController()->putIndex($name, $pattern->drawAsAdapter($map));
 	}
 
-	function getString(string $name, array $sprintf = array())
+	function getString($name, array $sprintf = array())
 	{
 		if(!$this->languageIndex instanceof Language)
 		{ 
@@ -85,7 +85,7 @@ abstract class ViewSkeleton implements ViewInterface
 		return $this->languageInstance->onInfo();
 	}
 
-	function getUri(string $skeleton, string $abstractPath = null)
+	function getUri($skeleton, $abstractPath = null)
 	{	
 		if($this->uris == null)
 			return false;

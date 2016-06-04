@@ -12,7 +12,7 @@ class SQLite3Loader implements DbLoaderInterface
 	private $dbAdapter;
 	private $loginInstance;
 
-	function __construct(string $file, $useExtras = false, $options = null, $encryptkey = null)
+	function __construct($file, $useExtras = false, $options = null, $encryptkey = null)
 	{
 		$this->loginInstance = new StackDataStore(new SQLite3LoginHelper);
 		

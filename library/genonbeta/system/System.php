@@ -83,7 +83,7 @@ abstract class System
 		}
 	}
 	
-	public static function getService(string $serviceName)
+	public static function getService($serviceName)
 	{
 		if (!self::serviceExists($serviceName))
 		{
@@ -95,7 +95,7 @@ abstract class System
 		return self::$services[$serviceName];
 	}
 
-	protected static function autoLoad(string $className)
+	protected static function autoLoad($className)
 	{
 		$classNameOriginal = $className;
 		$className = str_replace("\\", "/", $className);
@@ -115,7 +115,7 @@ abstract class System
 		return true;
 	}
 
-	private static function addLoadedClass(string $className)
+	private static function addLoadedClass($className)
 	{
 		// The character "\" represents to jump to main way
 		$className = "\\" . $className;
@@ -163,7 +163,7 @@ abstract class System
         return true;
 	}
 	
-	public static function serviceExists(string $serviceName)
+	public static function serviceExists($serviceName)
 	{
 		return isset(self::$services[$serviceName]);
 	}
@@ -190,7 +190,7 @@ abstract class System
         return true;
 	}
 	
-	public static function getClassStorage(string $className)
+	public static function getClassStorage($className)
     {
 		if (!class_exists($className))
 		{
