@@ -8,10 +8,9 @@ use genonbeta\provider\ResourceManager;
 use genonbeta\io\RequiredFiles;
 use genonbeta\system\System;
 use genonbeta\view\ViewSkeleton;
-use genonbeta\core\system\Loader;
 use genonbeta\filemanager\config\MainConfig;
 
-class Loader extends Loader
+class Loader extends \genonbeta\core\system\Loader
 {
 	const TAG = "Loader";
 	
