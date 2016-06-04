@@ -13,7 +13,7 @@ define("G_LOAD_TIME", microtime()); // unix current microtime saved as constant
 define("G_DOCUMENT_ROOT", dirname(__FILE__));
 define("G_FRAMEWORK_ROOT", substr(G_DOCUMENT_ROOT, strlen($_SERVER['DOCUMENT_ROOT'])));
 define("G_ADDRESS", str_replace("\\", "/", $_SERVER["HTTP_HOST"] . G_FRAMEWORK_ROOT));
-define("G_ADDRESS_FULL", ($_SERVER["REQUEST_SCHEME"] ?? "http") . "://". G_ADDRESS);
+define("G_ADDRESS_FULL", (isset($_SERVER["REQUEST_SCHEME"])) ? $_SERVER["REQUEST_SCHEME"] : "http") . "://". G_ADDRESS);
 
 if(!file_exists("configuration.php"))
 	die("No configuration file is available");
