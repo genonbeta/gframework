@@ -14,10 +14,10 @@ class FirstLoadInitializer extends Component
 
 	protected function onLoad()
 	{
-		EnvironmentVariables::define("resourceAddress", Configuration::RESOURCE_PATH);
+		EnvironmentVariables::define("resourceAddress", G_WORKER_PATH . "/" . Configuration::RESOURCE_PATH);
 		EnvironmentVariables::define("documentRoot", G_DOCUMENT_ROOT);
 		EnvironmentVariables::define("frameworkRoot", G_FRAMEWORK_ROOT);
-		EnvironmentVariables::define("workerAddress", $_SERVER['SCRIPT_NAME']);
+		EnvironmentVariables::define("workerAddress", G_WORKER_URL);
 
 		UniversalMessageFilter::registerFilter(new \genonbeta\view\filter\ProviderFilter());
 		SourceProvider::registerProvider(new \genonbeta\view\provider\EnvironmentVariablesProvider());

@@ -12,6 +12,9 @@ if (version_compare(PHP_VERSION, '5.3.0', '<'))
 define("G_LOAD_TIME", microtime()); // unix current microtime saved as constant
 define("G_DOCUMENT_ROOT", dirname(__FILE__));
 define("G_FRAMEWORK_ROOT", substr(G_DOCUMENT_ROOT, strlen($_SERVER['DOCUMENT_ROOT'])));
+define("G_WORKER_URL", $_SERVER['SCRIPT_NAME']);
+define("G_WORKER_PATH", dirname($_SERVER['SCRIPT_NAME']));
+
 
 if(!file_exists("configuration.php"))
 	die("No configuration file is available");
