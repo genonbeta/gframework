@@ -13,7 +13,7 @@ class ProviderFilter implements UniversalMessageFilterObject
 
 	public function applyFilter($message)
 	{
-		return preg_replace_callback("#\@([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)\;#", $this->getCallback(), $message);
+		return preg_replace_callback("#\@([a-zA-Z0-9._-]+)\/([a-zA-Z0-9._-]+)\;#", $this->getCallback(), $message);
 	}
 
 	public function getCallback()

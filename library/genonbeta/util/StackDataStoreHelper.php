@@ -66,7 +66,7 @@ abstract class StackDataStoreHelper
 		if(!$this->fieldDefined($name))
 			return false;
 
-		return $this->stack[$name]['callback']; 
+		return $this->stack[$name]['callback'];
 	}
 
 	public function getRequireStat($name)
@@ -74,7 +74,7 @@ abstract class StackDataStoreHelper
 		if(!$this->fieldDefined($name))
 			return false;
 
-		return $this->stack[$name]['required']; 
+		return $this->stack[$name]['required'];
 	}
 
 	public function checkAndDone(array $compare)
@@ -86,7 +86,7 @@ abstract class StackDataStoreHelper
 
 		foreach($this->stack as $name => $defines)
 		{
-			if(!isset($compare[$name]) && $defines['required'] == self::REQUIRED) 
+			if(!isset($compare[$name]) && $defines['required'] == self::REQUIRED)
 			{
 				$this->log->d("As {$name} field is defined as required, it cannot be empty");
 				$errorStack->putError($name, self::ERROR_CAUSE_EMPTY);
@@ -101,12 +101,12 @@ abstract class StackDataStoreHelper
 			}
 		}
 
-		if($errorStack->hasError()) 
+		if($errorStack->hasError())
 		{
 			$this->lastErrorStack = $errorStack;
 			return false;
 		}
-		
+
 		return true;
 	}
 

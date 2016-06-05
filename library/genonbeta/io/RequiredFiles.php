@@ -8,7 +8,7 @@ use genonbeta\util\HashMap;
 class RequiredFiles
 {
 	private $logger;
-	
+
 	const TYPE_DIRECTORY = 1;
 	const TYPE_FILE = 2;
 
@@ -20,11 +20,11 @@ class RequiredFiles
 	public function request($requestName, $type, $chmod = null, $index = null)
 	{
 		$fileInstance = new File($requestName);
-		
+
 		if ($fileInstance->doesExist())
 			return true;
-		
-		if($type == self::TYPE_DIRECTORY) 
+
+		if($type == self::TYPE_DIRECTORY)
 		{
 			if($fileInstance->createNewDirectory($chmod))
 			{
@@ -51,7 +51,7 @@ class RequiredFiles
 		}
 		else
 		{
-			$this->logger->e("the type you defined is not known {$type}");		
+			$this->logger->e("the type you defined is not known {$type}");
 		}
 	}
 }

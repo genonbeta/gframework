@@ -13,16 +13,16 @@ class ErrorHandler extends Service
 	const RESULT_OK = 1;
 	const RESULT_FALSE = 2;
 	const RESULT_NOT_KNOWN = 4;
-	
+
 	const ACTION_HANDLE_ERROR = "genonbeta.errorhandler.action.HANDLE_ERROR";
-	
+
 	const ERROR_LEVEL = "errorLevel";
 	const ERROR_MESSAGE = "errorMessage";
-	
+
 	private $controllerPool;
 	private $controllerCallback;
 	private $errorHandlerIntent;
-	
+
 	function __construct()
 	{
 		$this->controllerPool = new ControllerPool();
@@ -36,12 +36,12 @@ class ErrorHandler extends Service
 
 		return $this->getDefaultIntent()->setResult($this->controllerPool->sendRequest($intent, ControllerPool::MODE_ARGUMENT_CALLBACK, $this->controllerCallback) ? Intent::RESULT_OK : Intent::RESULT_FALSE);
 	}
-	
+
 	public function putHandlerController(Controller $handler)
 	{
 		$this->controllerPool->addTodoList($handler);
 	}
-	
+
 	public function getDefaultIntent()
 	{
 		return $this->errorHandlerIntent->flushOlds();

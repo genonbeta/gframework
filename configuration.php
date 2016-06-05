@@ -17,26 +17,26 @@ class Configuration
 	const CLASS_EXTENSION = "php"; // this will be used to call or identify the classes
 	const RESOURCE_PROTOCOL = "res"; // default resource protocol
 	const WORKER_URL = "index.php"; // main system file that handles requests
-	
+
 	private static $systemServices = [
 		"ErrorHandler" => "\\genonbeta\\service\\ErrorHandler",
 		"AutoLoader" => "\\genonbeta\\service\\AutoLoader",
 		"Flusher" => "\\genonbeta\service\\Flusher",
 		"ClassLoader" => "\\genonbeta\\service\\ClassLoader"
 	];
-	
+
 	// Components can be implemented only once
 	private static $components = [
 		"\\genonbeta\\system\\configuration\\FirstLoadInitializer",
 		"\\genonbeta\\system\\helper\\LibraryCacheHelper",
 		"\\genonbeta\\provider\\wrapper\\ResourceComponent",
 	];
-	
+
 	public static function getServices()
 	{
 		return self::$systemServices;
 	}
-	
+
 	public static function getComponents()
 	{
 		return self::$components;

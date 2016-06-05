@@ -11,17 +11,17 @@ class Cursor
 
 	public function __construct(HashMap $map)
 	{
-		$this->items = $map->getAll();		
+		$this->items = $map->getAll();
 	}
 
 	public function moveToFirst()
 	{
-		if(count($this->items) == 0) 
+		if(count($this->items) == 0)
 			return false;
 
 		$this->currentPosition = 0;
 
-		return true;		
+		return true;
 	}
 
 	public function getIndex()
@@ -46,7 +46,7 @@ class Cursor
 
 	public function moveToNext()
 	{
-		if(($this->currentPosition + 1) == count($this->items)) 
+		if(($this->currentPosition + 1) == count($this->items))
 			return false;
 
 		$this->currentPosition ++;
@@ -56,7 +56,7 @@ class Cursor
 
 	public function moveToPrevious()
 	{
-		if(($this->currentPosition - 1) < 0) 
+		if(($this->currentPosition - 1) < 0)
 			return false;
 
 		$this->currentPosition --;

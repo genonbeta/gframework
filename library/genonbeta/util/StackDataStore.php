@@ -26,7 +26,7 @@ class StackDataStore
 
 		$this->selfData[$field] = $value;
 
-		return false;		
+		return false;
 	}
 
 	function checkAndDone()

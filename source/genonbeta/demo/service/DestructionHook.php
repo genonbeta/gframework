@@ -1,6 +1,6 @@
 <?php
 
-namespace genonbeta\filemanager\service;
+namespace genonbeta\demo\service;
 
 use genonbeta\controller\Controller;
 use genonbeta\controller\ControllerPool;

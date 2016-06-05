@@ -1,6 +1,6 @@
 <?php
 
-namespace genonbeta\filemanager\config;
+namespace genonbeta\demo\config;
 
 class MainConfig
 {

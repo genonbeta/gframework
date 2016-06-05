@@ -10,7 +10,7 @@ class NativeUrl
 	{
 		if($method == null)
 			$method = $methodName;
-		
+
 		$this->methods[$methodName] = $method;
 
 		return true;
@@ -32,7 +32,7 @@ class NativeUrl
 		{
 			if (!$this->methodExists($arg))
 				break;
-			
+
 			$method = $this->getMethod($arg);
 
 			if(!preg_match("#{$method}#", $nUrl[$id], $result))
@@ -64,7 +64,7 @@ class NativeUrl
 		$path = (isset($_SERVER['PATH_INFO'])) ? $_SERVER['PATH_INFO'] : null;
 		$return = [];
 
-		if($path == null) 
+		if($path == null)
 			array();
 
 		foreach(explode("/", $path) as $id => $value)
@@ -74,7 +74,7 @@ class NativeUrl
 
 			$return[] = $value;
 		}
-		
+
 		return $return;
 	}
 }

@@ -19,7 +19,7 @@ class Log
 
 	public function __construct($pid)
 	{
-		$this->pid = $pid; 
+		$this->pid = $pid;
 	}
 
 	public static function debug($pid, $log)
@@ -46,7 +46,7 @@ class Log
 	{
 		self::getLogging()->add(array($this->pid, $error, time(), self::TYPE_ERROR));
 	}
-	
+
 	public function i($info)
 	{
 		self::getLogging()->add(array($this->pid, $info, time(), self::TYPE_INFO));

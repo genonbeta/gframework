@@ -11,13 +11,13 @@ class OutputController implements RealtimeDataProcess
 {
 	private $output;
 	private static $counter = 0;
-	
+
 	public function __construct()
 	{
 		$this->output = new HashMap();
 	}
 
-	public function putIndex($outputTitle, RealTimeDataProcess $write)
+	public function put($outputTitle, RealTimeDataProcess $write)
 	{
 		$this->output->add(array($outputTitle, $write));
 		return true;
@@ -27,14 +27,14 @@ class OutputController implements RealtimeDataProcess
 	{
 		//$args = System::getService("Flusher")->send($args);
 		$flusher = new StringBuilder("\n".$args[FlushArgument::FLUSH_TABS]);
-		
+
 		foreach($this->output->getAll() as $output)
 		{
 			$flusher->put($output[1]);
 		}
 
 		$this->output->clear();
-		
+
 		return $flusher->onFlush($args);
 	}
 }

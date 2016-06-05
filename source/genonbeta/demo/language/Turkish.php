@@ -1,13 +1,13 @@
 <?php
 
-namespace genonbeta\filemanager\language;
+namespace genonbeta\demo\language;
 
 use genonbeta\support\LanguageInterface;
 use genonbeta\support\Characters;
 use genonbeta\support\Language;
 use genonbeta\provider\ResourceManager;
 use genonbeta\provider\Resource;
-use genonbeta\filemanager\config\MainConfig;
+use genonbeta\demo\config\MainConfig;
 
 class Turkish implements LanguageInterface
 {
@@ -29,7 +29,7 @@ class Turkish implements LanguageInterface
 	{
 		$lang = new Language(ResourceManager::getResource(MainConfig::LANGUAGE_INDEX_NAME));
 		$lang->loadFile(self::TAG);
-		
+
 		$ch = new Characters("Turkish");
 
 		$ch->addMap("Ğ", "ğ", "g");
@@ -39,7 +39,7 @@ class Turkish implements LanguageInterface
 		$ch->addMap("Ö", "ö", "o");
 		$ch->addMap("Ş", "ş", "s");
 		$ch->addMap("Ü", "ü", "u");
-		
-		return $lang;		
+
+		return $lang;
 	}
 }

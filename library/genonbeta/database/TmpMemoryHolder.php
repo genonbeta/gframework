@@ -9,7 +9,7 @@ abstract class TmpMemoryHolder
 
 	static function put($data, $index)
 	{
-		if(!self::checkDataOnSave($data, $index)) 
+		if(!self::checkDataOnSave($data, $index))
 			return false;
 
 		self::$data[$data] = $index;
@@ -19,7 +19,7 @@ abstract class TmpMemoryHolder
 
 	static function rewrite($data, $index)
 	{
-		if(!self::checkDataOnRewrite($data, $index)) 
+		if(!self::checkDataOnRewrite($data, $index))
 			return false;
 
 		self::$data[$data] = $index;
@@ -29,7 +29,7 @@ abstract class TmpMemoryHolder
 
 	static function get($data)
 	{
-		if(!self::isSaved($data)) 
+		if(!self::isSaved($data))
 			return false;
 
 		return self::$data[$data];
@@ -39,7 +39,7 @@ abstract class TmpMemoryHolder
 	{
 		if(!self::checkData($data, $index))
 			return false;
-		
+
 		if(isset(self::$data[$data]))
 			return false;
 
@@ -50,7 +50,7 @@ abstract class TmpMemoryHolder
 	{
 		if(!self::checkData($data, $index))
 			return false;
-		
+
 		if(!isset(self::$data[$data]))
 			return false;
 
@@ -61,18 +61,18 @@ abstract class TmpMemoryHolder
 	{
 		if(!is_string($data) || empty($data))
 			return false;
-		
-		if(!isset(self::$data[$data])) 
+
+		if(!isset(self::$data[$data]))
 			return false;
 
-		return true; 
+		return true;
 	}
 
 	static protected function checkData($data, $index)
 	{
 		if(!is_string($data))
 			return false;
-		
+
 		if(empty($index) || empty($data))
 			return false;
 

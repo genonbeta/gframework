@@ -4,13 +4,13 @@ namespace genonbeta\io;
 
 use genonbeta\util\Log;
 
-class File 
+class File
 {
 	const TAG = "File";
 
 	private $log;
 	private $file = null;
-	
+
 	function __construct($fileName)
 	{
 		$this->log = new Log(self::TAG);
@@ -21,12 +21,12 @@ class File
 	{
 		return touch($this->file);
 	}
-	
+
 	function createNewDirectory($chmod = 0644)
 	{
 		return mkdir($this->file, $chmod);
 	}
-	
+
 	function createDirectories()
 	{
 		return self::forceToMakeDirectory($this->file);
@@ -41,7 +41,7 @@ class File
 	{
 		if (rename($this->file, $newName))
 			return new File($newName);
-			
+
 		return false;
 	}
 
@@ -49,7 +49,7 @@ class File
 	{
 		if(copy($this->file, $copyTo))
 			return new File($copyTo);
-			
+
 		return false;
 	}
 
@@ -82,7 +82,7 @@ class File
 	{
 		return self::deleteDirectory($this->file);
 	}
-	
+
 	function copyThisDirectory($copyTo)
 	{
 		return self::copyDirectory($this->file, $copyTo);
@@ -102,65 +102,65 @@ class File
 	{
 		return is_file($this->file);
 	}
-	
+
 	function isDirectory()
 	{
 		return is_dir($this->file);
 	}
-	
+
 	function doesExist()
 	{
 		return file_exists($this->file);
 	}
 
-	static function deleteDirectory($directory, $empty = false) 
+	static function deleteDirectory($directory, $empty = false)
 	{
-		if(substr($directory,-1) == "/") 
+		if(substr($directory,-1) == "/")
 		{
-			$directory = substr($directory,0,-1); 
-		} 
+			$directory = substr($directory,0,-1);
+		}
 
-		if(!file_exists($directory) || !is_dir($directory)) 
-		{ 
-			return false; 
-		} 
-		elseif(!is_readable($directory)) 
-		{ 
-			return false; 
-		} 
-		else 
-		{ 
-			$directoryHandle = opendir($directory); 
+		if(!file_exists($directory) || !is_dir($directory))
+		{
+			return false;
+		}
+		elseif(!is_readable($directory))
+		{
+			return false;
+		}
+		else
+		{
+			$directoryHandle = opendir($directory);
 
-			while ($contents = readdir($directoryHandle)) 
-			{ 
-				if($contents != '.' && $contents != '..') 
-				{ 
-					$path = $directory . "/" . $contents; 
-					if(is_dir($path)) 
-					{ 
-						self::deleteDirectory($path); 
-					} 
-					else 
-					{ 
-						unlink($path); 
-					} 
+			while ($contents = readdir($directoryHandle))
+			{
+				if($contents != '.' && $contents != '..')
+				{
+					$path = $directory . "/" . $contents;
+					if(is_dir($path))
+					{
+						self::deleteDirectory($path);
+					}
+					else
+					{
+						unlink($path);
+					}
 				}
 			}
 
-			closedir($directoryHandle); 
+			closedir($directoryHandle);
 
-			if($empty == false) 
-			{ 
-				if(!rmdir($directory)) 
-				{ 
-					return false; 
-				} 
-			} 
+			if($empty == false)
+			{
+				if(!rmdir($directory))
+				{
+					return false;
+				}
+			}
 
-			return true; 
-		} 
-	} 
+			return true;
+		}
+	}
 
 	static function copyDirectory($directory, $dest, $first = false)
 	{
@@ -173,93 +173,93 @@ class File
 		if(substr($dest,-1) == "/")
 			$dest = substr($dest,0,-1);
 
-		if(!is_dir($dest)) 
+		if(!is_dir($dest))
 			if(!mkdir($dest, 0777))
                 return false;
 
-		if(!file_exists($directory) || (!is_dir($directory) || !isset($dest))) 
-		{ 
-			return false; 
-		} 
-		elseif(!is_readable($directory) || !is_readable($dest)) 
-		{ 
+		if(!file_exists($directory) || (!is_dir($directory) || !isset($dest)))
+		{
 			return false;
-		} 
-		else 
+		}
+		elseif(!is_readable($directory) || !is_readable($dest))
+		{
+			return false;
+		}
+		else
 		{
 			$directory = realpath($directory);
 			$dest = realpath($dest);
 			$directoryHandle = opendir($directory);
 
-			while ($contents = readdir($directoryHandle)) 
+			while ($contents = readdir($directoryHandle))
 			{
-				if($contents != '.' && $contents != '..') 
+				if($contents != '.' && $contents != '..')
 				{
 					$path = $directory . "/" . $contents;
 					$path2 = $dest . "/" . $contents;
 
-					if(is_dir($path)) 
+					if(is_dir($path))
 					{
-						if($path == $first) 
+						if($path == $first)
 						{
 							continue;
-						} 
+						}
 
-						if(!is_dir($path2)) 
+						if(!is_dir($path2))
 						{
 							mkdir($path2, 0777);
 						}
 
-						self::copyDirectory($path, $path2, $first); 
-					} 
-					else 
+						self::copyDirectory($path, $path2, $first);
+					}
+					else
 					{
-						copy($path, $path2); 
-					} 
+						copy($path, $path2);
+					}
 				}
 			}
 
-			closedir($directoryHandle); 
-			return true; 
-		} 
-	} 
+			closedir($directoryHandle);
+			return true;
+		}
+	}
 
 	static function forceToMakeDirectory($directory)
 	{
-		$directory = explode('/', $directory); 
-		$dirNumber = count($directory); 
+		$directory = explode('/', $directory);
+		$dirNumber = count($directory);
 
-		for($x = 0; $x < $dirNumber; $x++) 
-		{ 
+		for($x = 0; $x < $dirNumber; $x++)
+		{
 			$currentDirPath = null;
-			
-			for($i = 0; $i <= $x; $i++) 
+
+			for($i = 0; $i <= $x; $i++)
 				$currentDirPath .= ($i !== 0) ? '/'.$directory[$i] : $directory[$i];
 
 			if(!is_dir($currentDirPath))
 				if(!mkdir($currentDirPath, 0755))
-					break; 
-					
-			unset($currentDirPath); 
-		} 
+					break;
 
-		return true; 
+			unset($currentDirPath);
+		}
+
+		return true;
 
 	}
 
 	static function sizeExpression($byte, $part = 1024, array $params = array())
 	{
-		if(!is_int($byte)) 
+		if(!is_int($byte))
 			$byte = 0;
-		
-		if(!is_int($part)) 
+
+		if(!is_int($part))
 			$part = 1024;
-		
-		if(!is_array($params) || count($params) < 1) 
+
+		if(!is_array($params) || count($params) < 1)
 			$params = array("B", "kB", "MB", "GB", "TB", "EB", "ZB", "YT");
 
 		$c = min((int) log($byte, $part), count($params) - 1);
-		
+
 		return sprintf('%1.2f', $byte / pow($part, $c)).' '.$params[$c];
 	}
 
@@ -267,7 +267,7 @@ class File
 	{
 		return $this->getPath();
 	}
-	
+
 	function __destruct()
 	{
 	}

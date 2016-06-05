@@ -35,24 +35,24 @@ class Characters
 
 		if(!isset(self::$data[$hexBig]))
 		{
-			self::$data[$hexBig] = array(self::TYPE_BIG => $bigSt, 
-												self::TYPE_SMALL => $smallSt, 
+			self::$data[$hexBig] = array(self::TYPE_BIG => $bigSt,
+												self::TYPE_SMALL => $smallSt,
 												self::TYPE_CLEARED => $clearedSt,
 												self::TYPE_LANG => $this->lang);
-		} 
-		else 
+		}
+		else
 		{
 			$log->e("{$bigSt} already saved");
 		}
 
 		if(!isset(self::$data[$hexSmall]))
 		{
-			self::$data[$hexSmall] = array(self::TYPE_BIG => $bigSt, 
-												self::TYPE_SMALL => $smallSt, 
+			self::$data[$hexSmall] = array(self::TYPE_BIG => $bigSt,
+												self::TYPE_SMALL => $smallSt,
 												self::TYPE_CLEARED => $clearedSt,
 												self::TYPE_LANG => $this->lang);
-		} 
-		else 
+		}
+		else
 		{
 			$log->e("{$smallSt} already saved");
 		}

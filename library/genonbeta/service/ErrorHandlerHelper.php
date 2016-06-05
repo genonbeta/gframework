@@ -15,12 +15,12 @@ class ErrorHandlerHelper implements ControllerCallback
 		elseif ($args === ErrorHandler::RESULT_FALSE)
 			$this->finalResult = false;
 	}
-	
+
 	public function onResult()
 	{
 		$result = $this->finalResult;
 		$this->finalResult = false;
-		
+
 		return $result;
 	}
 }

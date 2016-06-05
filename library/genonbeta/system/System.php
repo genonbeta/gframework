@@ -11,7 +11,7 @@ use genonbeta\system\Intent;
 use genonbeta\service\ErrorHandler;
 use genonbeta\service\AutoLoader;
 
-abstract class System 
+abstract class System
 {
 	const TAG = "System";
 
@@ -19,7 +19,7 @@ abstract class System
 	static private $logs;
 	static private $manifestIndex;
 	static private $services = array();
-	
+
 	public static function setup()
 	{
 		spl_autoload_register([__CLASS__, "autoLoad"]);
@@ -27,10 +27,10 @@ abstract class System
 
 		if(!is_dir(Configuration::DATA_PATH))
 			mkdir(Configuration::DATA_PATH, 0755);
-		
+
 		self::loadServices(Configuration::getServices());
 		self::loadComponents(Configuration::getComponents());
-		
+
 		if(is_file(Configuration::FRAMEWORK_JSON))
 		{
 			if(filesize(Configuration::FRAMEWORK_JSON) < Configuration::GMANIFEST_MAX_SIZE)
@@ -82,7 +82,7 @@ abstract class System
 			throw new \Exception("<b>".Configuration::FRAMEWORK_JSON."</b> file doesn't exist. That's the the deadline");
 		}
 	}
-	
+
 	public static function getService($serviceName)
 	{
 		if (!self::serviceExists($serviceName))
@@ -91,7 +91,7 @@ abstract class System
 
 			return null;
 		}
-		
+
 		return self::$services[$serviceName];
 	}
 
@@ -109,7 +109,7 @@ abstract class System
 			Intent::sendServiceIntent("AutoLoader", self::getService("AutoLoader")
 									  ->getDefaultIntent()
 									  ->putExtra(AutoLoader::CLASS_NAME, $className));
-	
+
 		self::addLoadedClass($classNameOriginal);
 
 		return true;
@@ -129,7 +129,7 @@ abstract class System
 
 		return $stat;
 	}
-	
+
 	private static function loadServices(array $serviceList)
 	{
 		if (count($serviceList) < 1)
@@ -137,7 +137,7 @@ abstract class System
 			self::getLogger()->d("No service was found to load in array variable");
 			return false;
 		}
-		
+
 		foreach($serviceList as $serviceName => $serviceClass)
 		{
 			if (class_exists($serviceClass) && is_string($serviceName))
@@ -147,9 +147,9 @@ abstract class System
 					self::getLogger()->e("Tried to load existed service {$serviceName}");
 					continue;
 				}
-					
+
 				$serviceInstance = new $serviceClass;
-				
+
 				if ($serviceInstance instanceof Service)
 				{
 					self::getLogger()->i($serviceName.":".$serviceClass." service is loaded");
@@ -162,12 +162,12 @@ abstract class System
 
         return true;
 	}
-	
+
 	public static function serviceExists($serviceName)
 	{
 		return isset(self::$services[$serviceName]);
 	}
-	
+
 	private static function loadComponents(array $componentList)
 	{
 		if (count($componentList) < 1)
@@ -175,12 +175,12 @@ abstract class System
 			self::getLogger()->d("No component was found to load in array variable");
 			return false;
 		}
-		
+
 		foreach ($componentList as $component)
 			if (class_exists($component))
 			{
 				$componentInstance = new $component;
-				
+
 				if ($componentInstance instanceof Component)
 					self::getLogger()->i($component." component is loaded");
                 else
@@ -189,7 +189,7 @@ abstract class System
 
         return true;
 	}
-	
+
 	public static function getClassStorage($className)
     {
 		if (!class_exists($className))
@@ -197,18 +197,18 @@ abstract class System
 			self::getLogger()->e("Requested self space path of not existing {$className} class");
 			return null;
 		}
-		
+
 		$className = str_replace("\\", "/", $className);
 		$className = preg_replace("/[^a-zA-Z0-9\/]/si", "", $className);
-		
+
 		$spaceDir = new \genonbeta\io\File(Configuration::DATA_PATH."/".$className);
-		
+
 		if (!$spaceDir->doesExist())
 			$spaceDir->createDirectories();
-		
+
 		return $spaceDir->getPath();
 	}
-	
+
 	public static function errorHandler($errLevel = null, $errMessage = null)
 	{
 		return Intent::sendServiceIntent("ErrorHandler", self::getService("ErrorHandler")

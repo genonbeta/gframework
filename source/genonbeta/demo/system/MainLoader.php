@@ -1,6 +1,6 @@
 <?php
 
-namespace genonbeta\filemanager\system;
+namespace genonbeta\demo\system;
 
 use Configuration;
 use genonbeta\controller\FlushArgument;
@@ -8,7 +8,7 @@ use genonbeta\provider\ResourceManager;
 use genonbeta\io\RequiredFiles;
 use genonbeta\system\System;
 use genonbeta\view\ViewSkeleton;
-use genonbeta\filemanager\config\MainConfig;
+use genonbeta\demo\config\MainConfig;
 
 class MainLoader extends \genonbeta\core\system\Loader
 {
@@ -31,7 +31,7 @@ class MainLoader extends \genonbeta\core\system\Loader
 
 	protected function onSkeletonLoaded(ViewSkeleton $skeleton)
 	{
-		$this->getOutputController()->putIndex("systemOutput", $skeleton);
+		$this->getOutputController()->put("systemOutput", $skeleton);
 
 		// Let's output the data =)
 		echo $this->getOutputController()->onFlush(FlushArgument::getDefaultArguments());

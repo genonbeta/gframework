@@ -15,7 +15,7 @@ use genonbeta\net\UrlResolver;
 abstract class ViewSkeleton implements ViewInterface
 {
 	const TAG = "ViewSkeleton";
-	
+
 	const DEFAULT_SKELETON = "__default";
 
 	const TYPE_REQUEST = 1;
@@ -30,11 +30,11 @@ abstract class ViewSkeleton implements ViewInterface
 	private $uris;
 
 	abstract function onCreate(array $methodName);
-	abstract function outputController();
+	abstract function onOutputController();
 
 	function __construct()
 	{
-		$this->opcontroller = $this->outputController();
+		$this->opcontroller = $this->onOutputController();
 		$this->logs = new Log(self::TAG);
 	}
 
@@ -42,7 +42,7 @@ abstract class ViewSkeleton implements ViewInterface
 	{
 		return NativeUrl::pathResolver();
 	}
-	
+
 	protected function getOpController()
 	{
 		return $this->opcontroller;
@@ -50,23 +50,23 @@ abstract class ViewSkeleton implements ViewInterface
 
 	public function drawView(ViewInterface $interface, $name, array $items)
 	{
-		$this->getOpController()->putIndex($name, $interface->onCreate($items));
+		$this->getOpController()->put($name, $interface->onCreate($items));
 	}
 
 	public function drawPattern(ViewPattern $pattern, $name, array $items)
 	{
-		$this->getOpController()->putIndex($name, $pattern->draw($items));
+		$this->getOpController()->put($name, $pattern->draw($items));
 	}
 
 	public function drawPatternAsAdapter(ViewPattern $pattern, $name, HashMap $map)
 	{
-		$this->getOpController()->putIndex($name, $pattern->drawAsAdapter($map));
+		$this->getOpController()->put($name, $pattern->drawAsAdapter($map));
 	}
 
 	function getString($name, array $sprintf = array())
 	{
 		if(!$this->languageIndex instanceof Language)
-		{ 
+		{
 			$this->logs->e("The languageIndex not defined yet. You need to load a language file");
 			return null;
 		}
@@ -77,19 +77,19 @@ abstract class ViewSkeleton implements ViewInterface
 	function getLoadedLangInfo()
 	{
 		if(!$this->languageInstance instanceof LanguageInterface)
-		{ 
+		{
 			$this->logs->e("The languageIndex not defined yet. You need to load a language file");
 			return array();
 		}
-	
+
 		return $this->languageInstance->onInfo();
 	}
 
 	function getUri($skeleton, $abstractPath = null)
-	{	
+	{
 		if($this->uris == null)
 			return false;
-		
+
 		return $this->uris->getUri($skeleton, $abstractPath);
 	}
 
@@ -97,9 +97,9 @@ abstract class ViewSkeleton implements ViewInterface
 	{
 		$this->languageInstance = $interface;
 		$this->languageIndex = $this->languageInstance->onLoading();
-		
+
 		if(!$this->languageIndex instanceof Language)
-		{ 
+		{
 			$this->logs->e("The language cannot be preserved languages instance");
 			return false;
 		}
@@ -128,7 +128,7 @@ abstract class ViewSkeleton implements ViewInterface
 	{
 		return $this->getOpController()->onFlush($args);
 	}
-	
+
 	function __toString()
 	{
 		return $this->getOpController()->printStack();

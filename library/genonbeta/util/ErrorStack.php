@@ -20,7 +20,7 @@ class ErrorStack
 	function putError($cause, $errorCode)
 	{
 		$this->errors[$cause] = $errorCode;
-		return true;		
+		return true;
 	}
 
 	function hasError()

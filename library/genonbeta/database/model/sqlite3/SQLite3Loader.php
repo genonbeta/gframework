@@ -15,22 +15,22 @@ class SQLite3Loader implements DbLoaderInterface
 	function __construct($file, $useExtras = false, $options = null, $encryptkey = null)
 	{
 		$this->loginInstance = new StackDataStore(new SQLite3LoginHelper);
-		
+
 		$this->loginInstance->setField(SQLite3::DB_FILE, $file);
 		$this->loginInstance->setField(SQLite3::DB_OPTIONS, $options);
 		$this->loginInstance->setField(SQLite3::DB_ENCRYPT_KEY, $encryptkey);
 		$this->loginInstance->setField(SQLite3::DB_USE_EXTRAS, $useExtras);
-		
+
 		if(!$this->loginInstance->checkAndDone())
 		{
 			throw new RefusedIndexException("The database connection variables is malformed");
 		}
 
 		$this->dbAdapter = new SQLite3($this->loginInstance);
-		
-		if(!$this->dbAdapter) 
+
+		if(!$this->dbAdapter)
 			return false;
-		
+
 		return true;
 	}
 

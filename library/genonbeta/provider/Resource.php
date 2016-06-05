@@ -11,12 +11,12 @@ class Resource extends ResourceManager
 
 	function __construct($resourceName)
 	{
-		if(!self::resourceExists($resourceName)) 
+		if(!self::resourceExists($resourceName))
 			return false;
 
 		$this->index = self::getResource($resourceName, false);
 		$this->count = count($this->index['Data']);
-		
+
 		return true;
 	}
 
@@ -40,20 +40,20 @@ class Resource extends ResourceManager
 
 	function findByName($name, $fullIndex = false)
 	{
-		if(!$this->doesExist($name)) 
+		if(!$this->doesExist($name))
 			return false;
 
 		if(!$fullIndex === true)
 			return $this->index['Directory']."/".$this->index['Data'][$name]['basename'];
-		
+
 		return $this->index['Data'][$name];
 	}
-		
+
 	function getIndex()
 	{
 		return $this->index['Data'];
 	}
-	
+
 	function getCount()
 	{
 		return $this->count;

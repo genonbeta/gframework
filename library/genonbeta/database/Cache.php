@@ -9,7 +9,7 @@ use genonbeta\io\RequiredFiles;
 class Cache
 {
 	const TAG = "Cache";
-	
+
 	private $cacheDirectory = null;
 
 	function __construct($dataDirectory)
@@ -17,7 +17,7 @@ class Cache
 		$required = new RequiredFiles(self::TAG);
 		$required->request(Configuration::CACHE_PATH, RequiredFiles::TYPE_DIRECTORY, 0777);
 		$required->request(Configuration::CACHE_PATH."/".$dataDirectory, RequiredFiles::TYPE_DIRECTORY, 0777);
-		
+
 		$this->cacheDirectory = Configuration::CACHE_PATH."/".$dataDirectory;
 	}
 
@@ -29,20 +29,20 @@ class Cache
 	function makeCacheFromFile($filePath, $externalContent = null, $fileNotExists)
 	{
 		$file = new File($filePath);
-		
+
 		if ((!$file->isFile() || !$file->isReadable()) && $fileNotExists == false)
 			return false;
-	
+
 		$cacheFile = new File($this->convertFileName($file->getPath()));
-		
+
 		if ($cacheFile->doesExist())
 			return false;
-			
-		$cacheFile->createNewFile(); 
-		
+
+		$cacheFile->createNewFile();
+
 		if(!$cacheFile->isWritable())
 			return false;
-		
+
 		if ($externalContent !== null)
 			return $cacheFile->putIndex($externalContent);
 		else
@@ -52,15 +52,15 @@ class Cache
 	function makeCache($cacheFilename, $content)
 	{
 		$cacheFile = new File($this->cacheDirectory."/".$cacheFilename);
-		
+
 		if ($cacheFile->doesExist())
 			return false;
-			
-		$cacheFile->createNewFile(); 
-		
+
+		$cacheFile->createNewFile();
+
 		if(!$cacheFile->isWritable())
 			return false;
-			
+
 		return $cacheFile->putIndex($content);
 	}
 
@@ -73,7 +73,7 @@ class Cache
 
 		if(!$file->isFile() || !$file->isReadable())
 			return false;
-		
+
 		return $file->getIndex();
 	}
 
@@ -86,10 +86,10 @@ class Cache
 
 		if(!$file->isFile() || !$file->isReadable())
 			return false;
-		
+
 		return $file->getIndex();
 	}
-	
+
 	function getFileCachePath($cacheName)
 	{
 		return $this->convertFileName($cacheName);
@@ -99,7 +99,7 @@ class Cache
 	{
 		if(is_file($this->convertFileName($cacheName)))
 			return true;
-			
+
 		return false;
 	}
 
@@ -110,21 +110,21 @@ class Cache
 
 		return false;
 	}
-	
+
 	function deleteFileCache($cacheName)
 	{
 		$file = new File($this->convertFileName($cacheName));
-		
+
 		if(!$file->isWritable() || !$file->isFile())
 			return false;
 
 		return $file->deleteFile();
 	}
-	
+
 	function deleteCache($cacheName)
 	{
 		$file = new File($this->cacheDirectory."/".$cacheName);
-		
+
 		if(!$file->isWritable() || !$file->isFile())
 			return false;
 

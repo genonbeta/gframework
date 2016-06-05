@@ -1,6 +1,6 @@
 <?php
 
-namespace genonbeta\filemanager\view\model;
+namespace genonbeta\demo\view\model;
 
 use Configuration;
 use genonbeta\controller\OutputController;
@@ -16,14 +16,14 @@ use genonbeta\util\ResourceHelper;
 use genonbeta\util\Log;
 use genonbeta\view\ViewSkeleton;
 
-use genonbeta\filemanager\config\MainConfig;
-use genonbeta\filemanager\language\Turkish;
-use genonbeta\filemanager\view\model\pattern\GBasicSkeleton;
-use genonbeta\filemanager\view\model\pattern\LogList;
+use genonbeta\demo\config\MainConfig;
+use genonbeta\demo\language\Turkish;
+use genonbeta\demo\view\model\pattern\GBasicSkeleton;
+use genonbeta\demo\view\model\pattern\LogList;
 
-class HowLoaded extends ViewSkeleton
+class Home extends ViewSkeleton
 {
-	const TAG = "HowLoaded";
+	const TAG = "Home";
 
 	public function onCreate(array $methods)
 	{
@@ -32,30 +32,34 @@ class HowLoaded extends ViewSkeleton
 
 		$listPattern = new LogList($this);
 
+		try
+		{
+			$sdbLoader = new SQLite3Loader($res->findByName("tr_en"));
+			$sdb = $sdbLoader->getDbInstance();
+			$result = $sdb->query("SELECT * FROM `tr_en`");
+			$cursor = $result->getCursor();
+
+			$log->i("Veritabanında ".$cursor->getCount()." adet kelime bulunuyor");
+		}
+		catch(\Exception $e)
+		{
+		}
+
 		$this->loadLanguage(new Turkish());
 		$this->setUrlResolver(new UrlResolver(EnvironmentVariables::get("workerAddress"), System::getLoadedManifest()['system']['viewSkeleton']));
 
-		$log->i("<a href=\"" . $this->getUri("home", "")."\">Goto home page</a>");
+		$dbLoader = new MySQLLoader();
+		$db = $dbLoader->getDbInstance();
 
-
-		$cursor = new \genonbeta\database\Cursor(System::getLoadedClasses());
-
-		if ($cursor->moveToFirst())
-		{
-			do
-			{
-				$log->i(($cursor->getIndex()[1] ? "loaded" : "error"). " : " . $cursor->getIndex()[0]);
-			}
-			while ($cursor->moveToNext());
-		}
+		$log->i("<a href=\"" . $this->getUri("about", "?isOkay=true")."\">Goto about page</a>");
 
 		$sb = new StringBuilder();
 		$sb->put($listPattern->drawAsAdapter(Log::getLogs()));
 
-		$this->drawPattern(new GBasicSkeleton($this), "system_html", array(GBasicSkeleton::TITLE => "How Loaded", GBasicSkeleton::BODY => $sb));
+		$this->drawPattern(new GBasicSkeleton($this), "system_html", array(GBasicSkeleton::TITLE => "Home", GBasicSkeleton::BODY => $sb));
 	}
 
-	public function outputController()
+	public function onOutputController()
 	{
 		return new OutputController();
 	}

@@ -10,7 +10,7 @@ class MySQL extends DbAdapter implements DbAdapterModel
 {
 
 	private $resourceIndex;
-	
+
 	const DB_FILE = "__dbfile__";
 	const DB_NAME = "__dbname__";
 	const DB_SERVER = "__dbserver__";
@@ -66,13 +66,13 @@ class MySQL extends DbAdapter implements DbAdapterModel
 	{
 		return $this->callOptimizer("mysqli_select_db", func_get_args());
 	}
-	
+
 	private function callOptimizer($func, array $index = array())
 	{
 		if (!function_exists($func)) return false;
-		
+
 		$finalIndex = array_merge($index, array($this->getDbResource()));
-		
+
 		return call_user_func_array($func, $finalIndex);
 	}
 }

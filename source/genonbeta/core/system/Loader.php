@@ -68,8 +68,11 @@ abstract class Loader extends Component
 				if(!$class instanceof ViewSkeleton)
 					throw new \InvalidArgumentException("{$defClass} isn't instance of ViewSkeleton");
 
+				EnvironmentVariables::define("currentSkeleton", "{$selectedSkeleton}");
+
 				$class->onCreate($leftValues);
 				$this->onSkeletonLoaded($class);
+
 			}
 			else
 			{

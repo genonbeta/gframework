@@ -1,6 +1,6 @@
 <?php
 
-namespace genonbeta\filemanager\service;
+namespace genonbeta\demo\service;
 
 use genonbeta\provider\Service;
 use genonbeta\system\Intent;

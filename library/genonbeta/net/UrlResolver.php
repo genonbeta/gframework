@@ -17,12 +17,12 @@ class UrlResolver
 	{
 		if (!$this->isDefined($skeleton))
 			return false;
-			
+
 		$uri = $this->loader ."/".$skeleton;
-		
+
 		if ($abstractPath != null)
 			$uri .= "/".$abstractPath;
-		
+
 		return $uri;
 	}
 

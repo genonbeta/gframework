@@ -9,33 +9,33 @@
 
 	"configuration":
 	{
-		"data_path":"genonbeta/filemanager",
-		"languages_path":"genonbeta/filemanager/languages",
-		"htmlPatterns_path":"genonbeta/filemanager/htmlPatterns",
-		"databases_path":"genonbeta/filemanager/databases"
+		"data_path":"genonbeta/demo",
+		"languages_path":"genonbeta/demo/languages",
+		"htmlPatterns_path":"genonbeta/demo/htmlPatterns",
+		"databases_path":"genonbeta/demo/databases"
 	},
 
 	"system":
 	{
-		"loaderClass":"\\genonbeta\\filemanager\\system\\MainLoader",
+		"loaderClass":"\\genonbeta\\demo\\system\\MainLoader",
 		"viewSkeleton":
 		{
-			"__default":"\\genonbeta\\filemanager\\view\\model\\Home",
-			"home":"\\genonbeta\\filemanager\\view\\model\\Home",
-			"about":"\\genonbeta\\filemanager\\view\\model\\About",
-			"about/developers":"\\genonbeta\\filemanager\\view\\model\\Developers",
-			"oneRun":"\\genonbeta\\filemanager\\view\\model\\HowLoaded"
+			"__default":"\\genonbeta\\demo\\view\\model\\Home",
+			"home":"\\genonbeta\\demo\\view\\model\\Home",
+			"about":"\\genonbeta\\demo\\view\\model\\About",
+			"about/developers":"\\genonbeta\\demo\\view\\model\\Developers",
+			"oneRun":"\\genonbeta\\demo\\view\\model\\HowLoaded"
 		}
 	},
-	
+
 	"service" :
 	{
-		"DestructionHook":"\\genonbeta\\filemanager\\service\\DestructionHook",
-		"ViewDistrubutor":"\\genonbeta\\filemanager\\service\\ViewDistrubutor"
+		"DestructionHook":"\\genonbeta\\demo\\service\\DestructionHook",
+		"ViewDistrubutor":"\\genonbeta\\demo\\service\\ViewDistrubutor"
 	},
 
 	"component" :
 	[
-		"\\genonbeta\\filemanager\\util\\Debugger"
+		"\\genonbeta\\demo\\util\\Debugger"
 	]
 }

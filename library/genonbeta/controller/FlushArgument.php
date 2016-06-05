@@ -13,21 +13,21 @@ class FlushArgument
 	public static function getDefaultArguments()
 	{
 		return self::$defaultArguments;
-	} 
+	}
 
 	public static function putArguments(array $arguments)
 	{
 		if(count($arguments) < 0)
 			return false;
-		
+
 		foreach($arguments as $key => $value)
 		{
 			if(isset(self::$defaultArguments[$key]))
 				continue;
-				
+
 			self::$defaultArguments[$key] = $value;
 		}
-		
+
 		return true;
 	}
 }

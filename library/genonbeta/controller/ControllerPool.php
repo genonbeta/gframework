@@ -10,7 +10,7 @@ class ControllerPool
 	const MODE_ARGUMENT_LOOP = 1;
 	const MODE_ARGUMENT_JUST_SEND = 2;
 	const MODE_ARGUMENT_CALLBACK = 4;
-	
+
 	const TAG = "ControllerPool";
 
 	private $controllerInterfaces;
@@ -37,7 +37,7 @@ class ControllerPool
 		if ($this->controllerInterfaces->size() < 1)
 		{
 			$this->log->d("no controller defined to do work");
-			
+
 			if ($mode === self::MODE_ARGUMENT_JUST_SEND)
 				return false;
 			elseif ($mode === self::MODE_ARGUMENT_LOOP)

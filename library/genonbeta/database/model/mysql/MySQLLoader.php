@@ -15,7 +15,7 @@ class MySQLLoader implements DbLoaderInterface
 	function __construct($server = false, $user = false, $passwd = false)
 	{
 		$this->loginInstance = new StackDataStore(new MySQLLoginHelper);
-		
+
 		$this->loginInstance->setField(MySQL::DB_SERVER, $server);
 		$this->loginInstance->setField(MySQL::DB_USERNAME, $user);
 		$this->loginInstance->setField(MySQL::DB_PASSWORD, $passwd);
@@ -26,7 +26,7 @@ class MySQLLoader implements DbLoaderInterface
 		}
 
 		$this->dbAdapter = new MySQL($this->loginInstance);
-		
+
 		if(!$this->dbAdapter) return false;
 		return true;
 	}

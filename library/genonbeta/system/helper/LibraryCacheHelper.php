@@ -33,23 +33,23 @@ class LibraryCacheHelper extends Component implements Controller
 	{
 		if ($intent->getAction() !== AutoLoader::ACTION_LOAD_CLASS)
 			return false;
-			
+
 		$this->tryToInclude($intent->getExtra(AutoLoader::CLASS_NAME));
 	}
 
 	public function isCachedLibrary($filePath)
 	{
-		if(!$this->getCache()->isCachedFile($filePath)) 
+		if(!$this->getCache()->isCachedFile($filePath))
 			return false;
-	
+
 		return true;
 	}
 
 	public function getParLibraryIndex($fileName)
 	{
 		$parFile = new File($fileName);
-		
-		if(!$parFile->isFile()) 
+
+		if(!$parFile->isFile())
 			return false;
 
 		$Zip = new ZipArchive();
@@ -57,18 +57,18 @@ class LibraryCacheHelper extends Component implements Controller
 		if(!$Zip->open($fileName))
 			return false;
 
-		for ($i=0; $i < $Zip->numFiles; $i++) 
+		for ($i=0; $i < $Zip->numFiles; $i++)
 		{
 			$Name = $Zip->statIndex($i)['name'];
 
 			if(substr($Name, -1) == "/")
 				continue;
 
-			$filesArray[$Name] = $i; 
+			$filesArray[$Name] = $i;
 		}
 
 		$this->getCache()->makeCacheFromFile($parFile->getPath(), json_encode($filesArray));
-		
+
 		return true;
 	}
 
@@ -82,16 +82,16 @@ class LibraryCacheHelper extends Component implements Controller
 
 	function tryToInclude($className)
 	{
-		if(count($this->parIndex) < 1) 
+		if(count($this->parIndex) < 1)
 			return false;
 
 		foreach($this->parIndex as $packageName => $attributes)
 		{
 			if(!isset($attributes['classes'][$className]))
 				continue;
-			
+
 			$nameMerged = $attributes['path']."/".$className;
-			
+
 			if(!$this->getCache()->isCachedFile($nameMerged))
 			{
 				$readPar = new ZipArchive();
@@ -99,7 +99,7 @@ class LibraryCacheHelper extends Component implements Controller
 				$this->getCache()->makeCacheFromFile($nameMerged, $readPar->getFromIndex($attributes['classes'][$className]), true);
 				$readPar->close();
 			}
-			
+
 			include_once($this->getCache()->getFileCachePath($nameMerged));
 		}
 	}
@@ -110,10 +110,10 @@ class LibraryCacheHelper extends Component implements Controller
 
 		if($findPars < 1)
 			return false;
-			
+
 		foreach($findPars as $fileName)
 		{
-			if(!$this->isCachedLibrary($fileName)) 
+			if(!$this->isCachedLibrary($fileName))
 				if (!$this->getParLibraryIndex($fileName))
 					continue;
 

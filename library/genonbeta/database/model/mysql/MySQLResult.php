@@ -8,7 +8,7 @@ use genonbeta\util\HashMap;
 
 class MySQLResult implements DbResultModel
 {
-	
+
 	private $resultIndex;
 
 	function __construct(resource $result)
@@ -23,7 +23,7 @@ class MySQLResult implements DbResultModel
 
 	function fetchArray()
 	{
-		return $this->callOptimizer("mysql_fetch_array", func_get_args());		
+		return $this->callOptimizer("mysql_fetch_array", func_get_args());
 	}
 
 	function numRows()
@@ -44,7 +44,7 @@ class MySQLResult implements DbResultModel
 	function getCursor()
 	{
 		$indexes = new HashMap();
-		
+
 		while($item = $this->fetchArray())
 		{
 			$indexes->add($item);
@@ -56,7 +56,7 @@ class MySQLResult implements DbResultModel
 	function getHashMap()
 	{
 		$indexes = new HashMap();
-		
+
 		while($item = $this->fetchArray())
 		{
 			$indexes->add($item);
@@ -68,9 +68,9 @@ class MySQLResult implements DbResultModel
 	private function callOptimizer($func, array $index = array())
 	{
 		if (!function_exists($func)) return false;
-		
+
 		$finalIndex = array_merge($index, array($this->resultIndex));
-		
+
 		return call_user_func_array($func, $finalIndex);
 	}
 }

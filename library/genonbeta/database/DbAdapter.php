@@ -28,7 +28,7 @@ abstract class DbAdapter
 		if(!$this->onStartCommand($login))
 		{
 			$this->log->e("Server connection failured");
-			return false;		
+			return false;
 		}
 
 		return true;

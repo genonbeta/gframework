@@ -21,6 +21,7 @@ class FirstLoadInitializer extends Component
 
 		UniversalMessageFilter::registerFilter(new \genonbeta\view\filter\ProviderFilter());
 		SourceProvider::registerProvider(new \genonbeta\view\provider\EnvironmentVariablesProvider());
+		SourceProvider::registerProvider(new \genonbeta\view\provider\ViewProvider());
 	}
 
 	protected function getClassId()

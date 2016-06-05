@@ -11,8 +11,8 @@ class Integer
 	{
 		$this->int = $int;
 	}
-	
-	function __toString() 
+
+	function __toString()
 	{
 		return $this->int;
 	}

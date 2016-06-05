@@ -8,7 +8,7 @@ use genonbeta\util\HashMap;
 
 class SQLite3Result implements DbResultModel
 {
-	
+
 	private $resultIndex;
 
 	function __construct(\SQLite3Result $result)
@@ -25,32 +25,32 @@ class SQLite3Result implements DbResultModel
 	{
 		return $this->callOptimizer(array($this->resultIndex, "fetchArray"), func_get_args());
 	}
-	
+
 	function numColumns()
 	{
 		return $this->callOptimizer(array($this->resultIndex, "numColumns"), func_get_args());
 	}
-	
+
 	function result()
 	{
 		return $this->callUserFunc("mysql_result", func_get_args());
 	}
-	
+
 	function columnType()
 	{
 		return $this->callOptimizer(array($this->resultIndex, "columnType"), func_get_args());
 	}
-	
+
 	function columnName()
 	{
 		return $this->callOptimizer(array($this->resultIndex, "columnName"), func_get_args());
 	}
-	
+
 	function finalize()
 	{
 		return $this->callOptimizer(array($this->resultIndex, "finalize"), func_get_args());
 	}
-	
+
 	function reset()
 	{
 		return $this->callOptimizer(array($this->resultIndex, "reset"), func_get_args());
@@ -64,7 +64,7 @@ class SQLite3Result implements DbResultModel
 	function getCursor()
 	{
 		$indexes = new HashMap();
-		
+
 		while($item = $this->fetchArray())
 		{
 			$indexes->add($item);
@@ -76,7 +76,7 @@ class SQLite3Result implements DbResultModel
 	function getHashMap()
 	{
 		$indexes = new HashMap();
-		
+
 		while($item = $this->fetchArray())
 		{
 			$indexes->add($item);
@@ -85,11 +85,11 @@ class SQLite3Result implements DbResultModel
 		return $indexes;
 	}
 
-	
+
 	private function callOptimizer($func, array $index = array())
 	{
 		if (!method_exists($func[0], $func[1])) return false;
-		
+
 		return call_user_func_array($func, $index);
 	}
 }

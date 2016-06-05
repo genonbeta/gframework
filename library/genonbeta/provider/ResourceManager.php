@@ -10,7 +10,7 @@ abstract class ResourceManager
 	{
 		if(!is_dir($dirPath) || self::resourceExists($resourceName))
 			return false;
-		
+
 		self::$resources[$resourceName] = array(
 			"Directory" => $dirPath,
 			"Type" => $type,
@@ -36,8 +36,8 @@ abstract class ResourceManager
 		}
 
 		return $return;
-	} 
-	
+	}
+
 	public static function resourceExists($resourceName)
 	{
 		return isset(self::$resources[$resourceName]);
@@ -45,10 +45,10 @@ abstract class ResourceManager
 
 	public static function getResource($resourceName, $inResource = true)
 	{
-		if(!self::resourceExists($resourceName)) 
+		if(!self::resourceExists($resourceName))
 			return false;
 
-		if($inResource) 
+		if($inResource)
 			return new Resource($resourceName);
 
 		return self::$resources[$resourceName];
