@@ -3,13 +3,14 @@
 namespace genonbeta\core\system;
 
 use Configuration;
-use genonbeta\system\System;
+use genonbeta\controller\FlushArgument;
+use genonbeta\controller\OutputController;
 use genonbeta\system\Component;
+use genonbeta\system\EnvironmentVariables;
+use genonbeta\system\System;
 use genonbeta\util\Log;
 use genonbeta\util\NativeUrl;
 use genonbeta\view\ViewSkeleton;
-use genonbeta\controller\OutputController;
-use genonbeta\controller\FlushArgument;
 
 abstract class Loader extends Component
 {

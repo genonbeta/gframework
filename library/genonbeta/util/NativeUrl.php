@@ -6,7 +6,7 @@ class NativeUrl
 {
 	private $methods = [];
 
-	function makeMethod($methodName, $method = null)
+	public function makeMethod($methodName, $method = null)
 	{
 		if($method == null)
 			$method = $methodName;
@@ -16,7 +16,7 @@ class NativeUrl
 		return true;
 	}
 
-	function read()
+	public function read()
 	{
 		if(func_num_args() < 1)
 			return false;
@@ -44,25 +44,25 @@ class NativeUrl
 		return $return;
 	}
 
-	function getMethod($methodName)
+	public function getMethod($methodName)
 	{
 		return $this->methods[$methodName];
 	}
 
-	function methodExists($methodName)
+	public function methodExists($methodName)
 	{
 		return isset($this->methods[$methodName]);
 	}
 
-	function getThis()
+	public function getThis()
 	{
 		return self::pathResolver();
 	}
 
-	static function pathResolver()
+	public static function pathResolver()
 	{
 		$path = (isset($_SERVER['PATH_INFO'])) ? $_SERVER['PATH_INFO'] : null;
-		$return = array();
+		$return = [];
 
 		if($path == null) 
 			array();
