@@ -10,9 +10,9 @@
 	"configuration":
 	{
 		"data_path":"genonbeta/demo",
-		"languages_path":"genonbeta/demo/languages",
-		"htmlPatterns_path":"genonbeta/demo/htmlPatterns",
-		"databases_path":"genonbeta/demo/databases"
+		"languages_path":"genonbeta/demo/language",
+		"htmlPatterns_path":"genonbeta/demo/html",
+		"databases_path":"genonbeta/demo/database"
 	},
 
 	"system":
@@ -23,15 +23,13 @@
 			"__default":"\\genonbeta\\demo\\view\\model\\Home",
 			"home":"\\genonbeta\\demo\\view\\model\\Home",
 			"about":"\\genonbeta\\demo\\view\\model\\About",
-			"about/developers":"\\genonbeta\\demo\\view\\model\\Developers",
-			"oneRun":"\\genonbeta\\demo\\view\\model\\HowLoaded"
+			"about/developers":"\\genonbeta\\demo\\view\\model\\Developers"
 		}
 	},
 
 	"service" :
 	{
-		"DestructionHook":"\\genonbeta\\demo\\service\\DestructionHook",
-		"ViewDistrubutor":"\\genonbeta\\demo\\service\\ViewDistrubutor"
+		"DestructionHook":"\\genonbeta\\demo\\service\\DestructionHook"
 	},
 
 	"component" :
