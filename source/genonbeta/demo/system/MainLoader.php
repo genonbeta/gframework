@@ -20,13 +20,13 @@ class MainLoader extends \genonbeta\core\system\Loader
 
 		$req = new RequiredFiles(self::TAG);
 		$req->request(Configuration::DATA_PATH."/".$fwConf['data_path'], RequiredFiles::TYPE_DIRECTORY);
-		$req->request(Configuration::DATA_PATH."/".$fwConf['languages_path'], RequiredFiles::TYPE_DIRECTORY);
-		$req->request(Configuration::DATA_PATH."/".$fwConf['htmlPatterns_path'], RequiredFiles::TYPE_DIRECTORY);
-		$req->request(Configuration::DATA_PATH."/".$fwConf['databases_path'], RequiredFiles::TYPE_DIRECTORY);
+		$req->request(Configuration::DATA_PATH."/".$fwConf['language_path'], RequiredFiles::TYPE_DIRECTORY);
+		$req->request(Configuration::DATA_PATH."/".$fwConf['html_path'], RequiredFiles::TYPE_DIRECTORY);
+		$req->request(Configuration::DATA_PATH."/".$fwConf['database_path'], RequiredFiles::TYPE_DIRECTORY);
 
-		ResourceManager::addResource(MainConfig::LANGUAGE_INDEX_NAME, Configuration::DATA_PATH."/".$fwConf['languages_path'], "json");
-		ResourceManager::addResource(MainConfig::PATTERN_INDEX_NAME, Configuration::DATA_PATH."/".$fwConf['htmlPatterns_path'], "html");
-		ResourceManager::addResource(MainConfig::DB_INDEX_NAME, Configuration::DATA_PATH."/".$fwConf['databases_path'], "db");
+		ResourceManager::addResource(MainConfig::LANGUAGE_INDEX_NAME, Configuration::DATA_PATH."/".$fwConf['language_path'], "json");
+		ResourceManager::addResource(MainConfig::PATTERN_INDEX_NAME, Configuration::DATA_PATH."/".$fwConf['html_path'], "html");
+		ResourceManager::addResource(MainConfig::DB_INDEX_NAME, Configuration::DATA_PATH."/".$fwConf['database_path'], "db");
 	}
 
 	protected function onSkeletonLoaded(ViewSkeleton $skeleton)
