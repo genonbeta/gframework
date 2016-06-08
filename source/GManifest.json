@@ -10,9 +10,9 @@
 	"configuration":
 	{
 		"data_path":"genonbeta/demo",
-		"languages_path":"genonbeta/demo/language",
-		"htmlPatterns_path":"genonbeta/demo/html",
-		"databases_path":"genonbeta/demo/database"
+		"language_path":"genonbeta/demo/language",
+		"html_path":"genonbeta/demo/html",
+		"database_path":"genonbeta/demo/database"
 	},
 
 	"system":
