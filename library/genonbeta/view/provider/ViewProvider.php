@@ -22,7 +22,7 @@ class ViewProvider implements SourceProviderObject
 
 		if (!class_exists($className))
 		{
-			Log.error(self::TAG, "View class not found. " . $className);
+			Log::error(self::TAG, "View class not found. " . $className);
 			return false;
 		}
 
