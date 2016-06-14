@@ -8,6 +8,7 @@ use genonbeta\controller\OutputController;
 use genonbeta\system\Component;
 use genonbeta\system\EnvironmentVariables;
 use genonbeta\system\System;
+use genonbeta\system\helper\CurrentManifest;
 use genonbeta\util\Log;
 use genonbeta\util\NativeUrl;
 use genonbeta\view\ViewSkeleton;
@@ -15,6 +16,10 @@ use genonbeta\view\ViewSkeleton;
 abstract class Loader extends Component
 {
 	const TAG = "Loader";
+
+	const SETTING_MAX_PATH_SIZE = "__loaderMaxPathSize";
+	const VIEW_DEFAULT= "__default";
+	const VIEW_ERROR = "__error";
 
 	private $log;
 	private $outputController;
@@ -32,56 +37,48 @@ abstract class Loader extends Component
 	{
 		$this->onCreate();
 
-		if(count(System::getLoadedManifest()['system']['viewSkeleton']) > 0)
+		if(count(CurrentManifest::getViewIndex()) > 0)
 		{
-			$skeleton = System::getLoadedManifest()['system']['viewSkeleton'];
-			$path = NativeUrl::pathResolver();
-			$pathCount = count($path);
-			$leftValues = [];
-			$selectedSkeleton = $skeleton[ViewSkeleton::DEFAULT_SKELETON];
-			$wayHolder = null;
+			$viewIndex = CurrentManifest::getViewIndex();
+			$pathIndex = NativeUrl::pathResolver();
+			$pathCount = count($pathIndex);
+			$leftPath = [];
+			$currentView = $viewIndex[self::VIEW_DEFAULT];
 
-			foreach ($path as $wayNumber => $currentPath)
+			for ($wayNumber = $pathCount; $wayNumber > 0; $wayNumber--)
 			{
-				($wayNumber === 0) ? $wayHolder = $currentPath : $wayHolder .= "/".$currentPath;
+				$try = implode("/", $pathIndex);
 
-				if (isset($skeleton[$wayHolder]))
+				if (isset($viewIndex[$try]) && class_exists($viewIndex[$try]))
 				{
-					if (class_exists($skeleton[$wayHolder]))
-					{
-						$selectedSkeleton = $skeleton[$wayHolder];
-						$leftValues = array_splice($path, $wayNumber);
-					}
+					$currentView = $viewIndex[$try];
+					$leftPath = array_splice(NativeUrl::pathResolver(), $wayNumber);
 				}
 				else
-					$this->getLogger()->d("{$wayHolder} path was not found. Previously founded ViewSkeleton.{$selectedSkeleton} is being loaded");
-
-				if($wayNumber > $pathCount)
-					break;
+					array_pop($pathIndex);
 			}
 
-			if(class_exists($selectedSkeleton))
+			if(class_exists($currentView))
 			{
-				$this->getLogger()->d("ViewSkeleton.{$selectedSkeleton} is loaded");
-				$class = new $selectedSkeleton();
+				$this->getLogger()->d("{$currentView} view is loaded");
+				$class = new $currentView();
 
 				if(!$class instanceof ViewSkeleton)
-					throw new \InvalidArgumentException("{$defClass} isn't instance of ViewSkeleton");
+					throw new \InvalidArgumentException("{$currentView} isn't instance of ViewSkeleton");
 
-				EnvironmentVariables::define("currentSkeleton", "{$selectedSkeleton}");
+				EnvironmentVariables::define("currentSkeleton", $currentView);
 
-				$class->onCreate($leftValues);
+				$class->onCreate($leftPath);
 				$this->onSkeletonLoaded($class);
-
 			}
 			else
 			{
-				throw new \InvalidArgumentException("System couldn't find any ViewSkeleton class");
+				throw new \InvalidArgumentException("System couldn't find any view handling definition");
             }
 		}
 		else
         {
-			throw new \InvalidArgumentException("No ViewSkeleton.class was defined.");
+			throw new \InvalidArgumentException("No view was defined");
         }
 
 		$this->onDestroy();

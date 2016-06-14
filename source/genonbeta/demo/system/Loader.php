@@ -4,19 +4,21 @@ namespace genonbeta\demo\system;
 
 use Configuration;
 use genonbeta\controller\FlushArgument;
-use genonbeta\provider\ResourceManager;
 use genonbeta\io\RequiredFiles;
+use genonbeta\provider\ResourceManager;
 use genonbeta\system\System;
+use genonbeta\system\helper\CurrentManifest;
 use genonbeta\view\ViewSkeleton;
+
 use genonbeta\demo\config\MainConfig;
 
-class MainLoader extends \genonbeta\core\system\Loader
+class Loader extends \genonbeta\core\system\Loader
 {
 	const TAG = "Loader";
 
 	protected function onCreate()
 	{
-		$fwConf = System::getLoadedManifest()['configuration'];
+		$fwConf = CurrentManifest::getConfiguration();
 
 		$req = new RequiredFiles(self::TAG);
 		$req->request(Configuration::DATA_PATH."/".$fwConf['data_path'], RequiredFiles::TYPE_DIRECTORY);

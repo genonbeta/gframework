@@ -1,7 +1,7 @@
 {
 	"application":
 	{
-		"name":"genonbeta.filemanager",
+		"name":"genonbeta.demo",
 		"version":"1.0",
 		"author":"genonbeta",
 		"website":"genonbeta.com"
@@ -15,25 +15,25 @@
 		"database_path":"genonbeta/demo/database"
 	},
 
-	"system":
+	"component":
+	[
+		"\\genonbeta\\demo\\util\\Debugger"
+	],
+
+	"service":
 	{
-		"loaderClass":"\\genonbeta\\demo\\system\\MainLoader",
-		"viewSkeleton":
+		"DestructionHook":"\\genonbeta\\demo\\service\\DestructionHook"
+	},
+
+	"view":
+	{
+		"loaderClass":"\\genonbeta\\demo\\system\\Loader",
+		"index":
 		{
 			"__default":"\\genonbeta\\demo\\view\\model\\Home",
 			"home":"\\genonbeta\\demo\\view\\model\\Home",
 			"about":"\\genonbeta\\demo\\view\\model\\About",
 			"about/developers":"\\genonbeta\\demo\\view\\model\\Developers"
 		}
-	},
-
-	"service" :
-	{
-		"DestructionHook":"\\genonbeta\\demo\\service\\DestructionHook"
-	},
-
-	"component" :
-	[
-		"\\genonbeta\\demo\\util\\Debugger"
-	]
+	}
 }

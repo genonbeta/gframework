@@ -8,10 +8,11 @@ use genonbeta\database\model\mysql\MySQLLoader;
 use genonbeta\database\model\sqlite3\SQLite3Loader;
 use genonbeta\lang\StringBuilder;
 use genonbeta\net\UrlResolver;
-use genonbeta\provider\ResourceManager;
 use genonbeta\provider\AssetResource;
+use genonbeta\provider\ResourceManager;
 use genonbeta\system\EnvironmentVariables;
 use genonbeta\system\System;
+use genonbeta\system\helper\CurrentManifest;
 use genonbeta\util\ResourceHelper;
 use genonbeta\util\Log;
 use genonbeta\view\ViewSkeleton;
@@ -46,7 +47,7 @@ class Home extends ViewSkeleton
 		}
 
 		$this->loadLanguage(new Turkish());
-		$this->setUrlResolver(new UrlResolver(EnvironmentVariables::get("workerAddress"), System::getLoadedManifest()['system']['viewSkeleton']));
+		$this->setUrlResolver(new UrlResolver(EnvironmentVariables::get("workerAddress"), CurrentManifest::getViewIndex()));
 
 		$dbLoader = new MySQLLoader();
 		$db = $dbLoader->getDbInstance();

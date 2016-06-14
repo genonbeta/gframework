@@ -16,8 +16,6 @@ abstract class ViewSkeleton implements ViewInterface
 {
 	const TAG = "ViewSkeleton";
 
-	const DEFAULT_SKELETON = "__default";
-
 	const TYPE_REQUEST = 1;
 	const TYPE_POST = 2;
 	const TYPE_GET = 3;

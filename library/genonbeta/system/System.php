@@ -3,22 +3,22 @@
 namespace genonbeta\system;
 
 use Configuration;
-use genonbeta\util\Log;
-use genonbeta\util\HashMap;
 use genonbeta\provider\Service;
+use genonbeta\service\AutoLoader;
+use genonbeta\service\ErrorHandler;
 use genonbeta\system\Component;
 use genonbeta\system\Intent;
-use genonbeta\service\ErrorHandler;
-use genonbeta\service\AutoLoader;
+use genonbeta\util\HashMap;
+use genonbeta\util\Log;
 
 abstract class System
 {
 	const TAG = "System";
 
-	static private $loadedClasses;
-	static private $logs;
-	static private $manifestIndex;
-	static private $services = array();
+	private static $loadedClasses;
+	private static $logs;
+	private static $manifestIndex = [];
+	private static $services = [];
 
 	public static function setup()
 	{
@@ -56,10 +56,10 @@ abstract class System
 					else
 						self::getLogger()->i("No component was requested in gmanifest file");
 
-					if(isset($json['system']['loaderClass']) && class_exists($json['system']['loaderClass']))
+					if(isset($json['view']['loaderClass']) && class_exists($json['view']['loaderClass']))
 					{
-						self::getLogger()->d("Loader class found \"".$json['system']['loaderClass']."\"");
-						$loader = new $json['system']['loaderClass']();
+						self::getLogger()->d("Loader class found \"".$json['view']['loaderClass']."\"");
+						$loader = new $json['view']['loaderClass']();
 
 						if (!$loader instanceof Component)
 							throw new \Exception("Loader class must be instance of \\genonbeta\\system\\Component class");
