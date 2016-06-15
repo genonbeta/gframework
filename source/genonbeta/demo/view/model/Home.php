@@ -49,6 +49,9 @@ class Home extends ViewSkeleton
 		$this->loadLanguage(new Turkish());
 		$this->setUrlResolver(new UrlResolver(EnvironmentVariables::get("workerAddress"), CurrentManifest::getViewIndex()));
 
+		$log->d($this->getString("t", ["naber lan"]));
+
+
 		$dbLoader = new MySQLLoader();
 		$db = $dbLoader->getDbInstance();
 

@@ -15,7 +15,7 @@ class Intent
 	private $action = self::ACTION_NONE;
 	private $result = self::RESULT_NOT_KNOWN;
 	private $extras = [];
-	private $staticClass = null;
+	private $staticData = null;
 
 	public function __construct($action = null)
 	{
@@ -25,14 +25,10 @@ class Intent
 
 	public function lockIntentDefault()
 	{
-		if ($this->staticClass !== null)
+		if ($this->staticData !== null)
 			return false;
 
-		$this->staticClass = [
-			$this->action,
-			$this->result,
-			$this->extras
-		];
+		$this->staticData = [$this->action, $this->result, $this->extras];
 
 		return $this;
 	}
@@ -102,12 +98,12 @@ class Intent
 
 	public function flushOlds()
 	{
-		if ($this->staticClass === null)
+		if ($this->staticData === null)
 			return null;
 
-		$this->action = $this->staticClass[0];
-		$this->result = $this->staticClass[1];
-		$this->extras = $this->staticClass[2];
+		$this->action = $this->staticData[0];
+		$this->result = $this->staticData[1];
+		$this->extras = $this->staticData[2];
 
 		return $this;
 	}

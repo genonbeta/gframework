@@ -24,8 +24,8 @@ abstract class ViewSkeleton implements ViewInterface
 	private $opcontroller;
 	private $languageInstance;
 	private $languageIndex;
+	private $urlResolver;
 	private $logs;
-	private $uris;
 
 	abstract function onCreate(array $methodName);
 	abstract function onOutputController();
@@ -36,86 +36,93 @@ abstract class ViewSkeleton implements ViewInterface
 		$this->logs = new Log(self::TAG);
 	}
 
-	protected function getMethods()
-	{
-		return NativeUrl::pathResolver();
-	}
-
-	protected function getOpController()
-	{
-		return $this->opcontroller;
-	}
-
-	public function drawView(ViewInterface $interface, $name, array $items)
-	{
-		$this->getOpController()->put($name, $interface->onCreate($items));
-	}
-
 	public function drawPattern(ViewPattern $pattern, $name, array $items)
 	{
-		$this->getOpController()->put($name, $pattern->draw($items));
+		$this->getOutputController()->put($name, $pattern->draw($items));
 	}
 
 	public function drawPatternAsAdapter(ViewPattern $pattern, $name, HashMap $map)
 	{
-		$this->getOpController()->put($name, $pattern->drawAsAdapter($map));
+		$this->getOutputController()->put($name, $pattern->drawAsAdapter($map));
+	}
+
+	public function drawView(ViewInterface $interface, $name, array $items)
+	{
+		$this->getOutputController()->put($name, $interface->onCreate($items));
+	}
+
+	function getLanguageInfo()
+	{
+		if ($this->getLanguageInstance() == null)
+			return false;
+
+		return $this->getLanguageInstance()->onInfo();
+	}
+
+	public function getLanguageInstance()
+	{
+		if($this->languageInstance == null || !$this->languageInstance instanceof LanguageInterface)
+		{
+			$this->logs->e("The language interfaces not defined yet. You need to load a language file");
+			return null;
+		}
+
+		return $this->languageInstance;
+	}
+
+	public function getLanguageIndex()
+	{
+		if ($this->getLanguageInstance() == null)
+			return null;
+
+		return $this->languageIndex;
+	}
+
+	public function getMethods()
+	{
+		return NativeUrl::pathResolver();
+	}
+
+	public function getOutputController()
+	{
+		return $this->opcontroller;
 	}
 
 	function getString($name, array $sprintf = array())
 	{
-		if(!$this->languageIndex instanceof Language)
-		{
-			$this->logs->e("The languageIndex not defined yet. You need to load a language file");
-			return null;
-		}
+		if ($this->getLanguageIndex() == null)
+			return false;
 
-		return $this->languageIndex->getString($name, $sprintf);
+		return $this->getLanguageIndex()->getString($name, $sprintf);
 	}
 
-	function getLoadedLangInfo()
+	public function getUrlResolver()
 	{
-		if(!$this->languageInstance instanceof LanguageInterface)
-		{
-			$this->logs->e("The languageIndex not defined yet. You need to load a language file");
-			return array();
-		}
-
-		return $this->languageInstance->onInfo();
+		return $this->urlResolver;
 	}
 
 	function getUri($skeleton, $abstractPath = null)
 	{
-		if($this->uris == null)
+		if($this->getUrlResolver() == null)
 			return false;
 
-		return $this->uris->getUri($skeleton, $abstractPath);
+		return $this->getUrlResolver()->getUri($skeleton, $abstractPath);
 	}
 
-	function loadLanguage(LanguageInterface $interface)
+	function loadLanguage(LanguageInterface $languageInstance)
 	{
-		$this->languageInstance = $interface;
-		$this->languageIndex = $this->languageInstance->onLoading();
+		$languageIndex = $languageInstance->onLoading();
 
-		if(!$this->languageIndex instanceof Language)
+		if(!$languageIndex instanceof Language)
 		{
-			$this->logs->e("The language cannot be preserved languages instance");
+			$this->logs->e("While loading language, it returned wrong class or something");
 			return false;
 		}
+
+		$this->languageInstance = $languageInstance;
+		$this->languageIndex = $languageIndex;
 
         return true;
-	}
-
-	protected function setUrlResolver(UrlResolver $res)
-	{
-		if($res == null)
-		{
-			$this->logs->e("setUrlResolver: You tried to load NULL index");
-			return false;
-		}
-
-		$this->uris = $res;
-
-		return true;
 	}
 
 	function onHeaderElements()
@@ -124,11 +131,21 @@ abstract class ViewSkeleton implements ViewInterface
 
 	function onFlush(array $args)
 	{
-		return $this->getOpController()->onFlush($args);
+		return $this->getOutputController()->onFlush($args);
+	}
+
+	protected function setUrlResolver(UrlResolver $resolver)
+	{
+		if($resolver == null)
+			return false;
+
+		$this->urlResolver = $resolver;
+
+		return true;
 	}
 
 	function __toString()
 	{
-		return $this->getOpController()->printStack();
+		return $this->getOutputController()->printStack();
 	}
 }

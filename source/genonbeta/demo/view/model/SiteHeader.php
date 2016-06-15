@@ -16,7 +16,6 @@ class SiteHeader implements ViewInterface
 	public function onCreate(array $methods)
 	{
 		$this->output = new OutputController();
-		$outputWriter = new StringBuilder();
 		$pattern = Pattern::getPatternFromResource(MainConfig::PATTERN_INDEX_NAME, "site_header");
 
 		$this->output->put("siteName", $pattern);

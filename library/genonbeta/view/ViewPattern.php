@@ -38,7 +38,7 @@ abstract class ViewPattern
 		return $this->completeDrawer($items);
 	}
 
-	function drawAsAdapter(HashMap $map)
+	public function drawAsAdapter(HashMap $map)
 	{
 		if($map->size() < 1)
 			return false;

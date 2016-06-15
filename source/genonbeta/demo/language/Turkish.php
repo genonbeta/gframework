@@ -13,6 +13,8 @@ class Turkish implements LanguageInterface
 {
 	const TAG = "Turkish";
 
+
+
 	function onInfo()
 	{
 		return array(

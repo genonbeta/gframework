@@ -25,6 +25,11 @@
 		"DestructionHook":"\\genonbeta\\demo\\service\\DestructionHook"
 	},
 
+	"language":
+	{
+		"Turkish":"\\genonbeta\\demo\\service\\DestructionHook"
+	},
+
 	"view":
 	{
 		"loaderClass":"\\genonbeta\\demo\\system\\Loader",
