@@ -3,14 +3,14 @@
 namespace genonbeta\view;
 
 use genonbeta\controller\OutputController;
+use genonbeta\net\UrlResolver;
+use genonbeta\provider\Resource;
+use genonbeta\provider\ResourceManager;
+use genonbeta\support\Language;
+use genonbeta\support\LanguageInterface;
 use genonbeta\util\Log;
 use genonbeta\util\HashMap;
 use genonbeta\util\NativeUrl;
-use genonbeta\support\LanguageInterface;
-use genonbeta\support\Language;
-use genonbeta\provider\ResourceManager;
-use genonbeta\provider\Resource;
-use genonbeta\net\UrlResolver;
 
 abstract class ViewSkeleton implements ViewInterface
 {

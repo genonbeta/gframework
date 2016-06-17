@@ -2,13 +2,11 @@
 
 namespace genonbeta\view;
 
-use genonbeta\database\Cursor;
-use genonbeta\util\HashMap;
 use genonbeta\controller\OutputController;
-use genonbeta\controller\RealtimeDataProcess;
-use genonbeta\view\html\Element;
-use genonbeta\controller\RealtimeDataCreator;
+use genonbeta\controller\PrintableObject;
+use genonbeta\database\Cursor;
 use genonbeta\lang\StringBuilder;
+use genonbeta\util\HashMap;
 
 abstract class ViewPattern
 {
@@ -79,7 +77,7 @@ abstract class ViewPattern
 
 			foreach($resultVariables as $key => $value)
 			{
-				if($value instanceof RealtimeDataProcess)
+				if($value instanceof PrintableObject)
 					$value = $value->onFlush(\genonbeta\controller\FlushArgument::getDefaultArguments());
 
 				$output = str_replace('{$.'.$key.'}', $value, $output);

@@ -7,7 +7,7 @@ use genonbeta\util\HashMap;
 use genonbeta\system\System;
 use genonbeta\controller\FlushArgument;
 
-class OutputController implements RealtimeDataProcess
+class OutputController implements PrintableObject
 {
 	private $output;
 	private static $counter = 0;
@@ -17,7 +17,7 @@ class OutputController implements RealtimeDataProcess
 		$this->output = new HashMap();
 	}
 
-	public function put($outputTitle, RealTimeDataProcess $write)
+	public function put($outputTitle, PrintableObject $write)
 	{
 		$this->output->add(array($outputTitle, $write));
 		return true;

@@ -2,7 +2,7 @@
 
 namespace genonbeta\controller;
 
-interface RealTimeDataProcess
+interface PrintableObject
 {
 	public function onFlush(array $args);
 }

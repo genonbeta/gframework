@@ -2,7 +2,7 @@
 
 namespace genonbeta\view;
 
-use genonbeta\controller\RealtimeDataProcess;
+use genonbeta\controller\PrintableObject;
 use genonbeta\io\File;
 use genonbeta\provider\AssetResource;
 use genonbeta\provider\ResourceManager;
@@ -11,7 +11,7 @@ use genonbeta\system\EnvironmentVariables;
 use genonbeta\system\UniversalMessageFilter;
 use genonbeta\view\PatternFilter;
 
-class Pattern implements RealtimeDataProcess
+class Pattern implements PrintableObject
 {
 	private $pattern;
 

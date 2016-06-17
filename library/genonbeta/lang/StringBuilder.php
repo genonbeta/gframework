@@ -3,10 +3,10 @@
 namespace genonbeta\lang;
 
 use genonbeta\controller\FlushArgument;
-use genonbeta\controller\RealtimeDataProcess;
+use genonbeta\controller\PrintableObject;
 use genonbeta\system\System;
 
-class StringBuilder implements RealtimeDataProcess
+class StringBuilder implements PrintableObject
 {
 	private $string = [];
 	private $seperator = "\n";
@@ -19,7 +19,7 @@ class StringBuilder implements RealtimeDataProcess
 
 	function put($write)
 	{
-		if(is_string($write) || is_int($write) || ($write instanceof RealtimeDataProcess))
+		if(is_string($write) || is_int($write) || ($write instanceof PrintableObject))
 		{
 			$this->string[] = $write;
 			return true;
@@ -47,7 +47,7 @@ class StringBuilder implements RealtimeDataProcess
 			if($num != 0)
 				$strAll .= $this->seperator;
 
-			$strAll .= ($str instanceof RealtimeDataProcess) ? $str->onFlush(array()) : $str;
+			$strAll .= ($str instanceof PrintableObject) ? $str->onFlush(array()) : $str;
 		}
 
 		if($bool)
@@ -67,7 +67,7 @@ class StringBuilder implements RealtimeDataProcess
 			if($num != 0)
 				$strAll .= $this->seperator;
 
-			$strAll .= ($str instanceof RealtimeDataProcess) ? $str->onFlush($args) : $str;
+			$strAll .= ($str instanceof PrintableObject) ? $str->onFlush($args) : $str;
 		}
 
 		$this->string = [];

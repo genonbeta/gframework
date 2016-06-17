@@ -4,12 +4,12 @@ namespace genonbeta\system\helper;
 
 use Configuration;
 use ZipArchive;
-use genonbeta\system\System;
-use genonbeta\system\Component;
 use genonbeta\controller\Controller;
-use genonbeta\service\AutoLoader;
 use genonbeta\database\Cache;
 use genonbeta\io\File;
+use genonbeta\service\AutoLoader;
+use genonbeta\system\Component;
+use genonbeta\system\System;
 
 class LibraryCacheHelper extends Component implements Controller
 {

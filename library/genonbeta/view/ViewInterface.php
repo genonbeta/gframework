@@ -2,9 +2,9 @@
 
 namespace genonbeta\view;
 
-use genonbeta\controller\RealtimeDataProcess;
+use genonbeta\controller\PrintableObject;
 
-interface ViewInterface extends RealtimeDataProcess
+interface ViewInterface extends PrintableObject
 {
 	public function onCreate(array $items);
 }
