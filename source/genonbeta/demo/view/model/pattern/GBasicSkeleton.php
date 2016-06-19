@@ -4,7 +4,6 @@ namespace genonbeta\demo\view\model\pattern;
 
 use genonbeta\view\ViewPattern;
 use genonbeta\util\Log;
-use genonbeta\lang\StringBuilder;
 use genonbeta\provider\AssetResource;
 use genonbeta\view\Pattern;
 use genonbeta\demo\config\MainConfig;
