@@ -3,7 +3,7 @@
 namespace genonbeta\demo\system;
 
 use Configuration;
-use genonbeta\controller\FlushArgument;
+use genonbeta\util\FlushArgument;
 use genonbeta\io\RequiredFiles;
 use genonbeta\provider\ResourceManager;
 use genonbeta\system\System;
@@ -33,10 +33,10 @@ class Loader extends \genonbeta\core\system\Loader
 
 	protected function onSkeletonLoaded(ViewSkeleton $skeleton)
 	{
-		$this->getOutputController()->put("systemOutput", $skeleton);
+		$this->getOutputWrapper()->put("systemOutput", $skeleton);
 
 		// Let's output the data =)
-		echo $this->getOutputController()->onFlush(FlushArgument::getDefaultArguments());
+		echo $this->getOutputWrapper()->onFlush(FlushArgument::getDefaultArguments());
 	}
 
 	protected function onDestroy()

@@ -2,7 +2,8 @@
 
 namespace genonbeta\view;
 
-use genonbeta\controller\OutputController;
+use genonbeta\content\OutputWrapper;
+use genonbeta\content\PrintableObject;
 use genonbeta\net\UrlResolver;
 use genonbeta\provider\Resource;
 use genonbeta\provider\ResourceManager;
@@ -28,27 +29,32 @@ abstract class ViewSkeleton implements ViewInterface
 	private $logs;
 
 	abstract function onCreate(array $methodName);
-	abstract function onOutputController();
+	abstract function onOutputWrapper();
 
 	function __construct()
 	{
-		$this->opcontroller = $this->onOutputController();
+		$this->opcontroller = $this->onOutputWrapper();
 		$this->logs = new Log(self::TAG);
 	}
 
 	public function drawPattern(ViewPattern $pattern, $name, array $items)
 	{
-		$this->getOutputController()->put($name, $pattern->draw($items));
+		$this->getOutputWrapper()->put($name, $pattern->draw($items));
 	}
 
 	public function drawPatternAsAdapter(ViewPattern $pattern, $name, HashMap $map)
 	{
-		$this->getOutputController()->put($name, $pattern->drawAsAdapter($map));
+		$this->getOutputWrapper()->put($name, $pattern->drawAsAdapter($map));
+	}
+
+	public function drawPrintable(PrintableObject $object, $name)
+	{
+		$this->getOutputWrapper()->put($name, $object);
 	}
 
 	public function drawView(ViewInterface $interface, $name, array $items)
 	{
-		$this->getOutputController()->put($name, $interface->onCreate($items));
+		$this->getOutputWrapper()->put($name, $interface->onCreate($items));
 	}
 
 	function getLanguageInfo()
@@ -83,7 +89,7 @@ abstract class ViewSkeleton implements ViewInterface
 		return NativeUrl::pathResolver();
 	}
 
-	public function getOutputController()
+	public function getOutputWrapper()
 	{
 		return $this->opcontroller;
 	}
@@ -125,15 +131,6 @@ abstract class ViewSkeleton implements ViewInterface
         return true;
 	}
 
-	function onHeaderElements()
-	{
-	}
-
-	function onFlush(array $args)
-	{
-		return $this->getOutputController()->onFlush($args);
-	}
-
 	protected function setUrlResolver(UrlResolver $resolver)
 	{
 		if($resolver == null)
@@ -144,8 +141,12 @@ abstract class ViewSkeleton implements ViewInterface
 		return true;
 	}
 
-	function __toString()
+	function onHeaderElements()
 	{
-		return $this->getOutputController()->printStack();
+	}
+
+	function onFlush(array $args)
+	{
+		return $this->getOutputWrapper()->onFlush($args);
 	}
 }

@@ -2,9 +2,9 @@
 
 namespace genonbeta\util\model\data;
 
-use genonbeta\controller\CallbackInterface;
+use genonbeta\controller\Callback;
 
-class String implements CallbackInterface
+class String implements Callback
 {
 	function onCallback($data)
 	{

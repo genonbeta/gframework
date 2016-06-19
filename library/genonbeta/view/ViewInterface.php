@@ -2,7 +2,7 @@
 
 namespace genonbeta\view;
 
-use genonbeta\controller\PrintableObject;
+use genonbeta\content\PrintableObject;
 
 interface ViewInterface extends PrintableObject
 {

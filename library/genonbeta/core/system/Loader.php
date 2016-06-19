@@ -3,8 +3,8 @@
 namespace genonbeta\core\system;
 
 use Configuration;
-use genonbeta\controller\FlushArgument;
-use genonbeta\controller\OutputController;
+use genonbeta\util\FlushArgument;
+use genonbeta\content\OutputWrapper;
 use genonbeta\system\Component;
 use genonbeta\system\EnvironmentVariables;
 use genonbeta\system\System;
@@ -84,10 +84,10 @@ abstract class Loader extends Component
 		$this->onDestroy();
 	}
 
-	protected function getOutputController()
+	protected function getOutputWrapper()
 	{
 		if ($this->outputController == null)
-			$this->outputController = new OutputController();
+			$this->outputController = new OutputWrapper();
 
 		return $this->outputController;
 	}

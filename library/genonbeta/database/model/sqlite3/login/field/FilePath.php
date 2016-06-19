@@ -2,9 +2,9 @@
 
 namespace genonbeta\database\model\sqlite3\login\field;
 
-use genonbeta\controller\CallbackInterface;
+use genonbeta\controller\Callback;
 
-class FilePath implements CallbackInterface
+class FilePath implements Callback
 {
 	function onCallback($data)
 	{

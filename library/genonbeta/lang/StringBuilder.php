@@ -2,9 +2,9 @@
 
 namespace genonbeta\lang;
 
-use genonbeta\controller\FlushArgument;
-use genonbeta\controller\PrintableObject;
+use genonbeta\content\PrintableObject;
 use genonbeta\system\System;
+use genonbeta\util\FlushArgument;
 
 class StringBuilder implements PrintableObject
 {

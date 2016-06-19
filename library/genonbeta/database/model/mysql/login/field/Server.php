@@ -2,9 +2,9 @@
 
 namespace genonbeta\database\model\mysql\login\field;
 
-use genonbeta\controller\CallbackInterface;
+use genonbeta\controller\Callback;
 
-class Server implements CallbackInterface
+class Server implements Callback
 {
 
 	function onCallback($server)

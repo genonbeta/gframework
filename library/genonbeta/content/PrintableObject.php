@@ -1,6 +1,6 @@
 <?php
 
-namespace genonbeta\controller;
+namespace genonbeta\content;
 
 interface PrintableObject
 {

@@ -2,7 +2,7 @@
 
 namespace genonbeta\demo\view\model;
 
-use genonbeta\controller\OutputController;
+use genonbeta\content\OutputWrapper;
 use genonbeta\database\model\mysql\MySQLLoader;
 use genonbeta\database\model\sqlite3\SQLite3Loader;
 use genonbeta\lang\StringBuilder;
@@ -34,8 +34,8 @@ class About extends ViewSkeleton
 		$this->drawPattern(new GBasicSkeleton($this), "system_html", array(GBasicSkeleton::TITLE => "About", GBasicSkeleton::BODY => $aboutPattern));
 	}
 
-	public function onOutputController()
+	public function onOutputWrapper()
 	{
-		return new OutputController();
+		return new OutputWrapper();
 	}
 }

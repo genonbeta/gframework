@@ -2,7 +2,7 @@
 
 namespace genonbeta\view;
 
-use genonbeta\controller\PrintableObject;
+use genonbeta\content\PrintableObject;
 use genonbeta\io\File;
 use genonbeta\provider\AssetResource;
 use genonbeta\provider\ResourceManager;

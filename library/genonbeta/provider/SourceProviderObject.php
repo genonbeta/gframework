@@ -2,7 +2,7 @@
 
 namespace genonbeta\provider;
 
-use genonbeta\controller\OutputController;
+use genonbeta\content\OutputWrapper;
 
 interface SourceProviderObject
 {

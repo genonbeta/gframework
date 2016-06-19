@@ -2,7 +2,7 @@
 
 namespace genonbeta\util;
 
-use genonbeta\controller\CallbackInterface;
+use genonbeta\controller\Callback;
 
 abstract class StackDataStoreHelper
 {
@@ -27,7 +27,7 @@ abstract class StackDataStoreHelper
 	}
 
 
-	protected function addField($stackName, CallbackInterface $callback, $required = false)
+	protected function addField($stackName, Callback $callback, $required = false)
 	{
 		$this->stack[$stackName] = array(
 			"callback" => $callback,

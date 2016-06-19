@@ -2,7 +2,7 @@
 
 namespace genonbeta\demo\view\model;
 
-use genonbeta\controller\OutputController;
+use genonbeta\content\OutputWrapper;
 use genonbeta\lang\StringBuilder;
 use genonbeta\view\Pattern;
 use genonbeta\view\ViewInterface;
@@ -15,7 +15,7 @@ class SiteHeader implements ViewInterface
 
 	public function onCreate(array $methods)
 	{
-		$this->output = new OutputController();
+		$this->output = new OutputWrapper();
 		$pattern = Pattern::getPatternFromResource(MainConfig::PATTERN_INDEX_NAME, "site_header");
 
 		$this->output->put("siteName", $pattern);

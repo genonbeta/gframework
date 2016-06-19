@@ -2,8 +2,8 @@
 
 namespace genonbeta\view;
 
-use genonbeta\controller\OutputController;
-use genonbeta\controller\PrintableObject;
+use genonbeta\content\OutputWrapper;
+use genonbeta\content\PrintableObject;
 use genonbeta\database\Cursor;
 use genonbeta\lang\StringBuilder;
 use genonbeta\util\HashMap;
@@ -46,7 +46,7 @@ abstract class ViewPattern
 		if(!$cursor->moveToFirst())
 			return false;
 
-		$result = new OutputController;
+		$result = new OutputWrapper;
 
 		do
 		{
@@ -59,9 +59,8 @@ abstract class ViewPattern
 
 	private function completeDrawer(array $items)
 	{
-		$resultVariables = array();
+		$resultVariables = [];
 		$output = $this->pattern;
-		$outputHolder = new StringBuilder();
 
 		if(count($this->itemIds) > 0)
 		{
@@ -78,15 +77,13 @@ abstract class ViewPattern
 			foreach($resultVariables as $key => $value)
 			{
 				if($value instanceof PrintableObject)
-					$value = $value->onFlush(\genonbeta\controller\FlushArgument::getDefaultArguments());
+					$value = $value->onFlush(\genonbeta\util\FlushArgument::getDefaultArguments());
 
 				$output = str_replace('{$.'.$key.'}', $value, $output);
 			}
 		}
 
-		$outputHolder->put($output);
-
-		return $outputHolder;
+		return $output;
 	}
 
 	protected function getSkeleton()

@@ -3,7 +3,7 @@
 namespace genonbeta\demo\view\model;
 
 use Configuration;
-use genonbeta\controller\OutputController;
+use genonbeta\content\OutputWrapper;
 use genonbeta\database\model\mysql\MySQLLoader;
 use genonbeta\database\model\sqlite3\SQLite3Loader;
 use genonbeta\lang\StringBuilder;
@@ -32,6 +32,16 @@ class Home extends ViewSkeleton
 		$res = ResourceManager::getResource(MainConfig::DB_INDEX_NAME);
 
 		$listPattern = new LogList($this);
+		$queuedString = new \genonbeta\util\QueuedString();
+
+		$queuedString->put("my");
+		$queuedString->put("name");
+		$queuedString->put("is");
+		$queuedString->put("veli");
+
+		$queuedString->useSeperator(" ");
+
+		$log->d($queuedString->getString());
 
 		try
 		{
@@ -63,8 +73,8 @@ class Home extends ViewSkeleton
 		$this->drawPattern(new GBasicSkeleton($this), "system_html", array(GBasicSkeleton::TITLE => "Home", GBasicSkeleton::BODY => $sb));
 	}
 
-	public function onOutputController()
+	public function onOutputWrapper()
 	{
-		return new OutputController();
+		return new OutputWrapper();
 	}
 }

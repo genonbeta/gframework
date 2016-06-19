@@ -35,8 +35,8 @@ abstract class System
 		{
 			if(filesize(Configuration::FRAMEWORK_JSON) < Configuration::GMANIFEST_MAX_SIZE)
 			{
-				$JsonIndex = file_get_contents(Configuration::FRAMEWORK_JSON);
-				$json = json_decode($JsonIndex, true);
+				$jsonIndex = file_get_contents(Configuration::FRAMEWORK_JSON);
+				$json = json_decode($jsonIndex, true);
 
 				if($json == false)
 				{

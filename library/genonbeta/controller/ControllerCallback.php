@@ -2,7 +2,7 @@
 
 namespace genonbeta\controller;
 
-interface ControllerCallback extends CallbackInterface
+interface ControllerCallback extends Callback
 {
 	public function onResult();
 }
