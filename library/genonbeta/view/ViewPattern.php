@@ -5,7 +5,6 @@ namespace genonbeta\view;
 use genonbeta\content\OutputWrapper;
 use genonbeta\content\PrintableObject;
 use genonbeta\database\Cursor;
-use genonbeta\lang\StringBuilder;
 use genonbeta\util\HashMap;
 
 abstract class ViewPattern

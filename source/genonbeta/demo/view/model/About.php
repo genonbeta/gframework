@@ -5,7 +5,6 @@ namespace genonbeta\demo\view\model;
 use genonbeta\content\OutputWrapper;
 use genonbeta\database\model\mysql\MySQLLoader;
 use genonbeta\database\model\sqlite3\SQLite3Loader;
-use genonbeta\lang\StringBuilder;
 use genonbeta\provider\ResourceManager;
 use genonbeta\provider\AssetResource;
 use genonbeta\system\EnvironmentVariables;

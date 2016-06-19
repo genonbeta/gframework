@@ -2,7 +2,6 @@
 
 namespace genonbeta\content;
 
-use genonbeta\lang\StringBuilder;
 use genonbeta\system\System;
 use genonbeta\util\FlushArgument;
 use genonbeta\util\HashMap;

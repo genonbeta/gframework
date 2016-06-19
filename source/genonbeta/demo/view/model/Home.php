@@ -6,7 +6,6 @@ use Configuration;
 use genonbeta\content\OutputWrapper;
 use genonbeta\database\model\mysql\MySQLLoader;
 use genonbeta\database\model\sqlite3\SQLite3Loader;
-use genonbeta\lang\StringBuilder;
 use genonbeta\net\UrlResolver;
 use genonbeta\provider\AssetResource;
 use genonbeta\provider\ResourceManager;
@@ -67,10 +66,7 @@ class Home extends ViewSkeleton
 
 		$log->i("<a href=\"" . $this->getUri("about", "?isOkay=true")."\">Goto about page</a>");
 
-		$sb = new StringBuilder();
-		$sb->put($listPattern->drawAsAdapter(Log::getLogs()));
-
-		$this->drawPattern(new GBasicSkeleton($this), "system_html", array(GBasicSkeleton::TITLE => "Home", GBasicSkeleton::BODY => $sb));
+		$this->drawPattern(new GBasicSkeleton($this), "system_html", array(GBasicSkeleton::TITLE => "Home", GBasicSkeleton::BODY => $listPattern->drawAsAdapter(Log::getLogs())));
 	}
 
 	public function onOutputWrapper()
