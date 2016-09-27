@@ -9,7 +9,7 @@ use genonbeta\view\ViewInterface;
 class ViewProvider implements SourceProviderObject
 {
 	const PROVIDER_NAME = "view";
-	const TAG = "ViewLoader";
+	const TAG = "ViewProvider";
 
 	public function getProviderName()
 	{
