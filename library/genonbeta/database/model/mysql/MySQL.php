@@ -6,6 +6,7 @@ use genonbeta\database\DbAdapter;
 use genonbeta\database\DbAdapterModel;
 use genonbeta\util\StackDataStore;
 
+// @depraceted: After PHP7 mysqli functions are removed, use PDO
 class MySQL extends DbAdapter implements DbAdapterModel
 {
 

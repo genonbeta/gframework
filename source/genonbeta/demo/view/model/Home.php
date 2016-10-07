@@ -4,7 +4,6 @@ namespace genonbeta\demo\view\model;
 
 use Configuration;
 use genonbeta\content\OutputWrapper;
-use genonbeta\database\model\mysql\MySQLLoader;
 use genonbeta\database\model\sqlite3\SQLite3Loader;
 use genonbeta\net\UrlResolver;
 use genonbeta\provider\AssetResource;
@@ -59,10 +58,6 @@ class Home extends ViewSkeleton
 		$this->setUrlResolver(new UrlResolver(EnvironmentVariables::get("workerAddress"), CurrentManifest::getViewIndex()));
 
 		$log->d($this->getString("t", ["naber lan"]));
-
-
-		$dbLoader = new MySQLLoader();
-		$db = $dbLoader->getDbInstance();
 
 		$log->i("<a href=\"" . $this->getUri("about", "?isOkay=true")."\">Goto about page</a>");
 
