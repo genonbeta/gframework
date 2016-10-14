@@ -38,16 +38,16 @@ abstract class ViewPattern
 	private $pattern;
 	private $skeleton;
 
-	abstract function onCreatingPattern();
-	abstract function onNotifingItems();
-	abstract function onControllingItems(array $items);
+	abstract function onCreate();
+	abstract function onNotify();
+	abstract function onCheckingItems(array $items);
 
 	function __construct(ViewSkeleton $skeleton)
 	{
 		$this->skeleton = $skeleton;
 
-		$this->itemIds = $this->onNotifingItems();
-		$this->pattern = $this->onCreatingPattern();
+		$this->itemIds = $this->onNotify();
+		$this->pattern = $this->onCreate();
 
 		if(!$this->pattern instanceof Pattern)
 			throw new \Exception("Pattern must be type of \\genonbeta\\view\Pattern");
@@ -94,7 +94,7 @@ abstract class ViewPattern
 					$resultVariables[$key] = $items[$key];
 			}
 
-			$resultVariables = $this->onControllingItems($resultVariables);
+			$resultVariables = $this->onCheckingItems($resultVariables);
 
 			foreach($resultVariables as $key => $value)
 			{

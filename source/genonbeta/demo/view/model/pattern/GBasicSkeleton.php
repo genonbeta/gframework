@@ -36,17 +36,17 @@ class GBasicSkeleton extends ViewPattern
 	const TITLE = "page_title";
 	const BODY = "page_body";
 
-	function onCreatingPattern()
+	function onCreate()
 	{
 		return Pattern::getPatternFromResource(MainConfig::PATTERN_INDEX_NAME, "default_html");
 	}
 
-	function onControllingItems(array $items)
+	function onCheckingItems(array $items)
 	{
 		return $items;
 	}
 
-	function onNotifingItems()
+	function onNotify()
 	{
 		return array(self::TITLE => "GFramework 1.0 - Test", self::BODY => "");
 	}

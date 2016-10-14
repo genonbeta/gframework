@@ -29,6 +29,13 @@ use genonbeta\provider\ResourceManager;
 
 interface LanguageInterface
 {
+	const INFO_AUTHOR = "author";
+	const INFO_CHARSET = "charset";
+	const INFO_CODENAME = "codename";
+	const INFO_LOCATION = "location";
+	const INFO_NAME = "language";
+	const INFO_TIMEZONE = "timezone";
+		
 	function onInfo();
-	function onLoading();
+	function onLoad();
 }

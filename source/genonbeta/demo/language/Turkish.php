@@ -30,27 +30,26 @@ use genonbeta\support\Characters;
 use genonbeta\support\Language;
 use genonbeta\provider\ResourceManager;
 use genonbeta\provider\Resource;
+
 use genonbeta\demo\config\MainConfig;
 
 class Turkish implements LanguageInterface
 {
 	const TAG = "Turkish";
 
-
-
 	function onInfo()
 	{
 		return array(
-			"author" => "genonbeta",
-			"language" => "Turkish",
-			"id" => "tr",
-			"location" => "Turkey",
-			"timezone" => "Europe/Istanbul",
-			"charset" => "utf-8"
+			self::INFO_AUTHOR => "genonbeta",
+			self::INFO_NAME => "Turkish",
+			self::INFO_CODENAME => "tr",
+			self::INFO_LOCATION => "Turkey",
+			self::INFO_LOCATION => "Europe/Istanbul",
+			self::INFO_CHARSET => "utf-8"
 		);
 	}
 
-	function onLoading()
+	function onLoad()
 	{
 		$lang = new Language(ResourceManager::getResource(MainConfig::LANGUAGE_INDEX_NAME));
 		$lang->loadFile(self::TAG);

@@ -59,7 +59,7 @@ class CurrentManifest
 		return System::getLoadedManifest()['service'];
 	}
 
-	public static function getViewLoaderClasss()
+	public static function getViewLoaderClass()
 	{
 		return System::getLoadedManifest()['view']['loaderClass'];
 	}
