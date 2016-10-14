@@ -28,60 +28,82 @@ namespace genonbeta\support;
 use genonbeta\provider\Resource;
 use genonbeta\util\Log;
 
-class Language
+abstract class Language
 {
 	const TAG = "Language";
 
-	private $fields = [];
-	private $resource;
+	const INFO_AUTHOR = "author";
+	const INFO_CHARSET = "charset";
+	const INFO_CODENAME = "codename";
+	const INFO_LOCATION = "location";
+	const INFO_NAME = "language";
+	const INFO_TIMEZONE = "timezone";
+
+	private $index = [];
+	private $Info = [];
 	private $log;
 
-	function __construct(Resource $resource)
+	abstract protected function onLoad();
+	abstract protected function onInfo();
+
+	function __construct()
 	{
-		$this->resource = $resource;
 		$this->log = new Log(self::TAG);
+		$this->info = $this->onInfo();
+		
+		// load files
+		$this->onLoad();
 	}
 
-	function loadFile($fileName)
+	protected function addIndex(array $patch)
 	{
-		$index = $this->resource->findByName($fileName);
-
-		if($index)
-		{
-			$readIndex = file_get_contents($index);
-			$jsonIndex = json_decode($readIndex, true);
-
-			if(!$jsonIndex)
-				$this->log->e("{$fileName} file cannot be read as a json file");
-			else
-			{
-				$this->addIndex($jsonIndex);
-				return true;
-			}
-		}
-		else
-			$this->log->e("{$fileName} cannot be found in resources");
-
-		return false;
+		$newArray = array_merge($this->index, $patch);
+		$this->index = $newArray;
 	}
-
-	private function addIndex(array $patch)
+	
+	public function getInfo()
 	{
-		$newArray = array_merge($this->fields, $patch);
-		$this->fields = $newArray;
+		return $this->info;
 	}
 
 	public function getString($string, array $sprintf = [])
 	{
-		if(isset($this->fields[$string]))
+		if(isset($this->index[$string]))
 		{
 			if(count($sprintf) > 0)
-				return call_user_func_array("sprintf", array_merge(array($this->fields[$string]), $sprintf));
+				return call_user_func_array("sprintf", array_merge(array($this->index[$string]), $sprintf));
 
-			return $this->fields[$string];
+			return $this->index[$string];
 		}
 
 		$this->log->e("{$string} not found");
+
+		return false;
+	}
+	
+	public function getInterface()
+	{
+		return $this->langinst;
+	}
+	
+	function loadFile($fileName)
+	{
+		if(!is_file($fileName) || !is_readable($fileName))
+		{
+			$this->log->e("{$fileName} file can't be found or read");
+			return false;
+		}
+
+		$readIndex = file_get_contents($fileName);
+		$jsonIndex = json_decode($readIndex, true);
+
+		if(!$jsonIndex)
+			$this->log->e("{$fileName} file cannot be read as a json file");
+		else
+		{
+			$this->addIndex($jsonIndex);
+			return true;
+		}
 
 		return false;
 	}

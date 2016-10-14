@@ -45,9 +45,8 @@ abstract class ViewSkeleton implements ViewInterface
 	const TYPE_GET = 3;
 	const TYPE_FILE = 4;
 
-	private $opcontroller;
-	private $languageInstance;
-	private $languageIndex;
+	private $owrapper;
+	private $language;
 	private $urlResolver;
 	private $logs;
 
@@ -56,7 +55,7 @@ abstract class ViewSkeleton implements ViewInterface
 
 	function __construct()
 	{
-		$this->opcontroller = $this->onOutputWrapper();
+		$this->owrapper = $this->onOutputWrapper();
 		$this->logs = new Log(self::TAG);
 	}
 
@@ -80,31 +79,12 @@ abstract class ViewSkeleton implements ViewInterface
 		$this->getOutputWrapper()->put($name, $interface->onCreate($items));
 	}
 
-	function getLanguageInfo()
+	function getLanguage()
 	{
-		if ($this->getLanguageInstance() == null)
+		if ($this->language == null)
 			return false;
 
-		return $this->getLanguageInstance()->onInfo();
-	}
-
-	public function getLanguageInstance()
-	{
-		if($this->languageInstance == null || !$this->languageInstance instanceof LanguageInterface)
-		{
-			$this->logs->e("The language interfaces not defined yet. You need to load a language file");
-			return null;
-		}
-
-		return $this->languageInstance;
-	}
-
-	public function getLanguageIndex()
-	{
-		if ($this->getLanguageInstance() == null)
-			return null;
-
-		return $this->languageIndex;
+		return $this->language;
 	}
 
 	public function getMethods()
@@ -114,15 +94,15 @@ abstract class ViewSkeleton implements ViewInterface
 
 	public function getOutputWrapper()
 	{
-		return $this->opcontroller;
+		return $this->owrapper;
 	}
 
 	function getString($name, array $sprintf = array())
 	{
-		if ($this->getLanguageIndex() == null)
+		if ($this->getLanguage() == null)
 			return false;
 
-		return $this->getLanguageIndex()->getString($name, $sprintf);
+		return $this->getLanguage()->getString($name, $sprintf);
 	}
 
 	public function getUrlResolver()
@@ -138,19 +118,9 @@ abstract class ViewSkeleton implements ViewInterface
 		return $this->getUrlResolver()->getUri($skeleton, $abstractPath);
 	}
 
-	function loadLanguage(LanguageInterface $languageInstance)
+	function loadLanguage(Language $language)
 	{
-		$languageIndex = $languageInstance->onLoading();
-
-		if(!$languageIndex instanceof Language)
-		{
-			$this->logs->e("While loading language, it returned wrong class or something");
-			return false;
-		}
-
-		$this->languageInstance = $languageInstance;
-		$this->languageIndex = $languageIndex;
-
+		$this->language = $language;
         return true;
 	}
 
