@@ -42,16 +42,28 @@ abstract class ResourceManager
 
 		self::$resources[$resourceName]['Data'] = self::getResourceIndex($resourceName);
 	}
+	
+	public static function getResource($resourceName, $inResource = true)
+	{
+		if(!self::resourceExists($resourceName))
+			return false;
+
+		if($inResource)
+			return new Resource($resourceName);
+
+		return self::$resources[$resourceName];
+	}
 
 	private static function getResourceIndex($resourceName)
 	{
 		$i = self::$resources[$resourceName];
 		$type = (!$i['Type']) ? "" : ".".$i['Type'];
-		$return = array();
+		$return = [];
 
 		foreach(glob($i['Directory']."/*". $type) as $resourceResult)
 		{
-			if(!is_file($resourceResult)) continue;
+			if(!is_file($resourceResult)) 
+				continue;
 
 			$rInfo = pathinfo($resourceResult);
 			unset($rInfo['dirname']);
@@ -65,15 +77,14 @@ abstract class ResourceManager
 	{
 		return isset(self::$resources[$resourceName]);
 	}
-
-	public static function getResource($resourceName, $inResource = true)
+	
+	public static function updateResource($resourceName)
 	{
 		if(!self::resourceExists($resourceName))
 			return false;
 
-		if($inResource)
-			return new Resource($resourceName);
-
-		return self::$resources[$resourceName];
+		self::$resources[$resourceName]['Data'] = self::getResourceIndex($resourceName);
+		
+		return true;
 	}
 }

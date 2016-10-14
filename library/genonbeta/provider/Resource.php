@@ -43,6 +43,27 @@ class Resource extends ResourceManager
 		return true;
 	}
 
+	function doesExist($name)
+	{
+		return isset($this->index['Data'][$name]);
+	}
+
+	function findByName($name, $fullIndex = false)
+	{
+		if(!$this->doesExist($name))
+			return false;
+
+		if(!$fullIndex === true)
+			return $this->index['Directory']."/".$this->index['Data'][$name]['basename'];
+
+		return $this->index['Data'][$name];
+	}
+	
+	function generateName($fileName)
+	{
+		return $this->getResourceDir()."/".$fileName.(($this->getResourceFileType() != null) ? ".".$this->getResourceFileType() : "");
+	}
+
 	function getResourceId()
 	{
 		$data = $this->index;
@@ -56,20 +77,14 @@ class Resource extends ResourceManager
 		return $this->index['Type'];
 	}
 
+	function getResourceName()
+	{
+		return $this->index['ResourceName'];
+	}
+
 	function getResourceDir()
 	{
 		return $this->index['Directory'];
-	}
-
-	function findByName($name, $fullIndex = false)
-	{
-		if(!$this->doesExist($name))
-			return false;
-
-		if(!$fullIndex === true)
-			return $this->index['Directory']."/".$this->index['Data'][$name]['basename'];
-
-		return $this->index['Data'][$name];
 	}
 
 	function getIndex()
@@ -81,9 +96,16 @@ class Resource extends ResourceManager
 	{
 		return $this->count;
 	}
-
-	function doesExist($name)
-	{
-		return isset($this->index['Data'][$name]);
+	
+	function update()
+	{		
+		if (self::updateResource($this->getResourceName()));
+		{
+			$this->index = self::getResource($this->getResourceName(), false);
+			return true;
+		}
+		
+			
+		return false;
 	}
 }
