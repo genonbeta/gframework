@@ -42,7 +42,7 @@ abstract class ViewPattern
 	abstract function onNotify();
 	abstract function onCheckingItems(array $items);
 
-	function __construct(ViewSkeleton $skeleton)
+	function __construct(ViewSkeleton $skeleton = null)
 	{
 		$this->skeleton = $skeleton;
 

@@ -39,7 +39,6 @@ class Configuration
 	private static $systemServices = [
 		"ErrorHandler" => "\\genonbeta\\service\\ErrorHandler",
 		"AutoLoader" => "\\genonbeta\\service\\AutoLoader",
-		"Flusher" => "\\genonbeta\service\\Flusher",
 		"ClassLoader" => "\\genonbeta\\service\\ClassLoader"
 	];
 
