@@ -29,6 +29,11 @@ use genonbeta\system\System;
 
 class CurrentManifest
 {
+	public static function doesViewExists($viewName)
+	{
+		return isset(self::getViewIndex()[$viewName]);
+	}
+	
 	public static function getApplicationInfo()
 	{
 		return System::getLoadedManifest()['application'];
@@ -67,5 +72,24 @@ class CurrentManifest
 	public static function getViewIndex()
 	{
 		return System::getLoadedManifest()['view']['index'];
+	}
+	
+	public static function getViewURL($viewName, array $get = [], $extra = "")
+	{
+		$endPath = null;
+		
+		if (count($get) > 0)
+		{			
+			foreach ($get as $key => $value)
+			{
+				$endPath .= ($endPath == null) ? "?" : "&";
+				$endPath .= $key . "=" . $value;
+			}
+		}
+		
+		if (self::doesViewExists($viewName))
+			return G_WORKER_URL. "/" .$viewName.$endPath.$extra;
+		
+		return G_WORKER_URL. "#pathNotFound";
 	}
 }
