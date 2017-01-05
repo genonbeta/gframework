@@ -37,7 +37,17 @@ class ProviderFilter implements UniversalMessageFilterObject
 
 	public function applyFilter($message)
 	{
+		$message = preg_replace_callback("#\@if\(([a-zA-Z0-9.,_?\:\"-]+)\)([\s\S]+)\@endif;#", $this->getConditionCallback(), $message);
 		return preg_replace_callback("#\@([a-zA-Z0-9.,_:?\"-]+)\/([a-zA-Z0-9.,_:?\"-]+)\;#", $this->getCallback(), $message);
+	}
+
+	public function getConditionCallback()
+	{
+		return function($matches)
+		{
+			if ((count($equalityContidion = explode(":", $matches[1])) > 1 && EnvironmentVariables::get($equalityContidion[0]) == $equalityContidion[1]) || EnvironmentVariables::isDefined($matches[1]))
+				return $matches[2];
+		};
 	}
 
 	public function getCallback()

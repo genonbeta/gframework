@@ -53,9 +53,20 @@ abstract class ViewPattern implements DrawableView
 			throw new \Exception("Pattern must be type of \\genonbeta\\view\Pattern");
 	}
 
+	private function completeDrawing(array $items)
+	{
+		$resultVariables = [];
+
+		if(count($this->itemIds) > 0)
+			foreach($this->itemIds as $key => $def)
+				$resultVariables[$key] = !isset($items[$key]) || empty($items[$key]) ? $def : $items[$key];
+
+		return (new FlushableViewPattern($this))->onCreate($resultVariables);
+	}
+
 	public function draw(array $items)
 	{
-		return $this->completeDrawer($items);
+		return $this->completeDrawing($items);
 	}
 
 	public function drawAsAdapter(HashMap $map)
@@ -79,33 +90,9 @@ abstract class ViewPattern implements DrawableView
 		return $result;
 	}
 
-	private function completeDrawer(array $items)
+	public function getPattern()
 	{
-		$resultVariables = [];
-		$output = $this->pattern;
-
-		if(count($this->itemIds) > 0)
-		{
-			foreach($this->itemIds as $key => $def)
-			{
-				if(!isset($items[$key]) || empty($items[$key]))
-					$resultVariables[$key] = $def;
-				else
-					$resultVariables[$key] = $items[$key];
-			}
-
-			$resultVariables = $this->onCheckingItems($resultVariables);
-
-			foreach($resultVariables as $key => $value)
-			{
-				if($value instanceof PrintableObject)
-					$value = $value->onFlush(\genonbeta\util\FlushArgument::getDefaultArguments());
-
-				$output = str_replace('{$.'.$key.'}', $value, $output);
-			}
-		}
-
-		return $output;
+		return $this->pattern;
 	}
 
 	protected function getSkeleton()
