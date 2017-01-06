@@ -59,6 +59,6 @@ class ViewProvider implements SourceProviderObject
 
 		$class->onCreate([]);
 
-		return $class->onFlush([]);
+		return $class->onFlush(new \genonbeta\util\FlushArgument());
 	}
 }

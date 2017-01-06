@@ -37,16 +37,24 @@ class ProviderFilter implements UniversalMessageFilterObject
 
 	public function applyFilter($message)
 	{
-		$message = preg_replace_callback("#\@if\(([a-zA-Z0-9.,_?\:\"-]+)\)([\s\S]+)\@endif;#", $this->getConditionCallback(), $message);
-		return preg_replace_callback("#\@([a-zA-Z0-9.,_:?\"-]+)\/([a-zA-Z0-9.,_:?\"-]+)\;#", $this->getCallback(), $message);
+		$message = preg_replace_callback("#\@([a-zA-Z0-9.,_:?\"-]+)\/([a-zA-Z0-9.,_:?\"-]+)\;#", $this->getCallback(), $message);
+		return preg_replace_callback("#\@if\(\"([\w\W]+|)\"(\!|\=)(\=|\>|\<)()\"([\w\W]+|)\"\)([\s\S]+)\@endif;#", $this->getConditionCallback(), $message);
 	}
 
 	public function getConditionCallback()
 	{
 		return function($matches)
 		{
-			if ((count($equalityContidion = explode(":", $matches[1])) > 1 && EnvironmentVariables::get($equalityContidion[0]) == $equalityContidion[1]) || EnvironmentVariables::isDefined($matches[1]))
-				return $matches[2];
+			$value1 = $matches[1];
+			$value2 = $matches[4];
+			$condition = $matches[3];
+			$trueCondition = $matches[2] == "=";
+
+			$result = ($condition == ">" && $value1 > $value2)
+					|| ($condition == "<" && $value1 < $value2)
+					|| ($condition == "=" && $value1 == $value2);
+
+			return $result == $trueCondition ? $matches[6] : "";
 		};
 	}
 
@@ -54,17 +62,8 @@ class ProviderFilter implements UniversalMessageFilterObject
 	{
 		return function($matches)
 		{
-			$execute = true;
 			$providerName = $matches[1];
 			$request = $matches[2];
-
-			if (count($condition = explode("?", $providerName)) > 1)
-			{
-				if ((count($equalityContidion = explode(":", $condition[0])) > 1 && EnvironmentVariables::get($equalityContidion[0]) == $equalityContidion[1]) || EnvironmentVariables::isDefined($condition[0]))
-					$providerName = $condition[1];
-				else
-					$execute = false;
-			}
 
 			if (SourceProvider::providerExists($providerName))
 			{
@@ -72,7 +71,7 @@ class ProviderFilter implements UniversalMessageFilterObject
 				return $provider->onRequest($request);
 			}
 			else
-				Log::error(TAG, ($execute) ? "Provider not found {$providerName}" : "Execute condition is not matched (passed)");
+				Log::error(TAG, "Provider not found {$providerName}");
 
 			return "";
 		};

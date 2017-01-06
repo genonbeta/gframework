@@ -1,7 +1,7 @@
 <?php
 
 /*
- * UrlResolver.php
+ * URLResolver.php
  * 
  * Copyright 2016 Veli TASALI <veli.tasali@gmail.com>
  * 
@@ -25,7 +25,7 @@
 
 namespace genonbeta\net;
 
-class UrlResolver
+class URLResolver
 {
 	private $loader;
 	private $paths = array();

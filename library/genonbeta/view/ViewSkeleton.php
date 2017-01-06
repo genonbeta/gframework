@@ -2,37 +2,38 @@
 
 /*
  * ViewSkeleton.php
- * 
+ *
  * Copyright 2016 Veli TASALI <veli.tasali@gmail.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
- * 
- * 
+ *
+ *
  */
 
 namespace genonbeta\view;
 
 use genonbeta\content\OutputWrapper;
 use genonbeta\content\PrintableObject;
-use genonbeta\net\UrlResolver;
+use genonbeta\net\URLResolver;
 use genonbeta\provider\Resource;
 use genonbeta\provider\ResourceManager;
 use genonbeta\support\Language;
 use genonbeta\support\LanguageInterface;
 use genonbeta\util\Log;
+use genonbeta\util\FlushArgument;
 use genonbeta\util\HashMap;
 use genonbeta\util\NativeUrl;
 
@@ -59,22 +60,22 @@ abstract class ViewSkeleton implements ViewInterface
 		$this->logs = new Log(self::TAG);
 	}
 
-	public function drawPattern(ViewPattern $pattern, $name, array $items)
+	public function drawPattern($name, ViewPattern $pattern, array $items)
 	{
 		$this->getOutputWrapper()->put($name, $pattern->draw($items));
 	}
 
-	public function drawPatternAsAdapter(ViewPattern $pattern, $name, HashMap $map)
+	public function drawPatternAsAdapter($name, ViewPattern $pattern, HashMap $map)
 	{
 		$this->getOutputWrapper()->put($name, $pattern->drawAsAdapter($map));
 	}
 
-	public function drawPrintable(PrintableObject $object, $name)
+	public function drawPrintable($name, PrintableObject $object)
 	{
 		$this->getOutputWrapper()->put($name, $object);
 	}
 
-	public function drawView(ViewInterface $interface, $name, array $items)
+	public function drawView($name, ViewInterface $interface, array $items)
 	{
 		$this->getOutputWrapper()->put($name, $interface->onCreate($items));
 	}
@@ -105,17 +106,17 @@ abstract class ViewSkeleton implements ViewInterface
 		return $this->getLanguage()->getString($name, $sprintf);
 	}
 
-	public function getUrlResolver()
+	public function getURLResolver()
 	{
 		return $this->urlResolver;
 	}
 
 	function getUri($skeleton, $abstractPath = null)
 	{
-		if($this->getUrlResolver() == null)
+		if($this->getURLResolver() == null)
 			return false;
 
-		return $this->getUrlResolver()->getUri($skeleton, $abstractPath);
+		return $this->getURLResolver()->getUri($skeleton, $abstractPath);
 	}
 
 	function loadLanguage(Language $language)
@@ -124,7 +125,7 @@ abstract class ViewSkeleton implements ViewInterface
         return true;
 	}
 
-	protected function setUrlResolver(UrlResolver $resolver)
+	protected function setURLResolver(URLResolver $resolver)
 	{
 		if($resolver == null)
 			return false;
@@ -134,11 +135,7 @@ abstract class ViewSkeleton implements ViewInterface
 		return true;
 	}
 
-	function onHeaderElements()
-	{
-	}
-
-	function onFlush(array $args)
+	function onFlush(FlushArgument $args)
 	{
 		return $this->getOutputWrapper()->onFlush($args);
 	}

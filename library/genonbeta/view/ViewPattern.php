@@ -79,15 +79,14 @@ abstract class ViewPattern implements DrawableView
 		if(!$cursor->moveToFirst())
 			return false;
 
-		$result = new OutputWrapper;
+		$output = new OutputWrapper();
 
-		do
-		{
-			$result->put(self::TAG, $this->draw($cursor->getIndex()));
+		do {
+			$output->put(self::TAG, $this->draw($cursor->getIndex()));
 		}
 		while($cursor->moveToNext());
 
-		return $result;
+		return $output;
 	}
 
 	public function getPattern()

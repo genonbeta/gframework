@@ -32,6 +32,7 @@ use genonbeta\provider\ResourceManager;
 use genonbeta\provider\resource\ResourceVariable;
 use genonbeta\system\EnvironmentVariables;
 use genonbeta\system\UniversalMessageFilter;
+use genonbeta\util\FlushArgument;
 use genonbeta\view\PatternFilter;
 
 class Pattern implements PrintableObject
@@ -75,7 +76,7 @@ class Pattern implements PrintableObject
 		return self::getPattenFromFile($file);
 	}
 
-	public function onFlush(array $args)
+	public function onFlush(FlushArgument $args)
 	{
 		return $this->__toString();
 	}

@@ -2,6 +2,9 @@
 
 namespace genonbeta\view;
 
+use genonbeta\content\PrintableObject;
+use genonbeta\util\FlushArgument;
+
 class FlushableViewPattern implements ViewInterface
 {
     private $pattern;
@@ -19,9 +22,9 @@ class FlushableViewPattern implements ViewInterface
         return $this;
     }
 
-    public function onFlush(array $flushArguments)
+    public function onFlush(FlushArgument $flushArguments)
     {
-        $output = $this->pattern->getPattern();
+        $output = $this->pattern->getPattern()->onFlush($flushArguments);
         $resultVariables = $this->pattern->onCheckingItems($this->items);
 
         foreach($resultVariables as $key => $value)
@@ -35,7 +38,7 @@ class FlushableViewPattern implements ViewInterface
         return $output;
     }
 
-    public function flush(array $flushArguments)
+    public function flush(FlushArgument $flushArguments)
     {
         return $this->onFlush($flushArguments);
     }
