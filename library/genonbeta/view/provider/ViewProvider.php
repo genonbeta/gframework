@@ -25,8 +25,11 @@
 
 namespace genonbeta\view\provider;
 
+use genonbeta\content\PrintableObject;
 use genonbeta\provider\SourceProviderObject;
+use genonbeta\util\FlushArgument;
 use genonbeta\util\Log;
+use genonbeta\util\PrintableUtils;
 use genonbeta\view\ViewInterface;
 
 class ViewProvider implements SourceProviderObject
@@ -39,7 +42,7 @@ class ViewProvider implements SourceProviderObject
 		return self::PROVIDER_NAME;
 	}
 
-	public function onRequest($request)
+	public function onRequest($request, FlushArgument $flushArgument)
 	{
 		$className = "\\" . str_replace(".", "\\", $request);
 
@@ -51,14 +54,14 @@ class ViewProvider implements SourceProviderObject
 
 		$class = new $className;
 
-		if (!$class instanceof ViewInterface)
+		if ($class instanceof ViewInterface)
+			$class->onCreate($flushArgument->getFieldList());
+		elseif (!$class instanceof PrintableObject)
 		{
-			Log::error(self::TAG, "Class must be instance of \\geonbeta\\view\\ViewInterface");
+			Log::error(self::TAG, "Class must be instance of \\geonbeta\\content\\PrintableObject");
 			return false;
 		}
 
-		$class->onCreate([]);
-
-		return $class->onFlush(new \genonbeta\util\FlushArgument());
+		return PrintableUtils::flush($class, $flushArgument);
 	}
 }

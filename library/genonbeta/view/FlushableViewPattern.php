@@ -3,7 +3,10 @@
 namespace genonbeta\view;
 
 use genonbeta\content\PrintableObject;
+use genonbeta\system\UniversalMessageFilter;
 use genonbeta\util\FlushArgument;
+use genonbeta\util\PrintableUtils;
+use genonbeta\view\PatternFilter;
 
 class FlushableViewPattern implements ViewInterface
 {
@@ -18,28 +21,22 @@ class FlushableViewPattern implements ViewInterface
     public function onCreate(array $items = [])
     {
         $this->items = $items;
-
         return $this;
     }
 
-    public function onFlush(FlushArgument $flushArguments)
+    public function onFlush(FlushArgument $flushArgument)
     {
-        $output = $this->pattern->getPattern()->onFlush($flushArguments);
+        $output = $this->pattern->getPattern()->getPlainText();
         $resultVariables = $this->pattern->onCheckingItems($this->items);
 
         foreach($resultVariables as $key => $value)
         {
-            if($value instanceof PrintableObject)
-                $value = $value->onFlush($flushArguments);
-
+            $value = PrintableUtils::flush($value, $flushArgument);
             $output = str_replace('{$.'.$key.'}', $value, $output);
         }
 
-        return $output;
-    }
+        $output = UniversalMessageFilter::applyFilter($output, PatternFilter::TYPE_TEMPLATE, $flushArgument);
 
-    public function flush(FlushArgument $flushArguments)
-    {
-        return $this->onFlush($flushArguments);
+        return $output;
     }
 }

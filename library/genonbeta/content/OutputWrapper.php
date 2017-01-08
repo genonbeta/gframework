@@ -50,12 +50,12 @@ class OutputWrapper implements PrintableObject
 		return true;
 	}
 
-	public function onFlush(FlushArgument $args)
+	public function onFlush(FlushArgument $flushArgument)
 	{
 		$output = null;
 
 		foreach($this->output->getAll() as $object)
-			$output .= PrintableUtils::getPrintableObject($object[1], $args);
+			$output .= PrintableUtils::flush($object[1], $flushArgument);
 
 		return $output;
 	}

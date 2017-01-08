@@ -2,28 +2,30 @@
 
 /*
  * UniversalMessageFilter.php
- * 
+ *
  * Copyright 2016 Veli TASALI <veli.tasali@gmail.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
- * 
- * 
+ *
+ *
  */
 
 namespace genonbeta\system;
+
+use genonbeta\util\FlushArgument;
 
 class UniversalMessageFilter
 {
@@ -32,6 +34,22 @@ class UniversalMessageFilter
 	const FILTER_CODE = 2;
 
 	private static $list = [];
+
+	public static function applyFilter($message, $type, FlushArgument $flushArgument = null)
+	{
+		foreach(self::$list as $filter)
+		{
+			if ($filter->getType() != $type)
+				continue;
+
+			if ($flushArgument == null)
+				$flushArgument = new FlushArgument();
+
+			$message = $filter->applyFilter($message, $flushArgument);
+		}
+
+		return $message;
+	}
 
 	public static function isRegistered(UniversalMessageFilterObject $filter)
 	{
@@ -56,18 +74,5 @@ class UniversalMessageFilter
 		unset(self::$list[get_class($filter)]);
 
 		return true;
-	}
-
-	public static function applyFilter($message, $type)
-	{
-		foreach(self::$list as $filter)
-		{
-			if (!$filter->getType() == $type)
-				continue;
-
-			$message = $filter->applyFilter($message);
-		}
-
-		return $message;
 	}
 }

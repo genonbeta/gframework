@@ -36,6 +36,7 @@ use genonbeta\util\Log;
 use genonbeta\util\FlushArgument;
 use genonbeta\util\HashMap;
 use genonbeta\util\NativeUrl;
+use genonbeta\util\PrintableUtils;
 
 abstract class ViewSkeleton implements ViewInterface
 {
@@ -50,6 +51,7 @@ abstract class ViewSkeleton implements ViewInterface
 	private $language;
 	private $urlResolver;
 	private $logs;
+	private $flushArgument = [];
 
 	abstract function onCreate(array $methodName);
 	abstract function onOutputWrapper();
@@ -78,6 +80,21 @@ abstract class ViewSkeleton implements ViewInterface
 	public function drawView($name, ViewInterface $interface, array $items)
 	{
 		$this->getOutputWrapper()->put($name, $interface->onCreate($items));
+	}
+
+	public function hasArgument($field)
+	{
+		return isset($this->flushArgument[$field]);
+	}
+
+	public function getArgument($field)
+	{
+		return $this->hasArgument($field) ? $this->flushArgument[$field] : null;
+	}
+
+	public function getArgumentList()
+	{
+		return $this->flushArgument;
 	}
 
 	function getLanguage()
@@ -119,10 +136,15 @@ abstract class ViewSkeleton implements ViewInterface
 		return $this->getURLResolver()->getUri($skeleton, $abstractPath);
 	}
 
-	function loadLanguage(Language $language)
+	protected function loadLanguage(Language $language)
 	{
 		$this->language = $language;
         return true;
+	}
+
+	public function putArgument($key, $value)
+	{
+		$this->flushArgument[$key] = $value;
 	}
 
 	protected function setURLResolver(URLResolver $resolver)
@@ -135,8 +157,11 @@ abstract class ViewSkeleton implements ViewInterface
 		return true;
 	}
 
-	function onFlush(FlushArgument $args)
+	function onFlush(FlushArgument $flushArgument)
 	{
-		return $this->getOutputWrapper()->onFlush($args);
+		foreach($this->flushArgument as $key => $arg)
+			$flushArgument->putField($key, $arg);
+
+		return PrintableUtils::flush($this->getOutputWrapper(), $flushArgument);
 	}
 }

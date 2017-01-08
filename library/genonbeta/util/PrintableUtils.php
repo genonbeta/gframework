@@ -26,6 +26,7 @@
 namespace genonbeta\util;
 
 use genonbeta\content\PrintableObject;
+use genonbeta\util\FlushArgument;
 
 class PrintableUtils
 {
@@ -34,11 +35,11 @@ class PrintableUtils
 		return is_string($object) || is_int($object) || ($object instanceof PrintableObject);
 	}
 
-	public static function getPrintableObject($object, FlushArgument $args = null)
+	public static function flush($object, FlushArgument $flushArgument)
 	{
 		if (!self::isPrintable($object))
 			return false;
 
-		return ($object instanceof PrintableObject) ? $object->onFlush($args) : $object;
+		return ($object instanceof PrintableObject) ? FlushArgument::flush($object, $flushArgument) : $object;
 	}
 }

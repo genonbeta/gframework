@@ -28,6 +28,7 @@ namespace genonbeta\demo\view\model;
 use genonbeta\content\OutputWrapper;
 use genonbeta\lang\StringBuilder;
 use genonbeta\util\FlushArgument;
+use genonbeta\util\PrintableUtils;
 use genonbeta\view\Pattern;
 use genonbeta\view\ViewInterface;
 
@@ -45,8 +46,8 @@ class SiteHeader implements ViewInterface
 		$this->output->put("siteName", $pattern);
 	}
 
-	public function onFlush(FlushArgument $flushArguments)
+	public function onFlush(FlushArgument $flushArgument)
 	{
-		return $this->output->onFlush($flushArguments);
+		return PrintableUtils::flush($this->output, $flushArgument);
 	}
 }

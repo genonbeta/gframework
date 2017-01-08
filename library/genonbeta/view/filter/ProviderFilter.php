@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
- *
+ * Hey! My mojo so dope
  *
  */
 
@@ -29,16 +29,23 @@ use genonbeta\provider\SourceProvider;
 use genonbeta\system\EnvironmentVariables;
 use genonbeta\system\UniversalMessageFilterObject;
 use genonbeta\util\Log;
+use genonbeta\util\FlushArgument;
 use genonbeta\view\PatternFilter;
 
 class ProviderFilter implements UniversalMessageFilterObject
 {
 	const TAG = __CLASS__;
 
-	public function applyFilter($message)
+	public function applyFilter($message, FlushArgument $flushArgument)
 	{
-		$message = preg_replace_callback("#\@([a-zA-Z0-9.,_:?\"-]+)\/([a-zA-Z0-9.,_:?\"-]+)\;#", $this->getCallback(), $message);
-		return preg_replace_callback("#\@if\(\"([\w\W]+|)\"(\!|\=)(\=|\>|\<)()\"([\w\W]+|)\"\)([\s\S]+)\@endif;#", $this->getConditionCallback(), $message);
+		$flushArgument->preventItemRemoving(true);
+
+		$message = preg_replace_callback("#\@([a-zA-Z0-9.,_:?\"-]+)\/([a-zA-Z0-9.,_:?\"-]+)\;#", $this->getCallback($flushArgument), $message);
+		$message = preg_replace_callback("#if\(\"(.*?)\"(\!|\=)(\=|\>|\<)\"(.*?)\"\)(.*?)\@fi;#", $this->getConditionCallback(), $message);
+
+		$flushArgument->preventItemRemoving(false);
+
+		return $message;
 	}
 
 	public function getConditionCallback()
@@ -54,13 +61,13 @@ class ProviderFilter implements UniversalMessageFilterObject
 					|| ($condition == "<" && $value1 < $value2)
 					|| ($condition == "=" && $value1 == $value2);
 
-			return $result == $trueCondition ? $matches[6] : "";
+			return $result == $trueCondition ? $matches[5] : "";
 		};
 	}
 
-	public function getCallback()
+	public function getCallback(FlushArgument $flushArgument)
 	{
-		return function($matches)
+		return function($matches) use ($flushArgument)
 		{
 			$providerName = $matches[1];
 			$request = $matches[2];
@@ -68,7 +75,7 @@ class ProviderFilter implements UniversalMessageFilterObject
 			if (SourceProvider::providerExists($providerName))
 			{
 				$provider = SourceProvider::getProvider($providerName);
-				return $provider->onRequest($request);
+				return $provider->onRequest($request, $flushArgument);
 			}
 			else
 				Log::error(TAG, "Provider not found {$providerName}");
@@ -79,6 +86,6 @@ class ProviderFilter implements UniversalMessageFilterObject
 
 	public function getType()
 	{
-		return PatternFilter::TYPE_CODE;
+		return PatternFilter::TYPE_TEMPLATE;
 	}
 }

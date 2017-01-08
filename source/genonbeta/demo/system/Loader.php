@@ -31,6 +31,7 @@ use genonbeta\io\RequiredFiles;
 use genonbeta\provider\ResourceManager;
 use genonbeta\system\System;
 use genonbeta\system\helper\CurrentManifest;
+use genonbeta\util\PrintableUtils;
 use genonbeta\view\ViewSkeleton;
 
 use genonbeta\demo\config\MainConfig;
@@ -57,9 +58,9 @@ class Loader extends \genonbeta\core\system\Loader
 	protected function onSkeletonLoaded(ViewSkeleton $skeleton)
 	{
 		$this->getOutputWrapper()->put("systemOutput", $skeleton);
-
+		
 		// Let's output the data =)
-		echo $this->getOutputWrapper()->onFlush(new FlushArgument());
+		echo PrintableUtils::flush($this->getOutputWrapper(), new FlushArgument());
 	}
 
 	protected function onDestroy()

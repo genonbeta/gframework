@@ -76,13 +76,13 @@ class Pattern implements PrintableObject
 		return self::getPattenFromFile($file);
 	}
 
-	public function onFlush(FlushArgument $args)
+	public function getPlainText()
 	{
-		return $this->__toString();
+		return $this->pattern;
 	}
 
-	public function __toString()
+	public function onFlush(FlushArgument $flushArgument)
 	{
-		return UniversalMessageFilter::applyFilter($this->pattern, PatternFilter::TYPE_CODE);
+		return UniversalMessageFilter::applyFilter($this->pattern, PatternFilter::TYPE_TEMPLATE, $flushArgument);
 	}
 }

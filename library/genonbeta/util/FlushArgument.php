@@ -25,7 +25,63 @@
 
 namespace genonbeta\util;
 
+use genonbeta\content\PrintableObject;
+
 class FlushArgument
 {
-	
+	private $loopingTime = 0;
+	private $tempFields = [];
+	private $lockData = false;
+
+	public static function flush(PrintableObject $printable, FlushArgument $flushArgument)
+	{
+		$flushArgument->prepare();
+		$output = $printable->onFlush($flushArgument);
+		$flushArgument->loop();
+
+		return $output;
+	}
+
+	public function getField($field)
+	{
+		return $this->hasField($field) ? $this->tempFields[$field] : null;
+	}
+
+	public function getFieldList()
+	{
+		return $this->tempFields;
+	}
+
+	public function hasField($field)
+	{
+		return isset($this->tempFields[$field]);
+	}
+
+	public function getLoopingTime()
+	{
+		return $this->loopingTime;
+	}
+
+	public function preventItemRemoving($isLocked)
+	{
+		$this->lockData = $isLocked ? true : false;
+	}
+
+	public function loop()
+	{
+		$this->loopingTime--;
+
+		if (!$this->lockData)
+			$this->tempFields = [];
+	}
+
+	public function prepare()
+	{
+		$this->loopingTime++;
+	}
+
+	public function putField($field, $value)
+	{
+		$this->tempFields[$field] = $value;
+	}
 }
