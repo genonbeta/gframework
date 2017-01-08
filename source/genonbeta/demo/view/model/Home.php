@@ -55,34 +55,20 @@ class Home extends ViewSkeleton
 		$listPattern = new LogList($this);
 		$queuedString = new \genonbeta\util\QueuedString();
 
-		$queuedString->put("my");
-		$queuedString->put("name");
+		$queuedString->put("this");
 		$queuedString->put("is");
-		$queuedString->put("veli");
-
+		$queuedString->put("gframework");
+		$queuedString->put(":)");
 		$queuedString->useSeperator(" ");
 
 		$log->d($queuedString->getString());
 
-		try
-		{
-			$sdbLoader = new SQLite3Loader($res->findByName("tr_en"));
-			$sdb = $sdbLoader->getDbInstance();
-			$result = $sdb->query("SELECT * FROM `tr_en`");
-			$cursor = $result->getCursor();
-
-			$log->i("Veritabanında ".$cursor->getCount()." adet kelime bulunuyor");
-		}
-		catch(\Exception $e)
-		{
-		}
-
 		$this->loadLanguage(new Turkish());
 		$this->setURLResolver(new URLResolver(EnvironmentVariables::get("workerAddress"), CurrentManifest::getViewIndex()));
 
-		$log->d($this->getString("t", ["naber lan"]));
+		$log->d($this->getString("test_text", ["gframewok"]));
 
-		$log->i("<a href=\"" . $this->getUri("about", "?isOkay=true")."\">Goto about page</a>");
+		$log->i("<a href=\"" . $this->getUri("about", "?isOkay=true")."\">Go to about page</a>");
 
 		$this->drawPattern("system_html", new GBasicSkeleton($this), [GBasicSkeleton::TITLE => "Home", GBasicSkeleton::BODY => $listPattern->drawAsAdapter(Log::getLogs())]);
 	}
