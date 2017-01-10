@@ -87,6 +87,16 @@ abstract class ViewSkeleton implements ViewInterface
 		return isset($this->flushArgument[$field]);
 	}
 
+	public function hasGetValue($key)
+	{
+		return isset($_GET[$key]);
+	}
+
+	public function hasPostValue($key)
+	{
+		return isset($_POST[$key]);
+	}
+
 	public function getArgument($field)
 	{
 		return $this->hasArgument($field) ? $this->flushArgument[$field] : null;
@@ -113,6 +123,16 @@ abstract class ViewSkeleton implements ViewInterface
 	public function getOutputWrapper()
 	{
 		return $this->owrapper;
+	}
+
+	function getGetValue($key)
+	{
+		return $_GET[$key];
+	}
+
+	function getPostValue($key)
+	{
+		return $_POST[$key];
 	}
 
 	function getString($name, array $sprintf = array())
