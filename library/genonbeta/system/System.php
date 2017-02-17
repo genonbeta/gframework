@@ -61,48 +61,46 @@ abstract class System
 				$jsonIndex = file_get_contents(Configuration::FRAMEWORK_JSON);
 				$json = json_decode($jsonIndex, true);
 
-				if($json == false)
+				if(!$json)
 				{
-					self::getLogger()->e("Json file cannot be read");
+					throw new \Exception("Manifest file couldn't be read (must be in JSON format)");
 				}
 				else
 				{
 					self::$manifestIndex = $json;
 
-					if (isset($json['service']))
-						self::loadServices($json['service']);
+					if (isset($json['system']['service']))
+						self::loadServices($json['system']['service']);
 					else
-						self::getLogger()->i("No service was requested to load in gmanifest file");
+						self::getLogger()->i("No service was requested to load by manifest file");
 
-					if (isset($json['component']))
-						self::loadComponents($json['component']);
+					if (isset($json['system']['component']))
+						self::loadComponents($json['system']['component']);
 					else
-						self::getLogger()->i("No component was requested in gmanifest file");
+						self::getLogger()->i("No component was requested by manifest file");
 
-					if(isset($json['view']['loaderClass']) && class_exists($json['view']['loaderClass']))
+					if(isset($json['system']['view']['loaderClass']) && class_exists($json['system']['view']['loaderClass']))
 					{
-						self::getLogger()->d("Loader class found \"".$json['view']['loaderClass']."\"");
-						$loader = new $json['view']['loaderClass']();
+						self::getLogger()->d("Loader class found \"".$json['system']['view']['loaderClass']."\"");
+						$loader = new $json['system']['view']['loaderClass']();
 
 						if (!$loader instanceof Component)
 							throw new \Exception("Loader class must be instance of \\genonbeta\\system\\Component class");
 					}
 					else
 					{
-						throw new \Exception("No class loader class found in GManifest file");
+						throw new \Exception("No class loader class found in manifest file");
 					}
 				}
 			}
 			else
 			{
-				self::getLogger()->e("Json file is too big to open. Its size must be smaller than defined size in config file");
-				throw new \Exception("Due to its size, <b>".Configuration::FRAMEWORK_JSON."</b> file cannot be opened.");
+				throw new \Exception("Due to its size, manifest file cannot be opened.");
 			}
 		}
 		else
 		{
-			self::getLogger()->d("Json file not found: ".Configuration::FRAMEWORK_JSON);
-			throw new \Exception("<b>".Configuration::FRAMEWORK_JSON."</b> file doesn't exist. That's the the deadline");
+			throw new \Exception("Manifest file doesn't exist. A JSON formatted file must be provided that's specified in Configuration class");
 		}
 	}
 
@@ -111,7 +109,6 @@ abstract class System
 		if (!self::serviceExists($serviceName))
 		{
 			self::getLogger()->e($serviceName." service which was requested is not known by System");
-
 			return null;
 		}
 
@@ -156,10 +153,7 @@ abstract class System
 	private static function loadServices(array $serviceList)
 	{
 		if (count($serviceList) < 1)
-		{
-			self::getLogger()->d("No service was found to load in array variable");
 			return false;
-		}
 
 		foreach($serviceList as $serviceName => $serviceClass)
 		{
@@ -194,10 +188,7 @@ abstract class System
 	private static function loadComponents(array $componentList)
 	{
 		if (count($componentList) < 1)
-		{
-			self::getLogger()->d("No component was found to load in array variable");
 			return false;
-		}
 
 		foreach ($componentList as $component)
 			if (class_exists($component))
@@ -217,7 +208,7 @@ abstract class System
     {
 		if (!class_exists($className))
 		{
-			self::getLogger()->e("Requested self space path of not existing {$className} class");
+			self::getLogger()->e("As {$className} class doesn't exists, rejected to generate class storage path");
 			return null;
 		}
 
@@ -232,12 +223,14 @@ abstract class System
 		return $spaceDir->getPath();
 	}
 
-	public static function errorHandler($errLevel = null, $errMessage = null)
+	public static function errorHandler($errLevel = null, $errMessage = null, $script = null, $lineNumber = null)
 	{
 		return Intent::sendServiceIntent("ErrorHandler", self::getService("ErrorHandler")
 										 ->getDefaultIntent()
 										 ->putExtra(ErrorHandler::ERROR_LEVEL, $errLevel)
-										 ->putExtra(ErrorHandler::ERROR_MESSAGE, $errMessage));
+										 ->putExtra(ErrorHandler::ERROR_MESSAGE, $errMessage)
+										 ->putExtra(ErrorHandler::ERROR_SCRIPT, $script)
+										 ->putExtra(ErrorHandler::ERROR_LINE_NUMBER, $lineNumber));
 	}
 
 	public static function getLoadedClasses()

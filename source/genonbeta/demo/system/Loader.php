@@ -42,7 +42,7 @@ class Loader extends \genonbeta\core\system\Loader
 
 	protected function onCreate()
 	{
-		$fwConf = CurrentManifest::getConfiguration();
+		$fwConf = CurrentManifest::access("configuration");
 
 		$req = new RequiredFiles(self::TAG);
 		$req->request(Configuration::DATA_PATH."/".$fwConf['data_path'], RequiredFiles::TYPE_DIRECTORY);
@@ -58,7 +58,7 @@ class Loader extends \genonbeta\core\system\Loader
 	protected function onSkeletonLoaded(ViewSkeleton $skeleton)
 	{
 		$this->getOutputWrapper()->put("systemOutput", $skeleton);
-		
+
 		// Let's output the data =)
 		echo PrintableUtils::flush($this->getOutputWrapper(), new FlushArgument());
 	}

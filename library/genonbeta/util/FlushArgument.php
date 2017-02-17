@@ -29,15 +29,17 @@ use genonbeta\content\PrintableObject;
 
 class FlushArgument
 {
-	private $loopingTime = 0;
 	private $tempFields = [];
+	private $loopingTime = 0;
 	private $lockData = false;
 
 	public static function flush(PrintableObject $printable, FlushArgument $flushArgument)
 	{
+		$tempFields = $flushArgument->getFieldList();
+
 		$flushArgument->prepare();
 		$output = $printable->onFlush($flushArgument);
-		$flushArgument->loop();
+		$flushArgument->loop($tempFields);
 
 		return $output;
 	}
@@ -67,12 +69,12 @@ class FlushArgument
 		$this->lockData = $isLocked ? true : false;
 	}
 
-	public function loop()
+	protected function loop(array $tempFields = [])
 	{
 		$this->loopingTime--;
 
 		if (!$this->lockData)
-			$this->tempFields = [];
+			$this->tempFields = $tempFields;
 	}
 
 	public function prepare()

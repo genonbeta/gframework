@@ -1,10 +1,35 @@
 {
-	"application":
+	"system":
 	{
-		"name":"genonbeta.demo",
-		"version":"1.0",
-		"author":"genonbeta",
-		"website":"genonbeta.com"
+		"application":
+		{
+			"name":"genonbeta.demo",
+			"version":"1.0",
+			"author":"genonbeta",
+			"website":"genonbeta.com"
+		},
+
+		"component":
+		[
+			"\\genonbeta\\demo\\util\\Debugger"
+		],
+
+		"service":
+		{
+			"DestructionHook":"\\genonbeta\\demo\\service\\DestructionHook"
+		},
+
+		"view":
+		{
+			"loaderClass":"\\genonbeta\\demo\\system\\Loader",
+			"index":
+			{
+				"__default":"\\genonbeta\\demo\\view\\model\\Home",
+				"home":"\\genonbeta\\demo\\view\\model\\Home",
+				"about":"\\genonbeta\\demo\\view\\model\\About",
+				"about/developers":"\\genonbeta\\demo\\view\\model\\Developers"
+			}
+		}
 	},
 
 	"configuration":
@@ -15,30 +40,8 @@
 		"database_path":"genonbeta/demo/database"
 	},
 
-	"component":
-	[
-		"\\genonbeta\\demo\\util\\Debugger"
-	],
-
-	"service":
-	{
-		"DestructionHook":"\\genonbeta\\demo\\service\\DestructionHook"
-	},
-
 	"language":
 	{
-		"Turkish":"\\genonbeta\\demo\\service\\DestructionHook"
-	},
-
-	"view":
-	{
-		"loaderClass":"\\genonbeta\\demo\\system\\Loader",
-		"index":
-		{
-			"__default":"\\genonbeta\\demo\\view\\model\\Home",
-			"home":"\\genonbeta\\demo\\view\\model\\Home",
-			"about":"\\genonbeta\\demo\\view\\model\\About",
-			"about/developers":"\\genonbeta\\demo\\view\\model\\Developers"
-		}
+		"Turkish":"\\genonbeta\\demo\\language\\Turkish"
 	}
 }

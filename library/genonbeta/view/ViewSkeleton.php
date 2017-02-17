@@ -62,6 +62,19 @@ abstract class ViewSkeleton implements ViewInterface
 		$this->logs = new Log(self::TAG);
 	}
 
+	function onFlush(FlushArgument $flushArgument)
+	{
+		foreach($this->flushArgument as $key => $arg)
+			$flushArgument->putField($key, $arg);
+
+		return PrintableUtils::flush($this->getOutputWrapper(), $flushArgument);
+	}
+
+	function onHandleViewPattern($requestedKey)
+	{
+		
+	}
+
 	public function drawPattern($name, ViewPattern $pattern, array $items)
 	{
 		$this->getOutputWrapper()->put($name, $pattern->draw($items));
@@ -175,13 +188,5 @@ abstract class ViewSkeleton implements ViewInterface
 		$this->urlResolver = $resolver;
 
 		return true;
-	}
-
-	function onFlush(FlushArgument $flushArgument)
-	{
-		foreach($this->flushArgument as $key => $arg)
-			$flushArgument->putField($key, $arg);
-
-		return PrintableUtils::flush($this->getOutputWrapper(), $flushArgument);
 	}
 }

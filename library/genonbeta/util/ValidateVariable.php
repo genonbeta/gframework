@@ -4,17 +4,17 @@ namespace genonbeta\util;
 
 class ValidateVariable
 {
-    public function validateEmail($variable)
+    public static function validateEmail($variable)
     {
         return filter_var($variable, FILTER_VALIDATE_EMAIL);
     }
 
-    public function valiteFullName($variable)
+    public static function valiteFullName($variable)
     {
         return preg_match("/^[a-zA-Z ]*$/", $variable);
     }
 
-    public function valiteName($variable)
+    public static function valiteName($variable)
     {
         return preg_match("/^[a-zA-Z]*$/", $variable);
     }

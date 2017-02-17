@@ -59,7 +59,13 @@ abstract class ViewPattern implements DrawableView
 
 		if(count($this->itemIds) > 0)
 			foreach($this->itemIds as $key => $def)
+			{
 				$resultVariables[$key] = !isset($items[$key]) || empty($items[$key]) ? $def : $items[$key];
+				unset($items[$key]);
+			}
+
+		if (count($items) > 0)
+			$resultVariables = array_merge($resultVariables, $items);
 
 		return (new FlushableViewPattern($this))->onCreate($resultVariables);
 	}
@@ -87,6 +93,11 @@ abstract class ViewPattern implements DrawableView
 		while($cursor->moveToNext());
 
 		return $output;
+	}
+
+	public function getItems()
+	{
+		return $this->itemIds;
 	}
 
 	public function getPattern()
