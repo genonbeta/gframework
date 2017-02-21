@@ -74,13 +74,12 @@ abstract class Loader extends Component
 				$try = implode("/", $pathIndex);
 
 				if (isset($viewIndex[$try]) && class_exists($viewIndex[$try]))
-				{
 					$currentView = $viewIndex[$try];
-					$leftPath = array_splice(URLAddress::resolvePath(), $wayNumber);
-				}
 				else
-					array_pop($pathIndex);
+					$leftPath[] = array_pop($pathIndex);
 			}
+
+			$leftPath = array_reverse($leftPath)
 
 			if(class_exists($currentView))
 			{

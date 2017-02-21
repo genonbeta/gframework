@@ -66,8 +66,31 @@ try {
 		if (!isset($trace['line']))
 			$trace['line'] = "----";
 
+		if (!isset($trace['file']))
+			$trace['file'] = "";
+
 		echo "<br />";
 		echo "<i>".$trace['line']."</i> &nbsp; <b><span style=\"color: green;\">".$trace['function']."()</span></b> ".$trace['file'];
+	}
+
+	if (class_exists("\genonbeta\util\Log"))
+	{
+		echo "<br /><br /><b>Logs</b>";
+
+		$logs = \genonbeta\util\Log::getLogs();
+		$logType = [
+			\genonbeta\util\Log::TYPE_INFO => "I",
+			\genonbeta\util\Log::TYPE_DEBUG => "D",
+			\genonbeta\util\Log::TYPE_ERROR => "E"
+		];
+
+		for ($i = 0; $i < $logs->size(); $i++)
+		{
+			$log = $logs->get($i);
+
+			echo "<br />";
+			echo "<i>".$logType[$log[\genonbeta\util\Log::TYPE]]."</i> &nbsp; <b><span style=\"color: green;\">".$log[\genonbeta\util\Log::PID]."()</span></b> ".$log[\genonbeta\util\Log::MSG];
+		}
 	}
 
 	echo "</html>";
