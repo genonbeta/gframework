@@ -37,7 +37,7 @@ class URLAddress implements PrintableObject
 
     public static function resolvePath()
 	{
-		$path = (isset($_SERVER['PATH_INFO'])) ? $_SERVER['PATH_INFO'] : [];
+		$path = (isset($_SERVER['PATH_INFO'])) ? $_SERVER['PATH_INFO'] : null;
 		$result = [];
 
 		foreach(explode("/", $path) as $id => $value)
