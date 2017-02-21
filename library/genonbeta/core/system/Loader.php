@@ -79,7 +79,7 @@ abstract class Loader extends Component
 					$leftPath[] = array_pop($pathIndex);
 			}
 
-			$leftPath = array_reverse($leftPath)
+			$leftPath = array_reverse($leftPath);
 
 			if(class_exists($currentView))
 			{
