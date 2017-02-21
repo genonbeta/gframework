@@ -2,6 +2,8 @@
 
 namespace genonbeta\util;
 
+use Exception;
+
 use genonbeta\controller\Controller;
 
 class ValidateForm
@@ -25,18 +27,19 @@ class ValidateForm
     const ERROR_CODE = "errorCode";
     const RESULT_VALUE = "resultValue";
 
-    // NULLABLE::value
     const NULL = true;
     const NOT_NULL = false;
 
     private $fields = [];
     private $errorMsgs = [];
+    private $lastErrors = [];
     private $selected = null;
-    private $gatherFunction;
+    private $gatherCallable;
+    private $finalCallable;
 
-    function __construct($gatherFunction = null)
+    function __construct($gatherCallable = null)
     {
-        $this->setGatherFunction($gatherFunction);
+        $this->setGatherCallable($gatherCallable);
 
         $this->errorMsgs = [
             self::ERROR_TOO_LONG => "%s is too long",
@@ -72,11 +75,12 @@ class ValidateForm
 
     public function deploy()
     {
-        $gatherFunction = $this->gatherFunction;
+        $gatherCallable = $this->gatherCallable;
+        $this->lastErrors = [];
 
         foreach ($this->fields as $key => $index)
         {
-            $value = $gatherFunction($key);
+            $value = $gatherCallable($key);
             $error = null;
 
             // remove previous error set
@@ -97,13 +101,38 @@ class ValidateForm
                         ($index[self::CONTROLLER] != self::DISABLED && !$index[self::CONTROLLER]->onRequest($value))
                     )
                 $error = self::ERROR_MATCH_CASE;
-            elseif ($index[self::FIELD_CHECK] != self::DISABLED && $value != $gatherFunction($index[self::FIELD_CHECK]))
+            elseif ($index[self::FIELD_CHECK] != self::DISABLED && $value != $gatherCallable($index[self::FIELD_CHECK]))
                 $error = self::ERROR_FIELD_CHECK;
 
             if ($error != null)
+            {
                 $this->fields[$key][self::ERROR_CODE] = $error;
+                $this->lastErrors[$key] = $this->fields[$key];
+            }
             else
                 $this->fields[$key][self::RESULT_VALUE] = $value;
+        }
+
+        if (count($this->lastErrors) == 0 && $this->finalCallable != null)
+        {
+            $callable = $this->finalCallable;
+            $resultArray = [];
+
+            foreach($this->fields as $key => $value)
+                $resultArray[$key] = $value[self::RESULT_VALUE];
+
+            $result = $callable($resultArray);
+
+            // An array represents [key error]
+            if (is_array($result))
+                foreach($result as $key => $value)
+                {
+                    if (!$this->has($key) || !isset($this->errorMsgs[$value]))
+                        throw new Exception("Irretrievable error. Only send values that currently exist", 1);
+
+                    $this->lastErrors[$key] = $value;
+                    $this->fields[$key][self::ERROR_CODE] = $value;
+                }
         }
 
         return $this;
@@ -134,18 +163,12 @@ class ValidateForm
 
     public function getErrors()
     {
-        $returnedIndex = [];
-
-        foreach($this->fields as $key => $index)
-            if (isset($index[self::ERROR_CODE]))
-                $returnedIndex[$key] = $index;
-
-        return $returnedIndex;
+        return $this->lastErrors;
     }
 
-    public function getGatherFunction()
+    public function getGatherCallable()
     {
-        return $this->gatherFunction;
+        return $this->gatherCallable;
     }
 
     public function getResultValue($key)
@@ -172,9 +195,19 @@ class ValidateForm
         return $this;
     }
 
-    public function setGatherFunction($gatherFunction)
+    public function setGatherCallable($gatherCallable)
     {
-        $this->gatherFunction = $gatherFunction;
+        $this->gatherCallable = $gatherCallable;
+
+        return $this;
+    }
+
+    public function setFinalCallable($finalCallable)
+    {
+        if (!is_callable($finalCallable))
+            return false;
+
+        $this->finalCallable = $finalCallable;
 
         return $this;
     }

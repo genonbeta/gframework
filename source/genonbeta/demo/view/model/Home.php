@@ -28,12 +28,10 @@ namespace genonbeta\demo\view\model;
 use Configuration;
 use genonbeta\content\OutputWrapper;
 use genonbeta\database\model\sqlite3\SQLite3Loader;
-use genonbeta\net\URLResolver;
 use genonbeta\provider\AssetResource;
 use genonbeta\provider\ResourceManager;
 use genonbeta\system\EnvironmentVariables;
 use genonbeta\system\System;
-use genonbeta\system\helper\CurrentManifest;
 use genonbeta\util\ResourceHelper;
 use genonbeta\util\Log;
 use genonbeta\view\ViewSkeleton;
@@ -64,11 +62,8 @@ class Home extends ViewSkeleton
 		$log->d($queuedString->getString());
 
 		$this->loadLanguage(new Turkish());
-		$this->setURLResolver(new URLResolver(EnvironmentVariables::get("workerAddress"), CurrentManifest::getViewIndex()));
 
 		$log->d($this->getString("test_text", ["gframewok"]));
-
-		$log->i("<a href=\"" . $this->getUri("about", "?isOkay=true")."\">Go to about page</a>");
 
 		$this->drawPattern("system_html", new GBasicSkeleton($this), [GBasicSkeleton::TITLE => "Home", GBasicSkeleton::BODY => $listPattern->drawAsAdapter(Log::getLogs())]);
 	}

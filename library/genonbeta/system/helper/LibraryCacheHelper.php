@@ -2,31 +2,32 @@
 
 /*
  * LibraryCacheHelper.php
- * 
+ *
  * Copyright 2016 Veli TASALI <veli.tasali@gmail.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
- * 
- * 
+ *
+ *
  */
 
 namespace genonbeta\system\helper;
 
 use Configuration;
 use ZipArchive;
+
 use genonbeta\controller\Controller;
 use genonbeta\database\Cache;
 use genonbeta\io\File;
@@ -52,12 +53,9 @@ class LibraryCacheHelper extends Component implements Controller
 		return __CLASS__;
 	}
 
-	public function onRequest($intent)
+	public function onRequest($className)
 	{
-		if ($intent->getAction() !== AutoLoader::ACTION_LOAD_CLASS)
-			return false;
-
-		$this->tryToInclude($intent->getExtra(AutoLoader::CLASS_NAME));
+		$this->tryToInclude($className);
 	}
 
 	public function isCachedLibrary($filePath)

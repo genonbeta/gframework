@@ -2,25 +2,25 @@
 
 /*
  * Language.php
- * 
+ *
  * Copyright 2016 Veli TASALI <veli.tasali@gmail.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
- * 
- * 
+ *
+ *
  */
 
 namespace genonbeta\support;
@@ -50,7 +50,7 @@ abstract class Language
 	{
 		$this->log = new Log(self::TAG);
 		$this->info = $this->onInfo();
-		
+
 		// load files
 		$this->onLoad();
 	}
@@ -60,15 +60,20 @@ abstract class Language
 		$newArray = array_merge($this->index, $patch);
 		$this->index = $newArray;
 	}
-	
+
 	public function getInfo()
 	{
 		return $this->info;
 	}
 
+	public function hasString($stringKey)
+	{
+		return isset($this->index[$stringKey]);
+	}
+
 	public function getString($string, array $sprintf = [])
 	{
-		if(isset($this->index[$string]))
+		if($this->hasString($string))
 		{
 			if(count($sprintf) > 0)
 				return call_user_func_array("sprintf", array_merge(array($this->index[$string]), $sprintf));
@@ -80,12 +85,12 @@ abstract class Language
 
 		return false;
 	}
-	
+
 	public function getInterface()
 	{
 		return $this->langinst;
 	}
-	
+
 	function loadFile($fileName)
 	{
 		if(!is_file($fileName) || !is_readable($fileName))

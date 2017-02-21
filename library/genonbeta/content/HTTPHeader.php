@@ -22,7 +22,7 @@ class HTTPHeader
         return !$this->hasHeader($key) ? false : $this->headerList[$key];
     }
 
-    public function getHeaderList($key)
+    public function getHeaderList()
     {
         return $this->headerList;
     }

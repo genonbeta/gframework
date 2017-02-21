@@ -26,11 +26,13 @@
 namespace genonbeta\view\provider;
 
 use genonbeta\content\PrintableObject;
+use genonbeta\provider\ViewRegistry;
 use genonbeta\provider\SourceProviderObject;
 use genonbeta\util\FlushArgument;
 use genonbeta\util\Log;
 use genonbeta\util\PrintableUtils;
 use genonbeta\view\ViewInterface;
+use genonbeta\view\ViewPattern;
 
 class ViewProvider implements SourceProviderObject
 {
@@ -44,24 +46,36 @@ class ViewProvider implements SourceProviderObject
 
 	public function onRequest($request, FlushArgument $flushArgument)
 	{
-		$className = "\\" . str_replace(".", "\\", $request);
-
-		if (!class_exists($className))
+		if (ViewRegistry::hasStaticView($request))
 		{
-			Log::error(self::TAG, "View class not found. " . $className);
-			return false;
+			$staticView = ViewRegistry::getStaticView($request);
+			$className = $staticView->getViewClass();
+
+			$class = new $className;
+
+			if ($class instanceof ViewPattern)
+				return PrintableUtils::flush($class->drawAsAdapter($staticView->getItemList()), $flushArgument);
+		}
+		else
+		{
+			$className = "\\" . str_replace(".", "\\", $request);
+
+			if (!class_exists($className))
+			{
+				Log::error(self::TAG, "View class not found: " . $className);
+				return false;
+			}
+
+			$class = new $className;
+
+			if ($class instanceof ViewInterface)
+			{
+				$class->onCreate($flushArgument->getFieldList());
+				return PrintableUtils::flush($class, $flushArgument);
+			}
 		}
 
-		$class = new $className;
-
-		if ($class instanceof ViewInterface)
-			$class->onCreate($flushArgument->getFieldList());
-		elseif (!$class instanceof PrintableObject)
-		{
-			Log::error(self::TAG, "Class must be instance of \\geonbeta\\content\\PrintableObject");
-			return false;
-		}
-
-		return PrintableUtils::flush($class, $flushArgument);
+		Log::error(self::TAG, "Not a printable object");
+		return false;
 	}
 }

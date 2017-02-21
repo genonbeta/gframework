@@ -26,14 +26,15 @@
 namespace genonbeta\core\system;
 
 use Configuration;
-use genonbeta\util\FlushArgument;
+
+use genonbeta\content\URLAddress;
 use genonbeta\content\OutputWrapper;
 use genonbeta\system\Component;
 use genonbeta\system\EnvironmentVariables;
 use genonbeta\system\System;
 use genonbeta\system\helper\CurrentManifest;
+use genonbeta\util\FlushArgument;
 use genonbeta\util\Log;
-use genonbeta\util\NativeUrl;
 use genonbeta\view\ViewSkeleton;
 
 abstract class Loader extends Component
@@ -63,7 +64,7 @@ abstract class Loader extends Component
 		if(count(CurrentManifest::getViewIndex()) > 0)
 		{
 			$viewIndex = CurrentManifest::getViewIndex();
-			$pathIndex = NativeUrl::pathResolver();
+			$pathIndex = URLAddress::resolvePath();
 			$pathCount = count($pathIndex);
 			$leftPath = [];
 			$currentView = $viewIndex[self::VIEW_DEFAULT];
@@ -75,7 +76,7 @@ abstract class Loader extends Component
 				if (isset($viewIndex[$try]) && class_exists($viewIndex[$try]))
 				{
 					$currentView = $viewIndex[$try];
-					$leftPath = array_splice(NativeUrl::pathResolver(), $wayNumber);
+					$leftPath = array_splice(URLAddress::resolvePath(), $wayNumber);
 				}
 				else
 					array_pop($pathIndex);
@@ -83,7 +84,7 @@ abstract class Loader extends Component
 
 			if(class_exists($currentView))
 			{
-				$this->getLogger()->d("{$currentView} view is loaded");
+				$this->getLog()->d("{$currentView} view is loaded");
 				$class = new $currentView();
 
 				if(!$class instanceof ViewSkeleton)
@@ -115,7 +116,7 @@ abstract class Loader extends Component
 		return $this->outputController;
 	}
 
-	protected function getLogger()
+	protected function getLog()
 	{
 		if ($this->log == null)
 			$this->log = new Log(self::TAG);

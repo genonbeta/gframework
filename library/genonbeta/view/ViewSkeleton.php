@@ -26,30 +26,23 @@
 namespace genonbeta\view;
 
 use genonbeta\content\OutputWrapper;
+use genonbeta\content\URLAddress;
 use genonbeta\content\PrintableObject;
-use genonbeta\net\URLResolver;
 use genonbeta\provider\Resource;
 use genonbeta\provider\ResourceManager;
 use genonbeta\support\Language;
-use genonbeta\support\LanguageInterface;
+use genonbeta\system\System;
 use genonbeta\util\Log;
 use genonbeta\util\FlushArgument;
 use genonbeta\util\HashMap;
-use genonbeta\util\NativeUrl;
 use genonbeta\util\PrintableUtils;
 
 abstract class ViewSkeleton implements ViewInterface
 {
 	const TAG = "ViewSkeleton";
 
-	const TYPE_REQUEST = 1;
-	const TYPE_POST = 2;
-	const TYPE_GET = 3;
-	const TYPE_FILE = 4;
-
 	private $owrapper;
 	private $language;
-	private $urlResolver;
 	private $logs;
 	private $flushArgument = [];
 
@@ -72,7 +65,7 @@ abstract class ViewSkeleton implements ViewInterface
 
 	function onHandleViewPattern($requestedKey)
 	{
-		
+
 	}
 
 	public function drawPattern($name, ViewPattern $pattern, array $items)
@@ -100,12 +93,12 @@ abstract class ViewSkeleton implements ViewInterface
 		return isset($this->flushArgument[$field]);
 	}
 
-	public function hasGetValue($key)
+	public function hasGET($key)
 	{
 		return isset($_GET[$key]);
 	}
 
-	public function hasPostValue($key)
+	public function hasPOST($key)
 	{
 		return isset($_POST[$key]);
 	}
@@ -120,6 +113,16 @@ abstract class ViewSkeleton implements ViewInterface
 		return $this->flushArgument;
 	}
 
+	function getGET($key)
+	{
+		return $_GET[$key];
+	}
+
+	function getHTTPHeader()
+	{
+		return System::getHTTPHeader();
+	}
+
 	function getLanguage()
 	{
 		if ($this->language == null)
@@ -128,22 +131,12 @@ abstract class ViewSkeleton implements ViewInterface
 		return $this->language;
 	}
 
-	public function getMethods()
-	{
-		return NativeUrl::pathResolver();
-	}
-
 	public function getOutputWrapper()
 	{
 		return $this->owrapper;
 	}
 
-	function getGetValue($key)
-	{
-		return $_GET[$key];
-	}
-
-	function getPostValue($key)
+	function getPOST($key)
 	{
 		return $_POST[$key];
 	}
@@ -154,19 +147,6 @@ abstract class ViewSkeleton implements ViewInterface
 			return false;
 
 		return $this->getLanguage()->getString($name, $sprintf);
-	}
-
-	public function getURLResolver()
-	{
-		return $this->urlResolver;
-	}
-
-	function getUri($skeleton, $abstractPath = null)
-	{
-		if($this->getURLResolver() == null)
-			return false;
-
-		return $this->getURLResolver()->getUri($skeleton, $abstractPath);
 	}
 
 	protected function loadLanguage(Language $language)
@@ -180,13 +160,8 @@ abstract class ViewSkeleton implements ViewInterface
 		$this->flushArgument[$key] = $value;
 	}
 
-	protected function setURLResolver(URLResolver $resolver)
+	public function redirect(URLAddress $address)
 	{
-		if($resolver == null)
-			return false;
-
-		$this->urlResolver = $resolver;
-
-		return true;
+		$this->getHTTPHeader()->addHeader("Location", $address->generate());
 	}
 }

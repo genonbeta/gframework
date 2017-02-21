@@ -26,6 +26,8 @@
 namespace genonbeta\system;
 
 use Configuration;
+
+use genonbeta\content\HTTPHeader;
 use genonbeta\provider\Service;
 use genonbeta\service\AutoLoader;
 use genonbeta\service\ErrorHandler;
@@ -38,8 +40,9 @@ abstract class System
 {
 	const TAG = "System";
 
+	private static $httpHeader;
 	private static $loadedClasses;
-	private static $logs;
+	private static $log;
 	private static $manifestIndex = [];
 	private static $services = [];
 
@@ -72,16 +75,16 @@ abstract class System
 					if (isset($json['system']['service']))
 						self::loadServices($json['system']['service']);
 					else
-						self::getLogger()->i("No service was requested to load by manifest file");
+						self::getLog()->i("No service was requested to load by manifest file");
 
 					if (isset($json['system']['component']))
 						self::loadComponents($json['system']['component']);
 					else
-						self::getLogger()->i("No component was requested by manifest file");
+						self::getLog()->i("No component was requested by manifest file");
 
 					if(isset($json['system']['view']['loaderClass']) && class_exists($json['system']['view']['loaderClass']))
 					{
-						self::getLogger()->d("Loader class found \"".$json['system']['view']['loaderClass']."\"");
+						self::getLog()->d("Loader class found \"".$json['system']['view']['loaderClass']."\"");
 						$loader = new $json['system']['view']['loaderClass']();
 
 						if (!$loader instanceof Component)
@@ -104,17 +107,6 @@ abstract class System
 		}
 	}
 
-	public static function getService($serviceName)
-	{
-		if (!self::serviceExists($serviceName))
-		{
-			self::getLogger()->e($serviceName." service which was requested is not known by System");
-			return null;
-		}
-
-		return self::$services[$serviceName];
-	}
-
 	protected static function autoLoad($className)
 	{
 		$classNameOriginal = $className;
@@ -135,6 +127,16 @@ abstract class System
 		return true;
 	}
 
+	public static function errorHandler($errLevel = null, $errMessage = null, $script = null, $lineNumber = null)
+	{
+		return Intent::sendServiceIntent("ErrorHandler", self::getService("ErrorHandler")
+										 ->getDefaultIntent()
+										 ->putExtra(ErrorHandler::ERROR_LEVEL, $errLevel)
+										 ->putExtra(ErrorHandler::ERROR_MESSAGE, $errMessage)
+										 ->putExtra(ErrorHandler::ERROR_SCRIPT, $script)
+										 ->putExtra(ErrorHandler::ERROR_LINE_NUMBER, $lineNumber));
+	}
+
 	private static function addLoadedClass($className)
 	{
 		// The character "\" represents to jump to main way
@@ -143,72 +145,18 @@ abstract class System
 		$stat = class_exists($className, false) || interface_exists($className, false);
 
 		if($stat === false)
-			self::getLogger()->e("{$className} class (or interface) was not found");
+			self::getLog()->e("{$className} class (or interface) was not found");
 
 		self::getLoadedClasses()->add(array($className, $stat));
 
 		return $stat;
 	}
 
-	private static function loadServices(array $serviceList)
-	{
-		if (count($serviceList) < 1)
-			return false;
-
-		foreach($serviceList as $serviceName => $serviceClass)
-		{
-			if (class_exists($serviceClass) && is_string($serviceName))
-			{
-				if(self::serviceExists($serviceName))
-				{
-					self::getLogger()->e("Tried to load existed service {$serviceName}");
-					continue;
-				}
-
-				$serviceInstance = new $serviceClass;
-
-				if ($serviceInstance instanceof Service)
-				{
-					self::getLogger()->i($serviceName.":".$serviceClass." service is loaded");
-					self::$services[$serviceName] = $serviceInstance;
-				}
-				else
-					throw new \Exception($serviceClass." class can only be instance of Service");
-			}
-		}
-
-        return true;
-	}
-
-	public static function serviceExists($serviceName)
-	{
-		return isset(self::$services[$serviceName]);
-	}
-
-	private static function loadComponents(array $componentList)
-	{
-		if (count($componentList) < 1)
-			return false;
-
-		foreach ($componentList as $component)
-			if (class_exists($component))
-			{
-				$componentInstance = new $component;
-
-				if ($componentInstance instanceof Component)
-					self::getLogger()->i($component." component is loaded");
-                else
-					throw new \Exception($component." class can only be instance of Component");
-			}
-
-        return true;
-	}
-
 	public static function getClassStorage($className)
     {
 		if (!class_exists($className))
 		{
-			self::getLogger()->e("As {$className} class doesn't exists, rejected to generate class storage path");
+			self::getLog()->e("As {$className} class doesn't exists, rejected to generate class storage path");
 			return null;
 		}
 
@@ -223,14 +171,12 @@ abstract class System
 		return $spaceDir->getPath();
 	}
 
-	public static function errorHandler($errLevel = null, $errMessage = null, $script = null, $lineNumber = null)
+	public static function getHTTPHeader()
 	{
-		return Intent::sendServiceIntent("ErrorHandler", self::getService("ErrorHandler")
-										 ->getDefaultIntent()
-										 ->putExtra(ErrorHandler::ERROR_LEVEL, $errLevel)
-										 ->putExtra(ErrorHandler::ERROR_MESSAGE, $errMessage)
-										 ->putExtra(ErrorHandler::ERROR_SCRIPT, $script)
-										 ->putExtra(ErrorHandler::ERROR_LINE_NUMBER, $lineNumber));
+		if (self::$httpHeader == null)
+			self::$httpHeader = new HTTPHeader();
+
+		return self::$httpHeader;
 	}
 
 	public static function getLoadedClasses()
@@ -241,16 +187,81 @@ abstract class System
 		return self::$loadedClasses;
 	}
 
-	private static function getLogger()
-	{
-		if (self::$logs == null)
-			self::$logs = new Log(self::TAG);
-
-		return self::$logs;
-	}
-
 	public static function getLoadedManifest()
 	{
 		return self::$manifestIndex;
+	}
+
+	private static function getLog()
+	{
+		if (self::$log == null)
+			self::$log = new Log(self::TAG);
+
+		return self::$log;
+	}
+
+	public static function getService($serviceName)
+	{
+		if (!self::serviceExists($serviceName))
+		{
+			self::getLog()->e($serviceName." service which was requested is not known by System");
+			return null;
+		}
+
+		return self::$services[$serviceName];
+	}
+
+	private static function loadComponents(array $componentList)
+	{
+		if (count($componentList) < 1)
+			return false;
+
+		foreach ($componentList as $component)
+			if (class_exists($component))
+			{
+				$componentInstance = new $component;
+
+				if ($componentInstance instanceof Component)
+					self::getLog()->i($component." component is loaded");
+                else
+					throw new \Exception($component." class can only be instance of Component");
+			}
+
+        return true;
+	}
+
+	private static function loadServices(array $serviceList)
+	{
+		if (count($serviceList) < 1)
+			return false;
+
+		foreach($serviceList as $serviceName => $serviceClass)
+		{
+			if (class_exists($serviceClass) && is_string($serviceName))
+			{
+				if(self::serviceExists($serviceName))
+				{
+					self::getLog()->e("Tried to load existed service {$serviceName}");
+					continue;
+				}
+
+				$serviceInstance = new $serviceClass;
+
+				if ($serviceInstance instanceof Service)
+				{
+					self::getLog()->i($serviceName.":".$serviceClass." service is loaded");
+					self::$services[$serviceName] = $serviceInstance;
+				}
+				else
+					throw new \Exception($serviceClass." class can only be instance of Service");
+			}
+		}
+
+        return true;
+	}
+
+	public static function serviceExists($serviceName)
+	{
+		return isset(self::$services[$serviceName]);
 	}
 }
