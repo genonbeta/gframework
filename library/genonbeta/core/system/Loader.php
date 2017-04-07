@@ -1,28 +1,5 @@
 <?php
 
-/*
- * Loader.php
- *
- * Copyright 2016 Veli TASALI <veli.tasali@gmail.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301, USA.
- *
- *
- */
-
 namespace genonbeta\core\system;
 
 use Configuration;
@@ -66,15 +43,16 @@ abstract class Loader extends Component
 			$viewIndex = CurrentManifest::getViewIndex();
 			$pathIndex = URLAddress::resolvePath();
 			$pathCount = count($pathIndex);
+			$viewName = self::VIEW_DEFAULT;
+			$currentView = $viewIndex[$viewName];
 			$leftPath = [];
-			$currentView = $viewIndex[self::VIEW_DEFAULT];
 
 			for ($wayNumber = $pathCount; $wayNumber > 0; $wayNumber--)
 			{
-				$try = implode("/", $pathIndex);
+				$viewName = implode("/", $pathIndex);
 
-				if (isset($viewIndex[$try]) && class_exists($viewIndex[$try]))
-					$currentView = $viewIndex[$try];
+				if (isset($viewIndex[$viewName]) && class_exists($viewIndex[$viewName]))
+					$currentView = $viewIndex[$viewName];
 				else
 					$leftPath[] = array_pop($pathIndex);
 			}
@@ -89,7 +67,8 @@ abstract class Loader extends Component
 				if(!$class instanceof ViewSkeleton)
 					throw new \InvalidArgumentException("{$currentView} isn't instance of ViewSkeleton");
 
-				EnvironmentVariables::define("currentSkeleton", $currentView);
+				EnvironmentVariables::define("view", $currentView);
+				EnvironmentVariables::define("viewAddress", URLAddress::getInstance($viewName));
 
 				$class->onCreate($leftPath);
 				$this->onSkeletonLoaded($class);

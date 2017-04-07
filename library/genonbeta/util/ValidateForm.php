@@ -70,7 +70,8 @@ class ValidateForm
 
     public function defineError($errorCode, $errorMsg)
     {
-        $this->errorMsg[$errorCode] = $errorCode;
+        $this->errorMsgs[$errorCode] = $errorMsg;
+        return $this;
     }
 
     public function deploy()
@@ -88,8 +89,9 @@ class ValidateForm
 
             // remove previous result value
             unset($this->fields[$key][self::RESULT_VALUE]);
+            echo "$key => $value<br/>";
 
-            if ($index[self::NULLABLE] == self::NOT_NULL && empty($value))
+            if ($index[self::NULLABLE] == self::NOT_NULL && $value === "")
                  $error = self::ERROR_EMPTY;
             elseif ($index[self::MAX_LENGHT] != self::DISABLED && strlen($value) > $index[self::MAX_LENGHT])
                 $error = self::ERROR_TOO_LONG;
