@@ -89,22 +89,28 @@ class ValidateForm
 
             // remove previous result value
             unset($this->fields[$key][self::RESULT_VALUE]);
-            echo "$key => $value<br/>";
 
-            if ($index[self::NULLABLE] == self::NOT_NULL && $value === "")
-                 $error = self::ERROR_EMPTY;
-            elseif ($index[self::MAX_LENGHT] != self::DISABLED && strlen($value) > $index[self::MAX_LENGHT])
-                $error = self::ERROR_TOO_LONG;
-            elseif ($index[self::MIN_LENGHT] != self::DISABLED && strlen($value) < $index[self::MIN_LENGHT])
-                $error = self::ERROR_TOO_SHORT;
-            elseif (
-                        ($index[self::CALLABLE] != self::DISABLED && !$index[self::CALLABLE]($value)) ||
-                        ($index[self::MATCH_CASE] != self::DISABLED && !preg_match($index[self::MATCH_CASE], $value)) ||
-                        ($index[self::CONTROLLER] != self::DISABLED && !$index[self::CONTROLLER]->onRequest($value))
-                    )
-                $error = self::ERROR_MATCH_CASE;
-            elseif ($index[self::FIELD_CHECK] != self::DISABLED && $value != $gatherCallable($index[self::FIELD_CHECK]))
-                $error = self::ERROR_FIELD_CHECK;
+            if ($index[self::NULLABLE] == self::NULL && $value === "")
+            {
+                // don't even check it's allowed to be empty
+            }
+            else
+            {
+                if ($index[self::NULLABLE] == self::NOT_NULL && $value === "")
+                     $error = self::ERROR_EMPTY;
+                elseif ($index[self::MAX_LENGHT] != self::DISABLED && strlen($value) > $index[self::MAX_LENGHT])
+                    $error = self::ERROR_TOO_LONG;
+                elseif ($index[self::MIN_LENGHT] != self::DISABLED && strlen($value) < $index[self::MIN_LENGHT])
+                    $error = self::ERROR_TOO_SHORT;
+                elseif (
+                            ($index[self::CALLABLE] != self::DISABLED && !$index[self::CALLABLE]($value)) ||
+                            ($index[self::MATCH_CASE] != self::DISABLED && !preg_match($index[self::MATCH_CASE], $value)) ||
+                            ($index[self::CONTROLLER] != self::DISABLED && !$index[self::CONTROLLER]->onRequest($value))
+                        )
+                    $error = self::ERROR_MATCH_CASE;
+                elseif ($index[self::FIELD_CHECK] != self::DISABLED && $value != $gatherCallable($index[self::FIELD_CHECK]))
+                    $error = self::ERROR_FIELD_CHECK;
+            }
 
             if ($error != null)
             {
@@ -233,6 +239,14 @@ class ValidateForm
             return false;
 
         return $this->updateFieldObserver(self::FIELD_CHECK, $otherFieldId);
+    }
+
+    public function setMatchCase($matchCase)
+    {
+        if (!is_string($matchCase))
+            return false;
+
+        return $this->updateFieldObserver(self::MATCH_CASE, $matchCase);
     }
 
     public function setMaxLenght($maxLenght)
