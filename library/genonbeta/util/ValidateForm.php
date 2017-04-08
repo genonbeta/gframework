@@ -21,7 +21,7 @@ class ValidateForm
     const MAX_LENGHT = "maxLenght";
     const MATCH_CASE = "matchCase";
     const CONTROLLER = "controller";
-    const CALLABLE = "callable";
+    const CALLBACK = "callable";
     const NULLABLE = "nullable";
     const FIELD_CHECK = "fieldCheck";
     const ERROR_CODE = "errorCode";
@@ -58,7 +58,7 @@ class ValidateForm
             self::MAX_LENGHT => self::DISABLED,
             self::MATCH_CASE => self::DISABLED,
             self::CONTROLLER => self::DISABLED,
-            self::CALLABLE => self::DISABLED,
+            self::CALLBACK => self::DISABLED,
             self::NULLABLE => self::DISABLED,
             self::FIELD_CHECK => self::DISABLED
         ];
@@ -103,7 +103,7 @@ class ValidateForm
                 elseif ($index[self::MIN_LENGHT] != self::DISABLED && strlen($value) < $index[self::MIN_LENGHT])
                     $error = self::ERROR_TOO_SHORT;
                 elseif (
-                            ($index[self::CALLABLE] != self::DISABLED && !$index[self::CALLABLE]($value)) ||
+                            ($index[self::CALLBACK] != self::DISABLED && !$index[self::CALLBACK]($value)) ||
                             ($index[self::MATCH_CASE] != self::DISABLED && !preg_match($index[self::MATCH_CASE], $value)) ||
                             ($index[self::CONTROLLER] != self::DISABLED && !$index[self::CONTROLLER]->onRequest($value))
                         )
@@ -225,7 +225,7 @@ class ValidateForm
         if (!is_callable($callable))
             return false;
 
-        return $this->updateFieldObserver(self::CALLABLE, $callable);
+        return $this->updateFieldObserver(self::CALLBACK, $callable);
     }
 
     public function setController(Controller $controller)
